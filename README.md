@@ -7,7 +7,11 @@
 * Version 4.9.4
 * Version 4.8
 
-**License**: GPLv3 or later
+**License**: 
+* GPLv3 or later
+
+**Case Studies**: 
+* [Clotheshorse](https://www.evernote.com/l/AOVjUMGu2ENAI5re7eE6hxx5tRTh0T5s0SE)
 
 # Description
 
