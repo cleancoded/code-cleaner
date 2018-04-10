@@ -141,3 +141,16 @@ The plugin also offers CDN rewrite support, a script manager to disbale CSS/JS o
 
 * **Version 1.0.0**
     * Plugin launched.
+    
+# Roadmap
+* Lazy load images
+* HTTP/2 server push
+* Sync Google Analytics locally
+* Delete expired transients
+* WordPress menu cache
+* Parse and remove all HTML comments in source code
+* Disable blog (comments, categories, tags, etc.)
+* Minify HTML/JS/CSS
+* Disable Google Fonts
+* Disable comments globally
+* White label for marketing agencies
