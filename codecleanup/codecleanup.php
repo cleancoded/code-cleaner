@@ -1,8 +1,8 @@
 <?php
 /*
 Plugin Name: WordPress Code Cleanup
-Plugin URI: https://cleancoded.com/plugin
-Description: This plugin cleans and optimizes WordPress code for improved website performance and faster page load time.
+Plugin URI: https://github.com/cleancoded/wordpress-code-cleanup/
+Description: This plugin cleans and optimizes WordPress code for improved website performance and faster page load times.
 Version: 1.1.8
 Author: CLEANCODED
 Author URI: https://cleancoded.com/
