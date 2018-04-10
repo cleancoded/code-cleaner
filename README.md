@@ -11,7 +11,7 @@
 
 # Description
 
-This plugin cleans and optimizes WordPress code for improved website performance and faster page load times. Whether you're running a custom child theme, or a stock theme template, this plugin can cleanup the code and improve performance.
+This plugin cleans and optimizes WordPress code for improved website performance and faster page load times. Whether you're running a custom child theme, or a stock theme template, this plugin will cleanup the code and improve performance.
 
 It adds a variety of site-wide optimmization options to the WordPress backend:
 * Disable emojis
