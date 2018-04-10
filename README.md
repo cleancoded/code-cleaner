@@ -133,7 +133,7 @@ The plugin also offers CDN rewrite support, a script manager to disbale CSS/JS o
     * WordPress 4.8 support.
 
 * **Version 1.0.1**
-Accessibility improvements to the plugin settings page.
+    * Accessibility improvements to the plugin settings page.
 
 * **Version 1.0.0**
-Plugin launched.
+    * Plugin launched.
