@@ -1,4 +1,4 @@
-# WordPress Code Cleanup
+# WordPress Code Cleaner
 
 **Contributors**:
 * [CLEANCODED](https://cleancoded.com/)
@@ -16,7 +16,7 @@
 
 # Description
 
-This plugin cleans and optimizes WordPress code for improved website performance and faster page load times. Whether you're using a custom child theme or a marketplace theme template, this plugin will cleanup the code and improve its performance.
+This plugin cleans and optimizes WordPress code for improved website performance and faster page load times. Whether you're using a custom child theme or a marketplace theme template, this plugin will clean the code and improve performance.
 
 It adds a variety of site-wide optimization options to the WordPress backend:
 * Disable emojis
@@ -46,13 +46,13 @@ WooCommerce optimization options:
 * Disable the status meta box
 * Disable widgets
 
-The plugin also offers CDN rewrite support, a script manager to disable CSS/JS on a page-by-page basis, DNS prefetch and preconnect support, as well as a backend accessibility mode. 
+The plugin also offers CDN rewrite support, a script manager to disable CSS/JS on a page-by-page basis, DNS prefetch and preconnect support, as well as backend accessibility mode. 
 
 # Installation
 
-1. Download the latest release of Code Cleanup for WordPress here: 
-    * https://github.com/cleancoded/wordpress-code-cleanup/
-2. Upload plugin files to the `/wp-content/plugins/codecleanup/` directory, or install the plugin through the 'Plugins' area of the WordPress backend.
+1. Download the latest release of Code Cleaner for WordPress here: 
+    * https://wordpress.org/plugins/code-cleaner/
+2. Upload plugin files to the `/wp-content/plugins/codecleaner/` directory, or install the plugin through the 'Plugins' area of the WordPress backend.
 3. Activate the plugin.
 4. Update options and optimization preferences from the plugin 'Settings' page. 
 
