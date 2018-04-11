@@ -527,9 +527,6 @@ function codecleanup_settings() {
     );
 
     register_setting('codecleanup_extras', 'codecleanup_extras', 'codecleanup_sanitize_extras');
-
-    //edd license option
-	register_setting('codecleanup_edd_license', 'codecleanup_edd_license_key', 'codecleanup_edd_sanitize_license');
 }
 add_action('admin_init', 'codecleanup_settings');
 
@@ -833,14 +830,6 @@ function codecleanup_sanitize_extras($values) {
     return $values;
 }
 
-//sanitize EDD license
-function codecleanup_edd_sanitize_license($new) {
-	$old = get_option( 'codecleanup_edd_license_key' );
-	if($old && $old != $new) {
-		delete_option( 'codecleanup_edd_license_status' ); // new license has been entered, so must reactivate
-	}
-	return $new;
-}
 
 //print tooltip
 function codecleanup_tooltip($link) {

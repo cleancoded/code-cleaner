@@ -19,9 +19,6 @@ if(empty($_GET['tab'])) {
 		<a href="?page=codecleanup&tab=options" class="nav-tab <?php echo $_GET['tab'] == 'options' || '' ? 'nav-tab-active' : ''; ?>">Options</a>
 		<a href="?page=codecleanup&tab=cdn" class="nav-tab <?php echo $_GET['tab'] == 'cdn' ? 'nav-tab-active' : ''; ?>">CDN</a>
 		<a href="?page=codecleanup&tab=extras" class="nav-tab <?php echo $_GET['tab'] == 'extras' ? 'nav-tab-active' : ''; ?>">Extras</a>
-		<?php if(!is_plugin_active_for_network('codecleanup/codecleanup.php')) { ?>
-			<a href="?page=codecleanup&tab=license" class="nav-tab <?php echo $_GET['tab'] == 'license' ? 'nav-tab-active' : ''; ?>">License</a>
-		<?php } ?>
 		<a href="?page=codecleanup&tab=support" class="nav-tab <?php echo $_GET['tab'] == 'support' ? 'nav-tab-active' : ''; ?>">Support</a>
 	</h2>
 
@@ -49,12 +46,7 @@ if(empty($_GET['tab'])) {
 		    <?php do_settings_sections( 'codecleanup_extras' ); ?>
 			<?php submit_button(); ?>
 
-		<!-- License and Activation Tab -->
-		<?php } elseif($_GET['tab'] == 'license') { ?>
-
-			<?php require_once('license.php'); ?>
-
-		<!-- Support Tab -->
+		
 		<?php } elseif($_GET['tab'] == 'support') { ?>
 
 			<h2>Support</h2>
@@ -63,7 +55,7 @@ if(empty($_GET['tab'])) {
 		<?php } ?>
 	</form>
 
-	<?php if($_GET['tab'] != 'support' && $_GET['tab'] != 'license') { ?>
+	<?php if($_GET['tab'] != 'support') { ?>
 
 		<div id="codecleanup-legend">
 			<div id="codecleanup-tooltip-legend">

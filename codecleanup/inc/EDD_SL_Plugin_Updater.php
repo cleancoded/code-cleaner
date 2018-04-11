@@ -40,7 +40,7 @@ class EDD_SL_Plugin_Updater {
 		$this->version     = $_api_data['version'];
 		$this->wp_override = isset( $_api_data['wp_override'] ) ? (bool) $_api_data['wp_override'] : false;
 		$this->beta        = ! empty( $this->api_data['beta'] ) ? true : false;
-		$this->cache_key   = 'edd_sl_' . md5( serialize( $this->slug . $this->api_data['license'] . $this->beta ) );
+		$this->cache_key   = 'edd_sl_' . md5( serialize( $this->slug . $this->beta ) );
 
 		$edd_plugin_data[ $this->slug ] = $this->api_data;
 
@@ -261,7 +261,7 @@ class EDD_SL_Plugin_Updater {
 			)
 		);
 
-		$cache_key = 'edd_api_request_' . md5( serialize( $this->slug . $this->api_data['license'] . $this->beta ) );
+		$cache_key = 'edd_api_request_' . md5( serialize( $this->slug . $this->beta ) );
 
 		// Get the transient where we store the api request for this plugin for 24 hours
 		$edd_api_request_transient = $this->get_cached_version_info( $cache_key );
@@ -349,7 +349,6 @@ class EDD_SL_Plugin_Updater {
 
 		$api_params = array(
 			'edd_action' => 'get_version',
-			'license'    => ! empty( $data['license'] ) ? $data['license'] : '',
 			'item_name'  => isset( $data['item_name'] ) ? $data['item_name'] : false,
 			'item_id'    => isset( $data['item_id'] ) ? $data['item_id'] : false,
 			'version'    => isset( $data['version'] ) ? $data['version'] : false,
