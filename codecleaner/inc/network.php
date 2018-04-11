@@ -48,12 +48,12 @@ function codecleaner_network_admin_menu() {
 }
 add_filter('network_admin_menu', 'codecleaner_network_admin_menu');
 
-//codecleaner Network Section Callback
+//Code Cleaner Network Section Callback
 function codecleaner_network_callback() {
 	echo '<p class="codecleaner-subheading">' . __( 'Manage network access control and setup a network default site.', 'codecleaner' ) . '</p>';
 }
  
-//codecleaner Network Access
+//Code Cleaner Network Access
 function codecleaner_network_access_callback() {
 	$codecleaner_network = get_site_option('codecleaner_network');
 	echo "<div style='display: table; width: 100%;'>";
@@ -75,7 +75,7 @@ function codecleaner_network_access_callback() {
 	echo "</div>";
 }
 
-//codecleaner Network Default
+//Code Cleaner Network Default
 function codecleaner_network_default_callback() {
 	$codecleaner_network = get_site_option('codecleaner_network');
 	echo "<div style='display: table; width: 100%;'>";
@@ -102,7 +102,7 @@ function codecleaner_network_default_callback() {
 	echo "</div>";
 }
  
-//codecleaner Network Settings Page
+//Code Cleaner Network Settings Page
 function codecleaner_network_page_callback() {
 	if(isset($_POST['codecleaner_apply_defaults'])) {
 		check_admin_referer('codecleaner-network-apply');
@@ -110,7 +110,7 @@ function codecleaner_network_page_callback() {
 			$blog = get_blog_details($_POST['codecleaner_network_apply_blog']);
 			if($blog) {
 
-				//apply default settings to selected blog
+				//Apply Default Settings to Selected Blog
 				if(is_multisite()) {
 					$codecleaner_network = get_site_option('codecleaner_network');
 
@@ -126,18 +126,18 @@ function codecleaner_network_page_callback() {
 
 							foreach($option_names as $option_name) {
 
-								//clear selected blog previous option
+								//Clear Selected Blog Previous Option
 								delete_blog_option($blog->blog_id, $option_name);
 
-								//grab new option from default blog
+								//Grab New Option from Default Blog
 								$new_option = get_blog_option($codecleaner_network['default'], $option_name);
 
-								//remove options we don't want to copy
+								//Remove Options We Don't Want to Copy
 								if($option_name == 'codecleaner_cdn') {
 									unset($new_option['cdn_url']);
 								}
 
-								//update selected blog with default option
+								//Update Selected Blog with Default Option
 								update_blog_option($blog->blog_id, $option_name, $new_option);
 
 							}
@@ -168,7 +168,7 @@ function codecleaner_network_page_callback() {
 		echo "<div class='notice updated is-dismissible'><p>" . __('Options saved.', 'codecleaner') . "</p></div>";
 	}
 
-	//if no tab is set, default to first/network tab
+	//If No Tab is Set, Default to Network Tab
 	if(empty($_GET['tab'])) {
 		$_GET['tab'] = 'network';
 	} 
@@ -218,7 +218,7 @@ function codecleaner_network_page_callback() {
 		//Support Tab Content
 		elseif($_GET['tab'] == 'support') {
 			echo "<h2>" . __('Support', 'codecleaner') . "</h2>";
-			echo "<p>For plugin support and documentation, please visit <a href='https://cleancoded.com/cleaner' title='codecleaner' target='_blank'>CLEANCODED.com</a>.</p>";
+			echo "<p>For plugin support and documentation, please visit <a href='https://cleancoded.com/cleaner' title='Code Cleaner' target='_blank'>CLEANCODED</a>.</p>";
 		}
 
 		//Tooltip Legend
@@ -244,7 +244,7 @@ function codecleaner_network_page_callback() {
 	echo "</div>";
 }
  
-//Update codecleaner Network Options
+//Update Code Cleaner Network Options
 function codecleaner_update_network_options() {
 
 	//Verify Post Referring Page

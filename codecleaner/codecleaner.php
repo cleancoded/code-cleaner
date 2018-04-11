@@ -2,32 +2,33 @@
 /*
 Plugin Name: Code Cleaner
 Plugin URI: https://cleancoded.com/cleaner/
-Description: This plugin cleans and optimizes WordPress code for improved website performance and faster page load times.
+Description: The Code Cleaner plugin cleans and optimizes WordPress code for improved website performance and faster page load times.
 Version: 1.1.8
 Author: CLEANCODED
 Author URI: https://cleancoded.com/
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: codecleaner
 */
 
-//add our admin menus
+//Add Admin Menus
 if(is_admin()) {
 	add_action('admin_menu', 'codecleaner_menu', 9);
 }
 
-//admin menu
+//Admin Menu
 function codecleaner_menu() {
 	if(codecleaner_network_access()) {
 		$pages = add_options_page( 'codecleaner', 'Code Cleaner', 'manage_options', 'codecleaner', 'codecleaner_admin');
 	}
 }
 
-//admin settings page
+//Admin Settings Page
 function codecleaner_admin() {
 	include plugin_dir_path(__FILE__) . '/inc/admin.php';
 }
 
-//plugin admin scripts
+//Plugin Admin Scripts
 function codecleaner_admin_scripts() {
 	if(codecleaner_network_access()) {
 		wp_register_style('codecleaner-styles', plugins_url('/css/style.css', __FILE__), array(), '1.1.8');
@@ -36,7 +37,7 @@ function codecleaner_admin_scripts() {
 }
 add_action('admin_enqueue_scripts', 'codecleaner_admin_scripts');
 
-//check multisite and verify access
+//Check Multisite and Verify Access
 function codecleaner_network_access() {
 	if(is_multisite()) {
 		$codecleaner_network = get_site_option('codecleaner_network');
@@ -47,10 +48,10 @@ function codecleaner_network_access() {
 	return true;
 }
 
-//uninstall plugin and delete options
+//Uninstall Plugin and Delete Options
 function codecleaner_uninstall() {
 
-	//plugin options
+	//Plugin Options
 	$codecleaner_options = array(
 		'codecleaner_options',
 		'codecleaner_cdn',
@@ -84,7 +85,7 @@ function codecleaner_uninstall() {
 }
 register_uninstall_hook(__FILE__, 'codecleaner_uninstall');
 
-//all plugin file includes
+//All Plugin File Includes
 include plugin_dir_path(__FILE__) . '/inc/settings.php';
 include plugin_dir_path(__FILE__) . '/inc/functions.php';
 include plugin_dir_path(__FILE__) . '/inc/network.php';

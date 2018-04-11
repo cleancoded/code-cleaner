@@ -1,11 +1,11 @@
 <?php
-//register settings + options
+//Register Settings and Options
 function codecleaner_settings() {
 	if(get_option('codecleaner_options') == false) {	
 		add_option('codecleaner_options', apply_filters('codecleaner_default_options', codecleaner_default_options()));
 	}
 
-    //Options Primary Section
+    //Primary Options Section
     add_settings_section('codecleaner_options', 'Options', 'codecleaner_options_callback', 'codecleaner_options');
 
     //Disable Emojis
@@ -17,7 +17,7 @@ function codecleaner_settings() {
     	'codecleaner_options', 
     	array(
             'id' => 'disable_emojis',
-            'tooltip' => 'Removes WordPress Emojis JavaScript file (wp-emoji-release.min.js).'
+            'tooltip' => 'Removes the WordPress Emojis JavaScript file (wp-emoji-release.min.js).'
         )
     );
 
@@ -30,7 +30,7 @@ function codecleaner_settings() {
     	'codecleaner_options', 
     	array(
     		'id' => 'disable_embeds',
-    		'tooltip' => 'Removes WordPress Embed JavaScript file (wp-embed.min.js).'    		
+    		'tooltip' => 'Removes the WordPress Embed JavaScript file (wp-embed.min.js).'    		
     	)
     );
 
@@ -43,7 +43,7 @@ function codecleaner_settings() {
     	'codecleaner_options', 
     	array(
     		'id' => 'remove_query_strings',
-    		'tooltip' => 'Remove query strings from static resources (CSS, JS).'
+    		'tooltip' => 'Remove query strings from static resources (CSS and JS).'
     	)
     );
 
@@ -84,7 +84,7 @@ function codecleaner_settings() {
     	'codecleaner_options', 
     	array(
     		'id' => 'remove_jquery_migrate',
-    		'tooltip' => 'Removes jQuery Migrate JavaScript file (jquery-migrate.min.js).'
+    		'tooltip' => 'Removes the jQuery Migrate JavaScript file (jquery-migrate.min.js).'
     	)
     );
 
@@ -97,7 +97,7 @@ function codecleaner_settings() {
     	'codecleaner_options', 
     	array(
     		'id' => 'hide_wp_version',
-    		'tooltip' => 'Removes WordPress version meta tag.'
+    		'tooltip' => 'Removes the WordPress version meta tag.'
     	)
     );
 
@@ -110,7 +110,7 @@ function codecleaner_settings() {
     	'codecleaner_options',
         array(
         	'id' => 'remove_wlwmanifest_link',
-        	'tooltip' => 'Remove wlwmanifest (Windows Live Writer) link tag.'
+        	'tooltip' => 'Removes the wlwmanifest (Windows Live Writer) link tag.'
         )
     );
 
@@ -123,7 +123,7 @@ function codecleaner_settings() {
     	'codecleaner_options', 
     	array(
     		'id' => 'remove_rsd_link',
-    		'tooltip' => 'Remove RSD (Real Simple Discovery) link tag.'
+    		'tooltip' => 'Removes the RSD (Real Simple Discovery) link tag.'
     	)
     );
 
@@ -136,7 +136,7 @@ function codecleaner_settings() {
     	'codecleaner_options', 
     	array(
     		'id' => 'remove_shortlink',
-    		'tooltip' => 'Remove Shortlink link tag.'
+    		'tooltip' => 'Removes the Shortlink link tag.'
     	)
     );
 
@@ -149,7 +149,7 @@ function codecleaner_settings() {
     	'codecleaner_options', 
     	array(
     		'id' => 'disable_rss_feeds',
-    		'tooltip' => 'Disable WordPress generated RSS feeds.'
+    		'tooltip' => 'Disables WordPress-generated RSS feeds.'
     	)
     );
 
@@ -162,7 +162,7 @@ function codecleaner_settings() {
     	'codecleaner_options', 
     	array(
     		'id' => 'remove_feed_links',
-    		'tooltip' => 'Disable WordPress generated RSS feed link tags.'
+    		'tooltip' => 'Disables WordPress-generated RSS feed link tags.'
     	)
     );
 
@@ -175,7 +175,7 @@ function codecleaner_settings() {
     	'codecleaner_options', 
     	array(
     		'id' => 'disable_self_pingbacks',
-    		'tooltip' => 'Disable Self Pingbacks (generated when linking to an article on your own blog).'
+    		'tooltip' => 'Disables Self Pingbacks (generated when linking to a post on your own site).'
     	)
     );
 
@@ -188,7 +188,7 @@ function codecleaner_settings() {
     	'codecleaner_options', 
     	array(
     		'id' => 'remove_rest_api_links',
-    		'tooltip' => 'Removes REST API link tag from the front end and the REST API header link from page requests.'
+    		'tooltip' => 'Removes the REST API link tag from the front-end and the REST API header link from page requests.'
     	)
     );
 
@@ -201,7 +201,7 @@ function codecleaner_settings() {
         'codecleaner_options', 
         array(
             'id' => 'disable_dashicons',
-            'tooltip' => 'Disables dashicons on the front end when not logged in.'
+            'tooltip' => 'Disables dashicons on the front-end when not logged in.'
         )
     );
 
@@ -214,7 +214,7 @@ function codecleaner_settings() {
         'codecleaner_options', 
         array(
             'id' => 'disable_google_maps',
-            'tooltip' => 'Removes any instances of Google Maps being loaded across your entire site.'
+            'tooltip' => 'Removes all instances of Google Maps loaded on your website.'
         )
     );
 
@@ -233,7 +233,7 @@ function codecleaner_settings() {
     			'disable_everywhere' => 'Disable Everywhere',
     			'allow_posts' => 'Only Allow When Editing Posts/Pages'
     		),
-    		'tooltip' => 'Disable WordPress Heartbeat everywhere or in certain areas (used for auto saving and revision tracking).'
+    		'tooltip' => 'Disables WordPress Heartbeat (used for auto saving and revision tracking).'
     	)
     );
 
@@ -281,7 +281,7 @@ function codecleaner_settings() {
     			'25' => '25',
     			'30' => '30'
     		),
-    		'tooltip' => 'Limits the maximum amount of revisions that are allowed for posts and pages.'
+    		'tooltip' => 'Limits the maximum number of revisions that are allowed for posts and pages.'
     	)
     );
 
@@ -317,7 +317,7 @@ function codecleaner_settings() {
             'id' => 'login_url',
             'input' => 'text',
             'placeholder' => 'hideme',
-            'tooltip' => 'When set, this will change your WordPress login URL (slug) to the provided string and will block wp-admin and wp-login endpoints from being directly accessed.'
+            'tooltip' => 'Changes your WordPress login URL (slug) to the provided string and blocks the wp-admin and wp-login endpoints from being accessed directly.'
         )
     );
 
@@ -333,7 +333,7 @@ function codecleaner_settings() {
         'codecleaner_woocommerce', 
         array(
             'id' => 'disable_woocommerce_scripts',
-            'tooltip' => 'Disables WooCommerce scripts and styles except on product, cart, and checkout pages.'
+            'tooltip' => 'Disables WooCommerce scripts and styles except on product, cart and checkout pages.'
         )
     );
 
@@ -346,7 +346,7 @@ function codecleaner_settings() {
         'codecleaner_woocommerce', 
         array(
             'id' => 'disable_woocommerce_cart_fragmentation',
-            'tooltip' => 'Completely disables WooCommerce cart fragmentation script.'
+            'tooltip' => 'Completely disables the WooCommerce cart fragmentation script.'
         )
     );
 
@@ -359,7 +359,7 @@ function codecleaner_settings() {
         'codecleaner_woocommerce', 
         array(
             'id' => 'disable_woocommerce_status',
-            'tooltip' => 'Disables WooCommerce status meta box from the WP Admin Dashboard.'
+            'tooltip' => 'Disables the WooCommerce status meta box from the WP Admin Dashboard.'
         )
     );
 
@@ -396,7 +396,7 @@ function codecleaner_settings() {
         array(
             'id' => 'enable_cdn',
             'option' => 'codecleaner_cdn',
-            'tooltip' => 'Enables rewriting of your site URLs with your CDN URLs which can be configured below.'
+            'tooltip' => 'Enables rewriting of your site URLs with CDN URLs which can be configured below.'
         )
     );
 
@@ -444,7 +444,7 @@ function codecleaner_settings() {
             'option' => 'codecleaner_cdn',
             'input' => 'text',
             'placeholder' => '.php',
-            'tooltip' => 'Enter any directories or file extensions you would like to be excluded from CDN rewriting, separated by commas (,). Default: .php'
+            'tooltip' => 'Enter any directories or file extensions you would like excluded from CDN rewriting, separated by commas (,). Default: .php'
         )
     );
 
@@ -465,7 +465,7 @@ function codecleaner_settings() {
         array(
         	'id' => 'script_manager',
         	'option' => 'codecleaner_extras',
-        	'tooltip' => 'Enables the codecleaner Script Manager, which gives you the ability to disable CSS and JS files on a page by page basis.'
+        	'tooltip' => 'Enables the Code Cleaner Script Manager, which allows you to disable CSS and JS files on a page-by-page basis.'
         )
     );
 
@@ -493,7 +493,7 @@ function codecleaner_settings() {
         array(
             'id' => 'preconnect',
             'option' => 'codecleaner_extras',
-            'tooltip' => 'Preconnect allows the browser to set up early connections before an HTTP request, eliminating roundtrip latency and saving time for users. Format: scheme://domain.tld (one per line)'
+            'tooltip' => 'Preconnect allows the browser to set up connections before an HTTP request, eliminating roundtrip latency. Format: scheme://domain.tld (one per line)'
         )
     );
 
@@ -507,7 +507,7 @@ function codecleaner_settings() {
         array(
             'id' => 'clean_uninstall',
             'option' => 'codecleaner_extras',
-            'tooltip' => 'When enabled, this will cause all codecleaner options data to be removed from your database when the plugin is uninstalled.'
+            'tooltip' => 'This will remove all Code Cleaner plugin options data from the database when the plugin is uninstalled.'
         )
     );
 
@@ -522,7 +522,7 @@ function codecleaner_settings() {
         	'id' => 'accessibility_mode',
         	'input' => 'checkbox',
         	'option' => 'codecleaner_extras',
-        	'tooltip' => 'Disable the use of visual UI elements in the plugin settings such as checkbox toggles and hovering tooltips.'
+        	'tooltip' => 'Disables visual UI elements within the plugin settings such as checkbox toggles and hovering tooltips.'
         )
     );
 
@@ -530,7 +530,7 @@ function codecleaner_settings() {
 }
 add_action('admin_init', 'codecleaner_settings');
 
-//options default values
+//Options Default Values
 function codecleaner_default_options() {
 	$defaults = array(
 		'disable_emojis' => "0",
@@ -563,7 +563,7 @@ function codecleaner_default_options() {
 	return apply_filters('codecleaner_default_options', $defaults);
 }
 
-//cdn default values
+//CDN Default Values
 function codecleaner_default_cdn() {
     $defaults = array(
         'enable_cdn' => "0",
@@ -575,7 +575,7 @@ function codecleaner_default_cdn() {
     return apply_filters( 'codecleaner_default_cdn', $defaults );
 }
 
-//extras default values
+//Extras Default Values
 function codecleaner_default_extras() {
     $defaults = array(
         'script_manager' => "0",
@@ -602,27 +602,27 @@ function codecleaner_network_defaults(&$defaults, $option) {
     }
 }
 
-//main options group callback
+//Main Options Group Callback
 function codecleaner_options_callback() {
 	echo '<p class="codecleaner-subheading">' . __( 'Select which performance options you would like to enable.', 'codecleaner' ) . '</p>';
 }
 
-//woocommerce options group callback
+//WooCommerce Options Group Callback
 function codecleaner_woocommerce_callback() {
     echo '<p class="codecleaner-subheading">' . __( 'Disable specific elements of WooCommerce.', 'codecleaner' ) . '</p>';
 }
 
-//cdn group callback
+//CDN Group Callback
 function codecleaner_cdn_callback() {
-    echo '<p class="codecleaner-subheading">' . __( 'CDN options that allow you to rewrite your site URLs with your CDN URLs.', 'codecleaner' ) . '</p>';
+    echo '<p class="codecleaner-subheading">' . __( 'CDN options that allow you to rewrite your site URLs with CDN URLs.', 'codecleaner' ) . '</p>';
 }
 
-//extras group callback
+//Extras Group Callback
 function codecleaner_extras_callback() {
-    echo '<p class="codecleaner-subheading">' . __( 'Extra options that pertain to codecleaner plugin functionality.', 'codecleaner' ) . '</p>';
+    echo '<p class="codecleaner-subheading">' . __( 'Extra Code Cleaner plugin functionality.', 'codecleaner' ) . '</p>';
 }
 
-//print form inputs
+//Print Form Inputs
 function codecleaner_print_input($args) {
     if(!empty($args['option'])) {
         $option = $args['option'];
@@ -665,7 +665,7 @@ function codecleaner_print_input($args) {
                 echo "</select>";
             }
 
-            //Checkbox + Toggle
+            //Checkbox and Toggle
             else {
                 if((empty($extras['accessibility_mode']) || $extras['accessibility_mode'] != "1") && (empty($args['input']) || $args['input'] != 'checkbox')) {
                     echo "<label for='" . $args['id'] . "' class='switch'>";
@@ -702,7 +702,7 @@ function codecleaner_print_input($args) {
     echo "</div>";
 }
 
-//print checkbox toggle option
+//Print Checkbox Toggle Option
 function codecleaner_print_toggle($args) {
     if(!empty($args['section'])) {
         $section = $args['section'];
@@ -735,7 +735,7 @@ function codecleaner_print_toggle($args) {
     }
 }
 
-//print select option
+//Print Select Option
 function codecleaner_print_select($args) {
 	$options = get_option('codecleaner_options');
 	echo "<select id='" . $args['id'] . "' name='codecleaner_options[" . $args['id'] . "]'>";
@@ -749,7 +749,7 @@ function codecleaner_print_select($args) {
 	echo "</select>";
 }
 
-//print DNS Prefetch
+//Print DNS Prefetch
 function codecleaner_print_dns_prefetch($args) {
     $extras = get_option('codecleaner_extras');
      echo "<div style='display: table; width: 100%;'>";
@@ -781,7 +781,7 @@ function codecleaner_print_dns_prefetch($args) {
     echo "</div>";
 }
 
-//print Preconnect
+//Print Preconnect
 function codecleaner_print_preconnect($args) {
     $extras = get_option('codecleaner_extras');
      echo "<div style='display: table; width: 100%;'>";
@@ -813,7 +813,7 @@ function codecleaner_print_preconnect($args) {
     echo "</div>";
 }
 
-//sanitize extras
+//Sanitize Extras
 function codecleaner_sanitize_extras($values) {
     if(!empty($values['dns_prefetch'])) {
         $text = trim($values['dns_prefetch']);
@@ -830,8 +830,7 @@ function codecleaner_sanitize_extras($values) {
     return $values;
 }
 
-
-//print tooltip
+//Print Tooltip
 function codecleaner_tooltip($link) {
 	$var = "<a ";
         if(!empty($link)) {
@@ -842,7 +841,7 @@ function codecleaner_tooltip($link) {
     return $var;
 }
 
-//print title
+//Print Title
 function codecleaner_title($title, $id, $checkbox = false) {
     if(!empty($title)) {
         $var = $title;

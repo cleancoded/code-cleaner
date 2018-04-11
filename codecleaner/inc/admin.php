@@ -1,5 +1,5 @@
 <?php 
-//if no tab is set, default to first/options tab
+//If No Tab is Set, Default to Options Tab
 if(empty($_GET['tab'])) {
 	$_GET['tab'] = 'options';
 } 
@@ -50,7 +50,7 @@ if(empty($_GET['tab'])) {
 		<?php } elseif($_GET['tab'] == 'support') { ?>
 
 			<h2>Support</h2>
-			<p>For plugin support and documentation, please visit <a href='https://cleancoded.com/cleaner/' title='Code Cleaner' target='_blank'>CLEANCODED.com</a>.</p>
+			<p>For plugin support and documentation, please visit <a href='https://cleancoded.com/cleaner/' title='Code Cleaner' target='_blank'>CLEANCODED</a>.</p>
 
 		<?php } ?>
 	</form>

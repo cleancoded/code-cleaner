@@ -3,7 +3,7 @@ $codecleaner_options = get_option('codecleaner_options');
 $codecleaner_cdn = get_option('codecleaner_cdn');
 $codecleaner_extras = get_option('codecleaner_extras');
 
-/* Options Actions + Filters
+/* Options Actions and Filters
 /***********************************************************************/
 if(!empty($codecleaner_options['disable_emojis']) && $codecleaner_options['disable_emojis'] == "1") {
 	add_action('init', 'codecleaner_disable_emojis');
@@ -394,7 +394,7 @@ function codecleaner_filter_wp_login($url, $scheme = null) {
 
 function codecleaner_login_url($scheme = null) {
 
-	//Return Full New Login URL Based on Permalink Structure
+	//Return New Login URL Based on Permalink Structure
 	if(get_option('permalink_structure')) {
 		return codecleaner_trailingslashit(home_url('/', $scheme) . codecleaner_login_slug());
 	} 
@@ -548,7 +548,7 @@ function codecleaner_cdn_rewriter($html) {
 		}
 	}
   
-  	//Rewrite URLs + Return
+  	//Rewrite URLs and Return
 	$regEx = '#(?<=[(\"\'])(?:' . $regExURL . ')?/(?:((?:' . $directories . ')[^\"\')]+)|([^/\"\']+\.[^/\"\')]+))(?=[\"\')])#';
 	$cdnHTML = preg_replace_callback($regEx, 'codecleaner_cdn_rewrite_url', $html);
 	return $cdnHTML;
@@ -579,12 +579,12 @@ function codecleaner_cdn_rewrite_url($url) {
 	    $siteURL = get_option('home');
 	    $siteURL = substr($siteURL, strpos($siteURL, '//'));
 
-	    //Replace URL w/ No HTTP/S Prefix
+	    //Replace URL with No HTTP/S Prefix
 	    if(strpos($url[0], '//') === 0) {
 	        return str_replace($siteURL, $codecleaner_cdn['cdn_url'], $url[0]);
 	    }
 
-	    //Found Site URL, Replace Non Relative URL w/ HTTP/S Prefix
+	    //Found Site URL, Replace Non Relative URL with HTTP/S Prefix
 	    if(strstr($url[0], $siteURL)) {
 	        return str_replace(array('http:' . $siteURL, 'https:' . $siteURL), $codecleaner_cdn['cdn_url'], $url[0]);
 	    }
@@ -637,7 +637,7 @@ function codecleaner_script_manager() {
 
 	global $codecleaner_options;
 
-	//build array of existing disables
+	//Build Array of Disables
 	$codecleaner_disables = array();
 	if(!empty($codecleaner_options['disable_google_maps']) && $codecleaner_options['disable_google_maps'] == "1") {
 		$codecleaner_disables[] = 'maps.google.com';
@@ -884,8 +884,8 @@ function codecleaner_script_manager() {
 			echo "<div id='codecleaner-script-manager-header'>";
 				echo "<h2>codecleaner Script Manager</h2>";
 				echo "<div id='codecleaner-script-manager-description'>";
-					echo "<p>Below you can disable/enable CSS and JS files on a per page/post basis, as well as by custom post types. We recommend testing this locally or on a staging site first, as you could break the appearance of your live site. If you aren't sure about a certain script, you can try clicking on it, as a lot of authors will mention their plugin or theme in the header of the source code.</p>
-						<p>If for some reason you run into trouble, you can always enable everything again to reset the settings. Make sure to check out the <a href='https://cleancoded.com/cleaner/' target='_blank' title='codecleaner Knowledge Base'>codecleaner knowledge base</a> for more information.</p>";
+					echo "<p>Below you can disable/enable CSS and JS files on an individual page/post basis, including custom post types. We recommend testing this locally or on a staging site first, as this can adversely affect the appearance of your live website. If you aren't sure about a certain script, you can try clicking on it, as a lot of authors will mention their plugin or theme in the header of the source code.</p>
+						<p>If for some reason you run into trouble, you can always enable everything again to reset these settings. Make sure to check out the <a href='https://cleancoded.com/cleaner/' target='_blank' title='Code Cleaner Knowledge Base'>Code Cleaner Knowledge Base</a> for more information.</p>";
 				echo "</div>";
 				echo "<a href='" . add_query_arg(str_replace(array('&codecleaner', 'codecleaner'), '', $_SERVER['QUERY_STRING']), '', home_url($wp->request)) . "' id='codecleaner-script-manager-close'>";
 					echo "<img src='" . plugins_url( 'img/close.png', dirname(__FILE__) ) . "' title='Close Script Manager' />";
@@ -921,7 +921,7 @@ function codecleaner_script_manager() {
 
 											if(!empty($data["scripts"]->registered[$script]->src)) {
 
-												//Check for disables already set
+												//Check for Disables Already Set
 												if(!empty($codecleaner_disables)) {
 													foreach($codecleaner_disables as $key => $val) {
 														if(strpos($data["scripts"]->registered[$script]->src, $val) !== false) {
@@ -940,7 +940,7 @@ function codecleaner_script_manager() {
 														}
 													echo "</td>";
 
-													//Handle + Path
+													//Handle and Path
 													echo "<td class='codecleaner-script-manager-script'><span>" . $data["scripts"]->registered[$script]->handle . "</span><a href='" . $data["scripts"]->registered[$script]->src . "' target='_blank'>" . str_replace(get_home_url(), '', $data["scripts"]->registered[$script]->src) . "</a></td>";
 
 													//Disable
@@ -1262,6 +1262,3 @@ function codecleaner_preconnect() {
 		}
 	}
 }
-
-
-
