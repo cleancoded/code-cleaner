@@ -52,9 +52,9 @@ The plugin also offers CDN rewrite support, a script manager to disable CSS/JS o
 
 1. Download the latest release of Code Cleanup for WordPress here: 
     * https://github.com/cleancoded/wordpress-code-cleanup/
-2. Upload plugin files to the `/wp-content/plugins/codecleanup/` directory (create this if it does exist), or install the plugin through the plugins area of the WordPress backend.
-4. Activate the plugin through the 'Plugins' area of the WordPress backend.
-5. Update options and optimization preferences from the plugin 'Settings' page. 
+2. Upload plugin files to the `/wp-content/plugins/codecleanup/` directory, or install the plugin through the 'Plugins' area of the WordPress backend.
+3. Activate the plugin.
+4. Update options and optimization preferences from the plugin 'Settings' page. 
 
 # Changelog
 
