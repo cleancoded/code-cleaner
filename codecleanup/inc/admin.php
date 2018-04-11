@@ -11,7 +11,7 @@ if(empty($_GET['tab'])) {
 
 	<!-- Optimization Guide Notice -->
 	<div class="notice notice-info">
-    	<p><?php _e( 'Check out our <a href="https://cleancoded.com/speed-up-wordpress/" title="WordPress Optimization Guide" target="_blank">complete optimization guide</a> for more ways to speed up WordPress.', 'codecleanup' ); ?></p>
+    	<p><?php _e( 'Check out our <a href="https://cleancoded.com/cleaner/" title="WordPress Optimization Guide" target="_blank">complete optimization guide</a> for more ways to speed up WordPress.', 'codecleanup' ); ?></p>
     </div>
 
     <!-- Tab Navigation -->
@@ -50,7 +50,7 @@ if(empty($_GET['tab'])) {
 		<?php } elseif($_GET['tab'] == 'support') { ?>
 
 			<h2>Support</h2>
-			<p>For plugin support and documentation, please visit <a href='https://codecleanup.io/' title='codecleanup' target='_blank'>codecleanup.io</a>.</p>
+			<p>For plugin support and documentation, please visit <a href='https://cleancoded.com/' title='codecleanup' target='_blank'>cleancoded.com</a>.</p>
 
 		<?php } ?>
 	</form>
