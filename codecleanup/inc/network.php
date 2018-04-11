@@ -251,7 +251,7 @@ function codecleanup_network_page_callback() {
 
 							//Activate/Deactivate License
 							echo "<tr>";
-								echo "<th>" . __('Activate License', 'permatters') . "</th>";
+								echo "<th>" . __('Activate License', 'codecleanup') . "</th>";
 								echo "<td>";
 									wp_nonce_field('codecleanup_edd_nonce', 'codecleanup_edd_nonce');
 									if($status !== false && $status == 'valid') {
