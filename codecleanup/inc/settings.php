@@ -11,7 +11,7 @@ function codecleanup_settings() {
     //Disable Emojis
     add_settings_field(
     	'disable_emojis', 
-    	codecleanup_title('Disable Emojis', 'disable_emojis') . codecleanup_tooltip('https://codecleanup.io/docs/disable-emojis-wordpress/'), 
+    	codecleanup_title('Disable Emojis', 'disable_emojis') . codecleanup_tooltip('https://cleancoded.com/docs/disable-emojis-wordpress/'), 
     	'codecleanup_print_input', 
     	'codecleanup_options', 
     	'codecleanup_options', 
@@ -24,7 +24,7 @@ function codecleanup_settings() {
     //Disable Embeds
     add_settings_field(
     	'disable_embeds', 
-    	codecleanup_title('Disable Embeds', 'disable_embeds') . codecleanup_tooltip('https://codecleanup.io/docs/disable-embeds-wordpress/'), 
+    	codecleanup_title('Disable Embeds', 'disable_embeds') . codecleanup_tooltip('https://cleancoded.com/docs/disable-embeds-wordpress/'), 
     	'codecleanup_print_input', 
     	'codecleanup_options', 
     	'codecleanup_options', 
@@ -37,7 +37,7 @@ function codecleanup_settings() {
     //Remove Query Strings
     add_settings_field(
     	'remove_query_strings', 
-    	codecleanup_title('Remove Query Strings', 'remove_query_strings') . codecleanup_tooltip('https://codecleanup.io/docs/remove-query-strings-from-static-resources/'), 
+    	codecleanup_title('Remove Query Strings', 'remove_query_strings') . codecleanup_tooltip('https://cleancoded.com/docs/remove-query-strings-from-static-resources/'), 
     	'codecleanup_print_input', 
     	'codecleanup_options', 
     	'codecleanup_options', 
@@ -65,7 +65,7 @@ function codecleanup_settings() {
 	//Disable XML-RPC
     add_settings_field(
     	'disable_xmlrpc', 
-    	codecleanup_title('Disable XML-RPC', 'disable_xmlrpc') . codecleanup_tooltip('https://codecleanup.io/docs/disable-xml-rpc-wordpress/'), 
+    	codecleanup_title('Disable XML-RPC', 'disable_xmlrpc') . codecleanup_tooltip('https://cleancoded.com/docs/disable-xml-rpc-wordpress/'), 
     	'codecleanup_print_input', 
     	'codecleanup_options', 
     	'codecleanup_options', 
@@ -78,7 +78,7 @@ function codecleanup_settings() {
 	//Remove jQuery Migrate
     add_settings_field(
     	'remove_jquery_migrate', 
-    	codecleanup_title('Remove jQuery Migrate', 'remove_jquery_migrate') . codecleanup_tooltip('https://codecleanup.io/docs/remove-jquery-migrate-wordpress/'), 
+    	codecleanup_title('Remove jQuery Migrate', 'remove_jquery_migrate') . codecleanup_tooltip('https://cleancoded.com/docs/remove-jquery-migrate-wordpress/'), 
     	'codecleanup_print_input', 
     	'codecleanup_options', 
     	'codecleanup_options', 
@@ -91,7 +91,7 @@ function codecleanup_settings() {
     //Hide WP Version
     add_settings_field(
     	'hide_wp_version', 
-    	codecleanup_title('Hide WP Version', 'hide_wp_version') . codecleanup_tooltip('https://codecleanup.io/docs/remove-wordpress-version-number/'), 
+    	codecleanup_title('Hide WP Version', 'hide_wp_version') . codecleanup_tooltip('https://cleancoded.com/docs/remove-wordpress-version-number/'), 
     	'codecleanup_print_input', 
     	'codecleanup_options', 
     	'codecleanup_options', 
@@ -101,10 +101,12 @@ function codecleanup_settings() {
     	)
     );
 
+
     //Remove wlmanifest Link
+    
     add_settings_field(
     	'remove_wlwmanifest_link', 
-    	codecleanup_title('Remove wlwmanifest Link', 'remove_wlwmanifest_link') . codecleanup_tooltip('https://codecleanup.io/docs/remove-wlwmanifest-link-wordpress/'), 
+    	codecleanup_title('Remove wlwmanifest Link', 'remove_wlwmanifest_link') . codecleanup_tooltip('https://cleancoded.com/docs/remove-wlwmanifest-link-wordpress/'), 
     	'codecleanup_print_input', 
     	'codecleanup_options', 
     	'codecleanup_options',
@@ -117,7 +119,7 @@ function codecleanup_settings() {
     //Remove RSD Link
     add_settings_field(
     	'remove_rsd_link', 
-    	codecleanup_title('Remove RSD Link', 'remove_rsd_link') . codecleanup_tooltip('https://codecleanup.io/docs/remove-rsd-link-wordpress/'), 
+    	codecleanup_title('Remove RSD Link', 'remove_rsd_link') . codecleanup_tooltip('https://cleancoded.com/docs/remove-rsd-link-wordpress/'), 
     	'codecleanup_print_input', 
     	'codecleanup_options', 
     	'codecleanup_options', 
@@ -130,7 +132,7 @@ function codecleanup_settings() {
     //Remove Shortlink
     add_settings_field(
     	'remove_shortlink', 
-    	codecleanup_title('Remove Shortlink', 'remove_shortlink') . codecleanup_tooltip('https://codecleanup.io/docs/remove-shortlink-wordpress/'), 
+    	codecleanup_title('Remove Shortlink', 'remove_shortlink') . codecleanup_tooltip('https://cleancoded.com/docs/remove-shortlink-wordpress/'), 
     	'codecleanup_print_input', 
     	'codecleanup_options', 
     	'codecleanup_options', 
@@ -143,7 +145,7 @@ function codecleanup_settings() {
     //Disable RSS Feeds
     add_settings_field(
     	'disable_rss_feeds', 
-    	codecleanup_title('Disable RSS Feeds', 'disable_rss_feeds') . codecleanup_tooltip('https://codecleanup.io/docs/disable-rss-feeds-wordpress/'), 
+    	codecleanup_title('Disable RSS Feeds', 'disable_rss_feeds') . codecleanup_tooltip('https://cleancoded.com/docs/disable-rss-feeds-wordpress/'), 
     	'codecleanup_print_input', 
     	'codecleanup_options', 
     	'codecleanup_options', 
@@ -156,7 +158,7 @@ function codecleanup_settings() {
     //Remove Feed Links
     add_settings_field(
     	'remove_feed_links', 
-    	codecleanup_title('Remove RSS Feed Links', 'remove_feed_links') . codecleanup_tooltip('https://codecleanup.io/docs/remove-rss-feed-links-wordpress/'), 
+    	codecleanup_title('Remove RSS Feed Links', 'remove_feed_links') . codecleanup_tooltip('https://cleancoded.com/docs/remove-rss-feed-links-wordpress/'), 
     	'codecleanup_print_input', 
     	'codecleanup_options', 
     	'codecleanup_options', 
@@ -169,7 +171,7 @@ function codecleanup_settings() {
     //Disable Self Pingbacks
     add_settings_field(
     	'disable_self_pingbacks', 
-    	codecleanup_title('Disable Self Pingbacks', 'disable_self_pingbacks') . codecleanup_tooltip('https://codecleanup.io/docs/disable-self-pingbacks-wordpress/'), 
+    	codecleanup_title('Disable Self Pingbacks', 'disable_self_pingbacks') . codecleanup_tooltip('https://cleancoded.com/docs/disable-self-pingbacks-wordpress/'), 
     	'codecleanup_print_input', 
     	'codecleanup_options', 
     	'codecleanup_options', 
@@ -182,7 +184,7 @@ function codecleanup_settings() {
     //Remove REST API Links
     add_settings_field(
     	'remove_rest_api_links', 
-    	codecleanup_title('Remove REST API Links', 'remove_rest_api_links') . codecleanup_tooltip('https://codecleanup.io/docs/remove-wordpress-rest-api-links/'), 
+    	codecleanup_title('Remove REST API Links', 'remove_rest_api_links') . codecleanup_tooltip('https://cleancoded.com/docs/remove-wordpress-rest-api-links/'), 
     	'codecleanup_print_input', 
     	'codecleanup_options', 
     	'codecleanup_options', 
@@ -195,7 +197,7 @@ function codecleanup_settings() {
     //Disable Dashicons
     add_settings_field(
         'disable_dashicons', 
-        codecleanup_title('Disable Dashicons', 'disable_dashicons') . codecleanup_tooltip('https://codecleanup.io/docs/remove-dashicons-wordpress/'), 
+        codecleanup_title('Disable Dashicons', 'disable_dashicons') . codecleanup_tooltip('https://cleancoded.com/docs/remove-dashicons-wordpress/'), 
         'codecleanup_print_input', 
         'codecleanup_options', 
         'codecleanup_options', 
@@ -208,7 +210,7 @@ function codecleanup_settings() {
     //Disable Google Maps
     add_settings_field(
         'disable_google_maps', 
-        codecleanup_title('Disable Google Maps', 'disable_google_maps') . codecleanup_tooltip('https://codecleanup.io/docs/disable-google-maps-api-wordpress/'), 
+        codecleanup_title('Disable Google Maps', 'disable_google_maps') . codecleanup_tooltip('https://cleancoded.com/docs/disable-google-maps-api-wordpress/'), 
         'codecleanup_print_input', 
         'codecleanup_options', 
         'codecleanup_options', 
@@ -221,7 +223,7 @@ function codecleanup_settings() {
     //Disable Heartbeat
     add_settings_field(
     	'disable_heartbeat', 
-    	'<label for=\'disable_heartbeat\'>' . __('Disable Heartbeat', 'codecleanup') . '</label>' . codecleanup_tooltip('https://codecleanup.io/docs/disable-wordpress-heartbeat-api/'), 
+    	'<label for=\'disable_heartbeat\'>' . __('Disable Heartbeat', 'codecleanup') . '</label>' . codecleanup_tooltip('https://cleancoded.com/docs/disable-wordpress-heartbeat-api/'), 
     	'codecleanup_print_input', 
     	'codecleanup_options', 
     	'codecleanup_options', 
@@ -240,7 +242,7 @@ function codecleanup_settings() {
     //Heartbeat Frequency
     add_settings_field(
     	'heartbeat_frequency', 
-    	'<label for=\'heartbeat_frequency\'>' . __('Heartbeat Frequency', 'codecleanup') . '</label>' . codecleanup_tooltip('https://codecleanup.io/docs/change-heartbeat-frequency-wordpress/'), 
+    	'<label for=\'heartbeat_frequency\'>' . __('Heartbeat Frequency', 'codecleanup') . '</label>' . codecleanup_tooltip('https://cleancoded.com/docs/change-heartbeat-frequency-wordpress/'), 
     	'codecleanup_print_input', 
     	'codecleanup_options', 
     	'codecleanup_options', 
@@ -260,7 +262,7 @@ function codecleanup_settings() {
     //Limit Post Revisions
     add_settings_field(
     	'limit_post_revisions', 
-    	'<label for=\'limit_post_revisions\'>' . __('Limit Post Revisions', 'codecleanup') . '</label>' . codecleanup_tooltip('https://codecleanup.io/docs/disable-limit-post-revisions-wordpress/'), 
+    	'<label for=\'limit_post_revisions\'>' . __('Limit Post Revisions', 'codecleanup') . '</label>' . codecleanup_tooltip('https://cleancoded.com/docs/disable-limit-post-revisions-wordpress/'), 
     	'codecleanup_print_input', 
     	'codecleanup_options', 
     	'codecleanup_options', 
@@ -288,7 +290,7 @@ function codecleanup_settings() {
     //Autosave Interval
     add_settings_field(
     	'autosave_interval', 
-    	'<label for=\'autosave_interval\'>' . __('Autosave Interval', 'codecleanup') . '</label>' . codecleanup_tooltip('https://codecleanup.io/docs/change-autosave-interval-wordpress/'), 
+    	'<label for=\'autosave_interval\'>' . __('Autosave Interval', 'codecleanup') . '</label>' . codecleanup_tooltip('https://cleancoded.com/docs/change-autosave-interval-wordpress/'), 
     	'codecleanup_print_input', 
     	'codecleanup_options', 
     	'codecleanup_options', 
@@ -309,7 +311,7 @@ function codecleanup_settings() {
     //Change Login URL
     add_settings_field(
         'login_url', 
-        codecleanup_title('Change Login URL', 'login_url') . codecleanup_tooltip('https://codecleanup.io/docs/change-wordpress-login-url/'), 
+        codecleanup_title('Change Login URL', 'login_url') . codecleanup_tooltip('https://cleancoded.com/docs/change-wordpress-login-url/'), 
         'codecleanup_print_input', 
         'codecleanup_options', 
         'codecleanup_options', 
@@ -327,7 +329,7 @@ function codecleanup_settings() {
     //Disable WooCommerce Scripts
     add_settings_field(
         'disable_woocommerce_scripts', 
-        codecleanup_title('Disable Scripts', 'disable_woocommerce_scripts') . codecleanup_tooltip('https://codecleanup.io/docs/disable-woocommerce-scripts-and-styles/'), 
+        codecleanup_title('Disable Scripts', 'disable_woocommerce_scripts') . codecleanup_tooltip('https://cleancoded.com/docs/disable-woocommerce-scripts-and-styles/'), 
         'codecleanup_print_input', 
         'codecleanup_options', 
         'codecleanup_woocommerce', 
@@ -340,7 +342,7 @@ function codecleanup_settings() {
     //Disable WooCommerce Cart Fragmentation
     add_settings_field(
         'disable_woocommerce_cart_fragmentation', 
-        codecleanup_title('Disable Cart Fragmentation', 'disable_woocommerce_cart_fragmentation') . codecleanup_tooltip('https://codecleanup.io/docs/disable-woocommerce-cart-fragments-ajax/'), 
+        codecleanup_title('Disable Cart Fragmentation', 'disable_woocommerce_cart_fragmentation') . codecleanup_tooltip('https://cleancoded.com/docs/disable-woocommerce-cart-fragments-ajax/'), 
         'codecleanup_print_input', 
         'codecleanup_options', 
         'codecleanup_woocommerce', 
@@ -353,7 +355,7 @@ function codecleanup_settings() {
     //Disable WooCommerce Status Meta Box
     add_settings_field(
         'disable_woocommerce_status', 
-        codecleanup_title('Disable Status Meta Box', 'disable_woocommerce_status') . codecleanup_tooltip('https://codecleanup.io/docs/disable-woocommerce-status-meta-box/'), 
+        codecleanup_title('Disable Status Meta Box', 'disable_woocommerce_status') . codecleanup_tooltip('https://cleancoded.com/docs/disable-woocommerce-status-meta-box/'), 
         'codecleanup_print_input', 
         'codecleanup_options', 
         'codecleanup_woocommerce', 
@@ -366,7 +368,7 @@ function codecleanup_settings() {
     //Disable WooCommerce Widgets
     add_settings_field(
         'disable_woocommerce_widgets', 
-        codecleanup_title('Disable Widgets', 'disable_woocommerce_widgets') . codecleanup_tooltip('https://codecleanup.io/docs/disable-woocommerce-widgets/'), 
+        codecleanup_title('Disable Widgets', 'disable_woocommerce_widgets') . codecleanup_tooltip('https://cleancoded.com/docs/disable-woocommerce-widgets/'), 
         'codecleanup_print_input', 
         'codecleanup_options', 
         'codecleanup_woocommerce', 
@@ -389,7 +391,7 @@ function codecleanup_settings() {
     //CDN URL
     add_settings_field(
         'enable_cdn', 
-        codecleanup_title('Enable CDN Rewrite', 'enable_cdn') . codecleanup_tooltip('https://codecleanup.io/docs/cdn-rewrite/'), 
+        codecleanup_title('Enable CDN Rewrite', 'enable_cdn') . codecleanup_tooltip('https://cleancoded.com/docs/cdn-rewrite/'), 
         'codecleanup_print_input', 
         'codecleanup_cdn', 
         'codecleanup_cdn', 
@@ -403,7 +405,7 @@ function codecleanup_settings() {
     //CDN URL
     add_settings_field(
         'cdn_url', 
-        codecleanup_title('CDN URL', 'cdn_url') . codecleanup_tooltip('https://codecleanup.io/docs/cdn-url/'), 
+        codecleanup_title('CDN URL', 'cdn_url') . codecleanup_tooltip('https://cleancoded.com/docs/cdn-url/'), 
         'codecleanup_print_input', 
         'codecleanup_cdn', 
         'codecleanup_cdn', 
@@ -419,7 +421,7 @@ function codecleanup_settings() {
     //CDN Included Directories
     add_settings_field(
         'cdn_directories', 
-        codecleanup_title('Included Directories', 'cdn_directories') . codecleanup_tooltip('https://codecleanup.io/docs/cdn-included-directories/'), 
+        codecleanup_title('Included Directories', 'cdn_directories') . codecleanup_tooltip('https://cleancoded.com/docs/cdn-included-directories/'), 
         'codecleanup_print_input', 
         'codecleanup_cdn', 
         'codecleanup_cdn', 
@@ -435,7 +437,7 @@ function codecleanup_settings() {
     //CDN Exclusions
     add_settings_field(
         'cdn_exclusions', 
-        codecleanup_title('CDN Exclusions', 'cdn_exclusions') . codecleanup_tooltip('https://codecleanup.io/docs/cdn-exclusions/'), 
+        codecleanup_title('CDN Exclusions', 'cdn_exclusions') . codecleanup_tooltip('https://cleancoded.com/docs/cdn-exclusions/'), 
         'codecleanup_print_input', 
         'codecleanup_cdn', 
         'codecleanup_cdn', 
@@ -458,7 +460,7 @@ function codecleanup_settings() {
     //Script Manager
     add_settings_field(
         'script_manager', 
-        codecleanup_title('Script Manager', 'script_manager') . codecleanup_tooltip('https://codecleanup.io/docs/disable-scripts-per-post-page/'), 
+        codecleanup_title('Script Manager', 'script_manager') . codecleanup_tooltip('https://cleancoded.com/docs/disable-scripts-per-post-page/'), 
         'codecleanup_print_input', 
         'codecleanup_extras', 
         'codecleanup_extras', 
@@ -472,7 +474,7 @@ function codecleanup_settings() {
     //DNS Prefetch
     add_settings_field(
         'dns_prefetch', 
-        codecleanup_title('DNS Prefetch', 'dns_prefetch') . codecleanup_tooltip('https://codecleanup.io/docs/dns-prefetching/'), 
+        codecleanup_title('DNS Prefetch', 'dns_prefetch') . codecleanup_tooltip('https://cleancoded.com/docs/dns-prefetching/'), 
         'codecleanup_print_dns_prefetch', 
         'codecleanup_extras', 
         'codecleanup_extras', 
@@ -486,7 +488,7 @@ function codecleanup_settings() {
     //Preconnect
     add_settings_field(
         'preconnect', 
-        codecleanup_title('Preconnect', 'preconnect') . codecleanup_tooltip('https://codecleanup.io/docs/preconnect/'), 
+        codecleanup_title('Preconnect', 'preconnect') . codecleanup_tooltip('https://cleancoded.com/docs/preconnect/'), 
         'codecleanup_print_preconnect', 
         'codecleanup_extras', 
         'codecleanup_extras', 
@@ -500,7 +502,7 @@ function codecleanup_settings() {
     //Clean Uninstall
     add_settings_field(
         'clean_uninstall', 
-        codecleanup_title('Clean Uninstall', 'clean_uninstall') . codecleanup_tooltip('https://codecleanup.io/docs/clean-uninstall/'), 
+        codecleanup_title('Clean Uninstall', 'clean_uninstall') . codecleanup_tooltip('https://cleancoded.com/docs/clean-uninstall/'), 
         'codecleanup_print_input', 
         'codecleanup_extras', 
         'codecleanup_extras', 
