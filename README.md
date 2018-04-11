@@ -4,8 +4,9 @@
 * [CLEANCODED](https://cleancoded.com/)
 
 **Tested On**:
-* Version 4.9.4
+* Version 4.9
 * Version 4.8
+* Version 4.7
 
 **License**: 
 * GPLv3 or later
@@ -15,9 +16,9 @@
 
 # Description
 
-This plugin cleans and optimizes WordPress code for improved website performance and faster page load times. Whether you're running a custom child theme, or a stock theme template, this plugin will cleanup the code and improve performance.
+This plugin cleans and optimizes WordPress code for improved website performance and faster page load times. Whether you're using a custom child theme or a marketplace theme template, this plugin will cleanup the code and improve its performance.
 
-It adds a variety of site-wide optimmization options to the WordPress backend:
+It adds a variety of site-wide optimization options to the WordPress backend:
 * Disable emojis
 * Disable embeds
 * Remove query strings
@@ -49,7 +50,7 @@ The plugin also offers CDN rewrite support, a script manager to disbale CSS/JS o
 
 # Installation
 
-1. Download the latest release of ghost backdoor plugin here: 
+1. Download the latest release of Code Cleanup for WordPress here: 
     * https://github.com/cleancoded/wordpress-code-cleanup/
 2. Upload plugin files to the `/wp-content/plugins/codecleanup/` directory (create this if it does exist), or install the plugin through the plugins area of the WordPress backend.
 4. Activate the plugin through the 'Plugins' area of the WordPress backend.
