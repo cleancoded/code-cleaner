@@ -46,7 +46,7 @@ WooCommerce optimization options:
 * Disable the status meta box
 * Disable widgets
 
-The plugin also offers CDN rewrite support, a script manager to disbale CSS/JS on a page-by-page basis, DNS prefetch and preconnect support, as well as a backend accessibility mode. 
+The plugin also offers CDN rewrite support, a script manager to disable CSS/JS on a page-by-page basis, DNS prefetch and preconnect support, as well as a backend accessibility mode. 
 
 # Installation
 
@@ -54,7 +54,7 @@ The plugin also offers CDN rewrite support, a script manager to disbale CSS/JS o
     * https://github.com/cleancoded/wordpress-code-cleanup/
 2. Upload plugin files to the `/wp-content/plugins/codecleanup/` directory (create this if it does exist), or install the plugin through the plugins area of the WordPress backend.
 4. Activate the plugin through the 'Plugins' area of the WordPress backend.
-5. Update options and preferences from the 'Settings' page. 
+5. Update options and optimization preferences from the plugin 'Settings' page. 
 
 # Changelog
 
