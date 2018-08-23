@@ -17,7 +17,8 @@ if(empty($_GET['tab'])) {
     <!-- Tab Navigation -->
 	<h2 class="nav-tab-wrapper">
 		<a href="?page=codecleaner&tab=options" class="nav-tab <?php echo $_GET['tab'] == 'options' || '' ? 'nav-tab-active' : ''; ?>">Options</a>
-		<a href="?page=codecleaner&tab=cdn" class="nav-tab <?php echo $_GET['tab'] == 'cdn' ? 'nav-tab-active' : ''; ?>">CDN</a>
+		<a href="?page=codecleaner&tab=cdn" class="nav-tab <?php echo $_GET['tab'] == 'cdn' ? 'nav-tab-active' : ''; ?>">CDN</a>		
+		<a href="?page=codecleaner&tab=ga" class="nav-tab <?php echo $_GET['tab'] == 'ga' ? 'nav-tab-active' : ''; ?>">Google Analytics</a>
 		<a href="?page=codecleaner&tab=extras" class="nav-tab <?php echo $_GET['tab'] == 'extras' ? 'nav-tab-active' : ''; ?>">Extras</a>
 		<a href="?page=codecleaner&tab=support" class="nav-tab <?php echo $_GET['tab'] == 'support' ? 'nav-tab-active' : ''; ?>">Support</a>
 	</h2>
@@ -30,6 +31,13 @@ if(empty($_GET['tab'])) {
 
 		    <?php settings_fields( 'codecleaner_options' ); ?>
 		    <?php do_settings_sections( 'codecleaner_options' ); ?>
+			<?php submit_button(); ?>
+
+		<!-- Google Analytics -->
+		<?php } elseif($_GET['tab'] == 'ga') { ?>
+
+			<?php settings_fields( 'codecleaner_ga' ); ?>
+		    <?php do_settings_sections( 'codecleaner_ga' ); ?>
 			<?php submit_button(); ?>
 
 		<!-- CDN Tab -->

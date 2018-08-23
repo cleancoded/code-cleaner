@@ -1,6 +1,7 @@
 <?php
 $codecleaner_options = get_option('codecleaner_options');
 $codecleaner_cdn = get_option('codecleaner_cdn');
+$codecleaner_ga = get_option('codecleaner_ga');
 $codecleaner_extras = get_option('codecleaner_extras');
 
 /* Options Actions and Filters
@@ -595,6 +596,117 @@ function codecleaner_cdn_rewrite_url($url) {
 
     //Return Original URL
     return $url[0];
+}
+/* Google Analytics
+/***********************************************************************/
+
+//enable/disable local analytics scheduled event
+if(!empty($codecleaner_ga['enable_local_ga']) && $codecleaner_ga['enable_local_ga'] == "1") {
+	if(!wp_next_scheduled('codecleaner_update_ga')) {
+		wp_schedule_event(time(), 'daily', 'codecleaner_update_ga');
+	}
+	if(!empty($codecleaner_ga['tracking_code_position']) && $codecleaner_ga['tracking_code_position'] == 'footer') {
+		$tracking_code_position = 'wp_footer';
+	}
+	else {
+		$tracking_code_position = 'wp_head';
+	}
+	add_action($tracking_code_position, 'codecleaner_print_ga', 0);
+}
+else {
+	if(wp_next_scheduled('codecleaner_update_ga')) {
+		wp_clear_scheduled_hook('codecleaner_update_ga');
+	}
+}
+
+//update analytics.js
+function codecleaner_update_ga() {
+	//paths
+	$local_file = dirname(dirname(__FILE__)) . '/js/analytics.js';
+	$host = 'www.google-analytics.com';
+	$path = '/analytics.js';
+
+	//open connection
+	$fp = @fsockopen($host, '80', $errno, $errstr, 10);
+
+	if($fp){	
+		//send headers
+		$header = "GET $path HTTP/1.0\r\n";
+		$header.= "Host: $host\r\n";
+		$header.= "User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6\r\n";
+		$header.= "Accept: */*\r\n";
+		$header.= "Accept-Language: en-us,en;q=0.5\r\n";
+		$header.= "Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7\r\n";
+		$header.= "Keep-Alive: 300\r\n";
+		$header.= "Connection: keep-alive\r\n";
+		$header.= "Referer: https://$host\r\n\r\n";
+		fwrite($fp, $header);
+		$response = '';
+		
+		//get response
+		while($line = fread($fp, 4096)) {
+			$response.= $line;
+		}
+
+		//close connection
+		fclose($fp);
+
+		//remove headers
+		$position = strpos($response, "\r\n\r\n");
+		$response = substr($response, $position + 4);
+
+		//create file if needed
+		if(!file_exists($local_file)) {
+			fopen($local_file, 'w');
+		}
+
+		//write response to file
+		if(is_writable($local_file)) {
+			if($fp = fopen($local_file, 'w')) {
+				fwrite($fp, $response);
+				fclose($fp);
+			}
+		}
+	}
+}
+add_action('codecleaner_update_ga', 'codecleaner_update_ga');
+
+//print analytics script
+function codecleaner_print_ga() {
+	global $codecleaner_ga;
+
+	//dont print for logged in admins
+	if(current_user_can('manage_options') && empty($codecleaner_ga['track_admins'])) {
+		return;
+	}
+
+	if(!empty($codecleaner_ga['tracking_id'])) {
+		echo "<!-- Local Analytics generated with codecleaner. -->";
+		echo "<script>";
+		    echo "(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+					(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+					m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+					})(window,document,'script','" . plugins_url() . "/codecleaner/js/analytics.js','ga');";
+		    echo "ga('create', '" . $codecleaner_ga['tracking_id'] . "', 'auto');";
+
+		    //disable display features
+		    if(!empty($codecleaner_ga['disable_display_features']) && $codecleaner_ga['disable_display_features'] == "1") {
+		    	echo "ga('set', 'displayFeaturesTask', null);";
+		    }
+
+		    //anonymize ip
+		   	if(!empty($codecleaner_ga['anonymize_ip']) && $codecleaner_ga['anonymize_ip'] == "1") {
+		   		echo "ga('set', 'anonymizeIp', true);";
+		   	}
+
+		    echo "ga('send', 'pageview');";
+
+		    //adjusted bounce rate
+		    if(!empty($codecleaner_ga['adjusted_bounce_rate'])) {
+		    	echo 'setTimeout("ga(' . "'send','event','adjusted bounce rate','" . $codecleaner_ga['adjusted_bounce_rate'] . " seconds')" . '"' . "," . $codecleaner_ga['adjusted_bounce_rate'] * 1000 . ");";
+		    }
+	    echo "</script>";
+	}
 }
 
 /* Script Manager
