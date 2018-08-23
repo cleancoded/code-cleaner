@@ -57,6 +57,8 @@ The plugin also offers CDN rewrite support, a script manager to disable CSS/JS o
 4. Update options and optimization preferences from the plugin 'Settings' page. 
 
 # Changelog
+* **Version 1.1.9**
+    * New option to Enable Local Analytics, along with a new dedicated Google Analytics tab with various related options.
 
 * **Version 1.1.8**
     * Fixed a compatibility issue with Script Manager dequeue priority that could cause it to not function properly.

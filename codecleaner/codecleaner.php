@@ -3,7 +3,7 @@
 Plugin Name: Code Cleaner
 Plugin URI: https://cleancoded.com/cleaner/
 Description: The Code Cleaner plugin cleans and optimizes WordPress code for improved website performance and faster page load times.
-Version: 1.1.8
+Version: 1.1.9
 Author: CLEANCODED
 Author URI: https://cleancoded.com/
 License: GPLv2 or later
