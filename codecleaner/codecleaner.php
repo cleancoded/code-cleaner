@@ -25,6 +25,23 @@ function codecleaner_load_textdomain() {
 }
 add_action('plugins_loaded', 'codecleaner_load_textdomain');
 
+// admin menus loading
+if(is_admin()) {
+	add_action('admin_menu', 'codecleaner_menu', 9);
+}
+
+//admin menu
+function codecleaner_menu() {
+	if(codecleaner_network_access()) {
+		$pages = add_options_page('codecleaner', 'Codecleaner', 'manage_options', 'codecleaner', 'codecleaner_admin');
+	}
+}
+
+//admin page settings
+function codecleaner_admin() {
+	include plugin_dir_path(__FILE__) . '/inc/admin.php';
+}
+
 //load EDD updater class
 if(!class_exists('EDD_SL_Plugin_Updater')) {
 	include(dirname( __FILE__ ) . '/inc/EDD_SL_Plugin_Updater.php');
@@ -52,23 +69,6 @@ function codecleaner_plugin_updater() {
 }
 add_action('admin_init', 'codecleaner_plugin_updater', 0);
 
-// admin menus loading
-if(is_admin()) {
-	add_action('admin_menu', 'codecleaner_menu', 9);
-}
-
-//admin menu
-function codecleaner_menu() {
-	if(codecleaner_network_access()) {
-		$pages = add_options_page('codecleaner', 'Codecleaner', 'manage_options', 'codecleaner', 'codecleaner_admin');
-	}
-}
-
-//admin page settings
-function codecleaner_admin() {
-	include plugin_dir_path(__FILE__) . '/inc/admin.php';
-}
-
 //load plugin scripts (.css/.js)
 function codecleaner_admin_scripts() {
 	if(codecleaner_network_access()) {
@@ -89,41 +89,17 @@ function codecleaner_network_access() {
 	return true;
 }
 
-//license messages in plugins table
-function codecleaner_meta_links($links, $file) {
-	if(strpos($file, 'codecleaner.php' ) !== false) {
+function codecleaner_activate() {
+	$codecleaner_ga = get_option('codecleaner_ga');
 
-		if(is_network_admin()) {
-			$license_info = codecleaner_edd_check_network_license();
-			$license_url = network_admin_url('settings.php?page=codecleaner');
+	//enable local analytics scheduled event
+	if(!empty($codecleaner_ga['enable_local_ga']) && $codecleaner_ga['enable_local_ga'] == "1") {
+		if(!wp_next_scheduled('cleadcoded_update_ga')) {
+			wp_schedule_event(time(), 'daily', 'cleadcoded_update_ga');
 		}
-		else {
-			$license_info = codecleaner_edd_check_license();
-			$license_url = admin_url('options-general.php?page=codecleaner');
-		}
-
-		$codecleaner_links = array();
-		$codecleaner_links[] = '<a href="' . $license_url . '">' . esc_html__('Settings', 'codecleaner') . '</a>';
-
-		if(!is_plugin_active_for_network('codecleaner/codecleaner.php') || is_network_admin()) {
-
-			if(!empty($license_info->license) && $license_info->license == "valid") {
-				$codecleaner_links[] = '<a href="' . $license_url . '&tab=license" style="color: green;">' . __('License is Activated', 'codecleaner') . '</a>';
-			}
-			elseif(!empty($license_info->license) && $license_info->license == "expired") {
-				$codecleaner_links[] = '<a href="' . $license_url . '&tab=license" style="color: orange;">' . __('Renew License', 'codecleaner') . '</a>';
-			}
-			else {
-				$codecleaner_links[] = '<a href="' . $license_url . '&tab=license" style="color: red;">' . __('Activate License', 'codecleaner') . '</a>';
-			}
-
-		}
-
-		$links = array_merge($links, $codecleaner_links);
 	}
-	return $links;
 }
-add_filter('plugin_row_meta', 'codecleaner_meta_links', 10, 2);
+register_activation_hook(__FILE__, 'codecleaner_activate');
 
 //Optimization Notice
 function codecleaner_guide_notice() {
@@ -136,18 +112,6 @@ function codecleaner_guide_notice() {
     }
 }
 add_action('admin_notices', 'codecleaner_guide_notice');
-
-function codecleaner_activate() {
-	$codecleaner_ga = get_option('codecleaner_ga');
-
-	//enable local analytics scheduled event
-	if(!empty($codecleaner_ga['enable_local_ga']) && $codecleaner_ga['enable_local_ga'] == "1") {
-		if(!wp_next_scheduled('cleadcoded_update_ga')) {
-			wp_schedule_event(time(), 'daily', 'cleadcoded_update_ga');
-		}
-	}
-}
-register_activation_hook(__FILE__, 'codecleaner_activate');
 
 //register a license deactivation
 function codecleaner_deactivate() {
@@ -189,6 +153,42 @@ function codecleaner_deactivate() {
 	}	
 }
 register_deactivation_hook(__FILE__, 'codecleaner_deactivate');
+
+//license messages in plugins table
+function codecleaner_meta_links($links, $file) {
+	if(strpos($file, 'codecleaner.php' ) !== false) {
+
+		if(is_network_admin()) {
+			$license_info = codecleaner_edd_check_network_license();
+			$license_url = network_admin_url('settings.php?page=codecleaner');
+		}
+		else {
+			$license_info = codecleaner_edd_check_license();
+			$license_url = admin_url('options-general.php?page=codecleaner');
+		}
+
+		$codecleaner_links = array();
+		$codecleaner_links[] = '<a href="' . $license_url . '">' . esc_html__('Settings', 'codecleaner') . '</a>';
+
+		if(!is_plugin_active_for_network('codecleaner/codecleaner.php') || is_network_admin()) {
+
+			if(!empty($license_info->license) && $license_info->license == "valid") {
+				$codecleaner_links[] = '<a href="' . $license_url . '&tab=license" style="color: green;">' . __('License is Activated', 'codecleaner') . '</a>';
+			}
+			elseif(!empty($license_info->license) && $license_info->license == "expired") {
+				$codecleaner_links[] = '<a href="' . $license_url . '&tab=license" style="color: orange;">' . __('Renew License', 'codecleaner') . '</a>';
+			}
+			else {
+				$codecleaner_links[] = '<a href="' . $license_url . '&tab=license" style="color: red;">' . __('Activate License', 'codecleaner') . '</a>';
+			}
+
+		}
+
+		$links = array_merge($links, $codecleaner_links);
+	}
+	return $links;
+}
+add_filter('plugin_row_meta', 'codecleaner_meta_links', 10, 2);
 
 //uninstall\remove plugin + delete options
 function codecleaner_uninstall() {

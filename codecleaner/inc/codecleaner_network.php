@@ -1,4 +1,10 @@
 <?php
+
+//Codecleaner Network Section Callback
+function codecleaner_network_callback() {
+	echo '<p class="codecleaner-subheading">' . __('Manage network access control and setup a network default site.', 'codecleaner') . '</p>';
+} 
+
 function codecleaner_network_admin_menu() {
 
 	//Add Network Settings Menu Item
@@ -48,33 +54,6 @@ function codecleaner_network_admin_menu() {
 }
 add_filter('network_admin_menu', 'codecleaner_network_admin_menu');
 
-//Codecleaner Network Section Callback
-function codecleaner_network_callback() {
-	echo '<p class="codecleaner-subheading">' . __('Manage network access control and setup a network default site.', 'codecleaner') . '</p>';
-} 
-   
-//Codecleaner Network Access
-function codecleaner_network_access_callback() {
-	$codecleaner_network = get_site_option('codecleaner_network');
-	echo "<div style='display: table; width: 100%;'>";
-		echo "<div class='codecleaner-input-wrapper'>";
-			echo "<select name='codecleaner_network[access]' id='access'>";
-				echo "<option value=''>" . __('Site Admins (Default)', 'codecleaner') . "</option>";
-				echo "<option value='super' " . ((!empty($codecleaner_network['access']) && $codecleaner_network['access'] == 'super') ? "selected" : "") . ">" . __('Super Admins Only', 'codecleaner') . "</option>";
-			echo "<select>";
-		echo "</div>";
-		echo "<div class='codecleaner-tooltip-text-wrapper'>";
-			echo "<div class='codecleaner-tooltip-text-container' style='display: none;'>";
-				echo "<div style='display: table; height: 100%; width: 100%;'>";
-					echo "<div style='display: table-cell; vertical-align: middle;'>";
-						echo "<span class='codecleaner-tooltip-text'>" . __('Choose who has access to manage Codecleaner plugin settings.', 'codecleaner') . "</span>";  
-					echo "</div>";
-				echo "</div>";
-			echo "</div>";
-		echo "</div>";
-	echo "</div>";
-} 
- 
 //Codecleaner Network Default
 function codecleaner_network_default_callback() {
 	$codecleaner_network = get_site_option('codecleaner_network');
@@ -101,7 +80,7 @@ function codecleaner_network_default_callback() {
 		echo "</div>";
 	echo "</div>";
 }
-  
+
 //Codecleaner Network Settings Page
 function codecleaner_network_page_callback() {
 	if(isset($_POST['codecleaner_apply_defaults'])) {
@@ -338,7 +317,7 @@ function codecleaner_network_page_callback() {
 
 	echo "</div>";
 }
- 
+
 //Update Codecleaner Network Options
 function codecleaner_update_network_options() {
 
@@ -364,6 +343,28 @@ function codecleaner_update_network_options() {
 	exit;
 }
 add_action('network_admin_edit_codecleaner_update_network_options',  'codecleaner_update_network_options');
+    
+//Codecleaner Network Access
+function codecleaner_network_access_callback() {
+	$codecleaner_network = get_site_option('codecleaner_network');
+	echo "<div style='display: table; width: 100%;'>";
+		echo "<div class='codecleaner-input-wrapper'>";
+			echo "<select name='codecleaner_network[access]' id='access'>";
+				echo "<option value=''>" . __('Site Admins (Default)', 'codecleaner') . "</option>";
+				echo "<option value='super' " . ((!empty($codecleaner_network['access']) && $codecleaner_network['access'] == 'super') ? "selected" : "") . ">" . __('Super Admins Only', 'codecleaner') . "</option>";
+			echo "<select>";
+		echo "</div>";
+		echo "<div class='codecleaner-tooltip-text-wrapper'>";
+			echo "<div class='codecleaner-tooltip-text-container' style='display: none;'>";
+				echo "<div style='display: table; height: 100%; width: 100%;'>";
+					echo "<div style='display: table-cell; vertical-align: middle;'>";
+						echo "<span class='codecleaner-tooltip-text'>" . __('Choose who has access to manage Codecleaner plugin settings.', 'codecleaner') . "</span>";  
+					echo "</div>";
+				echo "</div>";
+			echo "</div>";
+		echo "</div>";
+	echo "</div>";
+} 
 
 function codecleaner_edd_activate_network_license() {
 
@@ -391,36 +392,6 @@ function codecleaner_edd_activate_network_license() {
 
 	//$license_data->license will be either "valid" or "invalid"
 	update_site_option('codecleaner_edd_license_status', $license_data->license);
-}
-
-function codecleaner_edd_deactivate_network_license() {
-
-	// retrieve the license from the database
-	$license = trim(get_site_option('codecleaner_edd_license_key'));
-
-	// data to send in our API request
-	$api_params = array(
-		'edd_action'=> 'deactivate_license',
-		'license' 	=> $license,
-		'item_name' => urlencode(CODECLEANER_ITEM_NAME), // the name of our product in EDD
-		'url'       => home_url()
-	);
-
-	// Call the custom API.
-	$response = wp_remote_post(CODECLEANER_STORE_URL, array('timeout' => 15, 'sslverify' => true, 'body' => $api_params));
-
-	// make sure the response came back okay
-	if(is_wp_error($response)) {
-		return false;
-	}
-
-	// decode the license data
-	$license_data = json_decode(wp_remote_retrieve_body($response));
-
-	// $license_data->license will be either "deactivated" or "failed"
-	if($license_data->license == 'deactivated') {
-		delete_site_option('codecleaner_edd_license_status');
-	}
 }
 
 function codecleaner_edd_check_network_license() {
@@ -453,4 +424,34 @@ function codecleaner_edd_check_network_license() {
 	}
 	
 	return($license_data);
+}
+
+function codecleaner_edd_deactivate_network_license() {
+
+	// retrieve the license from the database
+	$license = trim(get_site_option('codecleaner_edd_license_key'));
+
+	// data to send in our API request
+	$api_params = array(
+		'edd_action'=> 'deactivate_license',
+		'license' 	=> $license,
+		'item_name' => urlencode(CODECLEANER_ITEM_NAME), // the name of our product in EDD
+		'url'       => home_url()
+	);
+
+	// Call the custom API.
+	$response = wp_remote_post(CODECLEANER_STORE_URL, array('timeout' => 15, 'sslverify' => true, 'body' => $api_params));
+
+	// make sure the response came back okay
+	if(is_wp_error($response)) {
+		return false;
+	}
+
+	// decode the license data
+	$license_data = json_decode(wp_remote_retrieve_body($response));
+
+	// $license_data->license will be either "deactivated" or "failed"
+	if($license_data->license == 'deactivated') {
+		delete_site_option('codecleaner_edd_license_status');
+	}
 }

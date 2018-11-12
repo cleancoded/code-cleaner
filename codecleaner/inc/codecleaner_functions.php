@@ -4,18 +4,6 @@ $codecleaner_cdn = get_option('codecleaner_cdn');
 $codecleaner_ga = get_option('codecleaner_ga');
 $codecleaner_extras = get_option('codecleaner_extras');
 
-/* Options Actions + Filters
-/***********************************************************************/
-if(!empty($codecleaner_options['disable_emojis']) && $codecleaner_options['disable_emojis'] == "1") {
-	add_action('init', 'codecleaner_disable_emojis');
-}
-if(!empty($codecleaner_options['disable_embeds']) && $codecleaner_options['disable_embeds'] == "1") {
-	add_action('init', 'codecleaner_disable_embeds', 9999);
-}
-if(!empty($codecleaner_options['remove_query_strings']) && $codecleaner_options['remove_query_strings'] == "1") {
-	add_action('init', 'codecleaner_remove_query_strings');
-}
-
 /* Disable XML-RPC
 /***********************************************************************/
 if(!empty($codecleaner_options['disable_xmlrpc']) && $codecleaner_options['disable_xmlrpc'] == "1") {
@@ -43,11 +31,16 @@ if(!empty($codecleaner_options['remove_rsd_link']) && $codecleaner_options['remo
 	remove_action('wp_head', 'rsd_link');
 }
 
-/* Remove Shortlink
+/* Options Actions + Filters
 /***********************************************************************/
-if(!empty($codecleaner_options['remove_shortlink']) && $codecleaner_options['remove_shortlink'] == "1") {
-	remove_action('wp_head', 'wp_shortlink_wp_head');
-	remove_action ('template_redirect', 'wp_shortlink_header', 11, 0);
+if(!empty($codecleaner_options['disable_emojis']) && $codecleaner_options['disable_emojis'] == "1") {
+	add_action('init', 'codecleaner_disable_emojis');
+}
+if(!empty($codecleaner_options['disable_embeds']) && $codecleaner_options['disable_embeds'] == "1") {
+	add_action('init', 'codecleaner_disable_embeds', 9999);
+}
+if(!empty($codecleaner_options['remove_query_strings']) && $codecleaner_options['remove_query_strings'] == "1") {
+	add_action('init', 'codecleaner_remove_query_strings');
 }
 
 /* Disable RSS Feeds
@@ -81,7 +74,6 @@ function codecleaner_disable_rss_feeds() {
 	// display error message or redirect failed
 	wp_die(sprintf(__("No feed available, please visit the <a href='%s'>homepage</a>!"), esc_url(home_url('/'))));
 }
-
 /* Remove RSS Feed Links
 /***********************************************************************/
 if(!empty($codecleaner_options['remove_feed_links']) && $codecleaner_options['remove_feed_links'] == "1") {
@@ -89,11 +81,7 @@ if(!empty($codecleaner_options['remove_feed_links']) && $codecleaner_options['re
 	remove_action('wp_head', 'feed_links_extra', 3);
 }
 
-/* Disable Self Pingbacks
-/***********************************************************************/
-if(!empty($codecleaner_options['disable_self_pingbacks']) && $codecleaner_options['disable_self_pingbacks'] == "1") {
-	add_action('pre_ping', 'codecleaner_disable_self_pingbacks');
-}
+
 
 function codecleaner_disable_self_pingbacks(&$links) {
 	$home = get_option('home');
@@ -104,6 +92,13 @@ function codecleaner_disable_self_pingbacks(&$links) {
 	}
 }
 
+/* Remove Shortlink
+/***********************************************************************/
+if(!empty($codecleaner_options['remove_shortlink']) && $codecleaner_options['remove_shortlink'] == "1") {
+	remove_action('wp_head', 'wp_shortlink_wp_head');
+	remove_action ('template_redirect', 'wp_shortlink_header', 11, 0);
+}
+
 /* Remove REST API Links
 /***********************************************************************/
 if(!empty($codecleaner_options['remove_rest_api_links']) && $codecleaner_options['remove_rest_api_links'] == "1") {
@@ -111,6 +106,62 @@ if(!empty($codecleaner_options['remove_rest_api_links']) && $codecleaner_options
 	remove_action('template_redirect', 'rest_output_link_header', 11, 0);
 }
 
+/* Disable Self Pingbacks
+/***********************************************************************/
+if(!empty($codecleaner_options['disable_self_pingbacks']) && $codecleaner_options['disable_self_pingbacks'] == "1") {
+	add_action('pre_ping', 'codecleaner_disable_self_pingbacks');
+}
+
+/* Disable WooCommerce Widgets
+/***********************************************************************/
+if(!empty($codecleaner_options['disable_woocommerce_widgets']) && $codecleaner_options['disable_woocommerce_widgets'] == "1") {
+	add_action('widgets_init', 'codecleaner_disable_woocommerce_widgets', 99);
+}
+function codecleaner_disable_woocommerce_widgets() {
+	global $codecleaner_options;
+
+	unregister_widget('WC_Widget_Products');
+	unregister_widget('WC_Widget_Product_Categories');
+	unregister_widget('WC_Widget_Product_Tag_Cloud');
+	unregister_widget('WC_Widget_Cart');
+	unregister_widget('WC_Widget_Layered_Nav');
+	unregister_widget('WC_Widget_Layered_Nav_Filters');
+	unregister_widget('WC_Widget_Price_Filter');
+	unregister_widget('WC_Widget_Product_Search');
+	unregister_widget('WC_Widget_Recently_Viewed');
+
+	if(empty($codecleaner_options['disable_woocommerce_reviews']) || $codecleaner_options['disable_woocommerce_reviews'] == "0") {
+		unregister_widget('WC_Widget_Recent_Reviews');
+		unregister_widget('WC_Widget_Top_Rated_Products');
+		unregister_widget('WC_Widget_Rating_Filter');
+	}
+}
+
+if(!empty($codecleaner_options['disable_heartbeat'])) {
+	add_action('init', 'codecleaner_disable_heartbeat', 1);
+}
+if(!empty($codecleaner_options['heartbeat_frequency'])) {
+	add_filter('heartbeat_settings', 'codecleaner_heartbeat_frequency');
+}
+if(!empty($codecleaner_options['limit_post_revisions'])) {
+	define('WP_POST_REVISIONS', $codecleaner_options['limit_post_revisions']);
+}
+if(!empty($codecleaner_options['autosave_interval'])) {
+	define('AUTOSAVE_INTERVAL', $codecleaner_options['autosave_interval']);
+}
+
+if(!empty($codecleaner_extras['dns_prefetch'])) {
+	add_action('wp_head', 'codecleaner_dns_prefetch', 1);
+}
+
+if(!empty($codecleaner_extras['script_manager']) && $codecleaner_extras['script_manager'] == "1") {
+	add_action('admin_bar_menu', 'codecleaner_script_manager_admin_bar', 1000);
+	add_action('wp_footer', 'codecleaner_script_manager', 1000);
+	add_action('script_loader_src', 'codecleaner_dequeue_scripts', 1000, 2);
+	add_action('style_loader_src', 'codecleaner_dequeue_scripts', 1000, 2);
+	add_action('template_redirect', 'codecleaner_script_manager_update', 10, 2);
+	add_action('wp_enqueue_scripts', 'codecleaner_script_manager_scripts');
+}
 /* Disable Google Maps
 /***********************************************************************/
 if(!empty($codecleaner_options['disable_google_maps']) && $codecleaner_options['disable_google_maps'] == "1") {
@@ -124,34 +175,6 @@ function codecleaner_disable_google_maps() {
 function codecleaner_disable_google_maps_regex($html) {
 	$html = preg_replace('/<script[^<>]*\/\/maps.(googleapis|google|gstatic).com\/[^<>]*><\/script>/i', '', $html);
 	return $html;
-}
-
-/* Disable Password Strength Meter
-/***********************************************************************/
-if(!empty($codecleaner_options['disable_password_strength_meter']) && $codecleaner_options['disable_password_strength_meter'] == "1") {
-	add_action('wp_print_scripts', 'codecleaner_disable_password_strength_meter', 100);
-}
-
-function codecleaner_disable_password_strength_meter() {
-	global $wp;
-
-	$wp_check = isset($wp->query_vars['lost-password']) || (isset($_GET['action']) && $_GET['action'] === 'lostpassword') || is_page('lost_password');
-
-	$wc_check = (class_exists('WooCommerce') && (is_account_page() || is_checkout()));
-
-	if(!$wp_check && !$wc_check) {
-		if(wp_script_is('zxcvbn-async', 'enqueued')) {
-			wp_dequeue_script('zxcvbn-async');
-		}
-
-		if(wp_script_is('password-strength-meter', 'enqueued')) {
-			wp_dequeue_script('password-strength-meter');
-		}
-
-		if(wp_script_is('wc-password-strength-meter', 'enqueued')) {
-			wp_dequeue_script('wc-password-strength-meter');
-		}
-	}
 }
 
 /* Disable Dashicons
@@ -222,6 +245,35 @@ function codecleaner_disable_woocommerce_cart_fragmentation() {
 	}
 }
 
+/* Disable Password Strength Meter
+/***********************************************************************/
+if(!empty($codecleaner_options['disable_password_strength_meter']) && $codecleaner_options['disable_password_strength_meter'] == "1") {
+	add_action('wp_print_scripts', 'codecleaner_disable_password_strength_meter', 100);
+}
+
+function codecleaner_disable_password_strength_meter() {
+	global $wp;
+
+	$wp_check = isset($wp->query_vars['lost-password']) || (isset($_GET['action']) && $_GET['action'] === 'lostpassword') || is_page('lost_password');
+
+	$wc_check = (class_exists('WooCommerce') && (is_account_page() || is_checkout()));
+
+	if(!$wp_check && !$wc_check) {
+		if(wp_script_is('zxcvbn-async', 'enqueued')) {
+			wp_dequeue_script('zxcvbn-async');
+		}
+
+		if(wp_script_is('password-strength-meter', 'enqueued')) {
+			wp_dequeue_script('password-strength-meter');
+		}
+
+		if(wp_script_is('wc-password-strength-meter', 'enqueued')) {
+			wp_dequeue_script('wc-password-strength-meter');
+		}
+	}
+}
+
+
 /* Disable WooCommerce Status Meta Box
 /***********************************************************************/
 if(!empty($codecleaner_options['disable_woocommerce_status']) && $codecleaner_options['disable_woocommerce_status'] == "1") {
@@ -230,56 +282,6 @@ if(!empty($codecleaner_options['disable_woocommerce_status']) && $codecleaner_op
 
 function codecleaner_disable_woocommerce_status() {
 	remove_meta_box('woocommerce_dashboard_status', 'dashboard', 'normal');
-}
-
-/* Disable WooCommerce Widgets
-/***********************************************************************/
-if(!empty($codecleaner_options['disable_woocommerce_widgets']) && $codecleaner_options['disable_woocommerce_widgets'] == "1") {
-	add_action('widgets_init', 'codecleaner_disable_woocommerce_widgets', 99);
-}
-function codecleaner_disable_woocommerce_widgets() {
-	global $codecleaner_options;
-
-	unregister_widget('WC_Widget_Products');
-	unregister_widget('WC_Widget_Product_Categories');
-	unregister_widget('WC_Widget_Product_Tag_Cloud');
-	unregister_widget('WC_Widget_Cart');
-	unregister_widget('WC_Widget_Layered_Nav');
-	unregister_widget('WC_Widget_Layered_Nav_Filters');
-	unregister_widget('WC_Widget_Price_Filter');
-	unregister_widget('WC_Widget_Product_Search');
-	unregister_widget('WC_Widget_Recently_Viewed');
-
-	if(empty($codecleaner_options['disable_woocommerce_reviews']) || $codecleaner_options['disable_woocommerce_reviews'] == "0") {
-		unregister_widget('WC_Widget_Recent_Reviews');
-		unregister_widget('WC_Widget_Top_Rated_Products');
-		unregister_widget('WC_Widget_Rating_Filter');
-	}
-}
-
-if(!empty($codecleaner_options['disable_heartbeat'])) {
-	add_action('init', 'codecleaner_disable_heartbeat', 1);
-}
-if(!empty($codecleaner_options['heartbeat_frequency'])) {
-	add_filter('heartbeat_settings', 'codecleaner_heartbeat_frequency');
-}
-if(!empty($codecleaner_options['limit_post_revisions'])) {
-	define('WP_POST_REVISIONS', $codecleaner_options['limit_post_revisions']);
-}
-if(!empty($codecleaner_options['autosave_interval'])) {
-	define('AUTOSAVE_INTERVAL', $codecleaner_options['autosave_interval']);
-}
-if(!empty($codecleaner_extras['script_manager']) && $codecleaner_extras['script_manager'] == "1") {
-	add_action('admin_bar_menu', 'codecleaner_script_manager_admin_bar', 1000);
-	add_action('wp_footer', 'codecleaner_script_manager', 1000);
-	add_action('script_loader_src', 'codecleaner_dequeue_scripts', 1000, 2);
-	add_action('style_loader_src', 'codecleaner_dequeue_scripts', 1000, 2);
-	add_action('template_redirect', 'codecleaner_script_manager_update', 10, 2);
-	add_action('wp_enqueue_scripts', 'codecleaner_script_manager_scripts');
-}
-
-if(!empty($codecleaner_extras['dns_prefetch'])) {
-	add_action('wp_head', 'codecleaner_dns_prefetch', 1);
 }
 
 /* Disable Emojis
@@ -664,34 +666,6 @@ function codecleaner_cdn_rewrite_url($url) {
     return $url[0];
 }
 
-/* Google Analytics
-/***********************************************************************/
-
-//enable/disable local analytics scheduled event
-if(!empty($codecleaner_ga['enable_local_ga']) && $codecleaner_ga['enable_local_ga'] == "1") {
-	if(!wp_next_scheduled('cleadcoded_update_ga')) {
-		wp_schedule_event(time(), 'daily', 'cleadcoded_update_ga');
-	}
-
-	if(!empty($codecleaner_ga['use_monster_insights']) && $codecleaner_ga['use_monster_insights'] == "1") {
-		add_filter('monsterinsights_frontend_output_analytics_src', 'codecleaner_monster_ga', 1000);
-	}
-	else {
-		if(!empty($codecleaner_ga['tracking_code_position']) && $codecleaner_ga['tracking_code_position'] == 'footer') {
-			$tracking_code_position = 'wp_footer';
-		}
-		else {
-			$tracking_code_position = 'wp_head';
-		}
-		add_action($tracking_code_position, 'cleadcoded_print_ga', 0);
-	}
-}
-else {
-	if(wp_next_scheduled('cleadcoded_update_ga')) {
-		wp_clear_scheduled_hook('cleadcoded_update_ga');
-	}
-}
-
 //update analytics.js
 function cleadcoded_update_ga() {
 	//paths
@@ -743,6 +717,34 @@ function cleadcoded_update_ga() {
 	}
 }
 add_action('cleadcoded_update_ga', 'cleadcoded_update_ga');
+
+/* Google Analytics
+/***********************************************************************/
+
+//enable/disable local analytics scheduled event
+if(!empty($codecleaner_ga['enable_local_ga']) && $codecleaner_ga['enable_local_ga'] == "1") {
+	if(!wp_next_scheduled('cleadcoded_update_ga')) {
+		wp_schedule_event(time(), 'daily', 'cleadcoded_update_ga');
+	}
+
+	if(!empty($codecleaner_ga['use_monster_insights']) && $codecleaner_ga['use_monster_insights'] == "1") {
+		add_filter('monsterinsights_frontend_output_analytics_src', 'codecleaner_monster_ga', 1000);
+	}
+	else {
+		if(!empty($codecleaner_ga['tracking_code_position']) && $codecleaner_ga['tracking_code_position'] == 'footer') {
+			$tracking_code_position = 'wp_footer';
+		}
+		else {
+			$tracking_code_position = 'wp_head';
+		}
+		add_action($tracking_code_position, 'cleadcoded_print_ga', 0);
+	}
+}
+else {
+	if(wp_next_scheduled('cleadcoded_update_ga')) {
+		wp_clear_scheduled_hook('cleadcoded_update_ga');
+	}
+}
 
 //print analytics script
 function cleadcoded_print_ga() {
@@ -957,6 +959,33 @@ function codecleaner_script_manager_print_section($category, $group, $scripts) {
 		}
 	echo "</div>";
 }
+ 
+function codecleaner_script_manager_print_status($type, $handle) {
+	global $codecleaner_extras;
+	global $codecleaner_script_manager_options;
+	global $currentID;
+	$options = $codecleaner_script_manager_options;
+
+	global $statusDisabled;
+ 
+	$statusDisabled = false;
+	if(isset($options['disabled'][$type][$handle]['everywhere']) || (isset($options['disabled'][$type][$handle]['current']) && in_array($currentID, $options['disabled'][$type][$handle]['current']))) {
+		$statusDisabled = true;
+	} 
+	if(!empty($codecleaner_extras['accessibility_mode']) && $codecleaner_extras['accessibility_mode'] == "1") {
+		echo "<select name='status[" . $type . "][" . $handle . "]' class='codecleaner-status-select" . ($statusDisabled ? "disabled" : "") . "'>";
+			echo "<option value='enabled' class='codecleaner-option-enabled'>" . __('ON', 'codecleaner') . "</option>";
+			echo "<option value='disabled' class='codecleaner-option-everywhere' " . ($statusDisabled ? "selected" : "") . ">" . __('OFF', 'codecleaner') . "</option>";
+		echo "</select>";
+	}
+	else {
+		echo "<input type='hidden' name='status[" . $type . "][" . $handle . "]' value='enabled' />";
+        echo "<label for='status_" . $type . "_" . $handle . "' class='codecleaner-script-manager-switch'>";
+        	echo "<input type='checkbox' id='status_" . $type . "_" . $handle . "' name='status[" . $type . "][" . $handle . "]' value='disabled' " . ($statusDisabled ? "checked" : "") . " class='codecleaner-status-toggle'>";
+        	echo "<div class='codecleaner-script-manager-slider'></div>";
+       	echo "</label>";
+	}
+}
 
 
 function codecleaner_script_manager_print_script($category, $group, $script, $type) {
@@ -1045,56 +1074,6 @@ function codecleaner_script_manager_print_script($category, $group, $script, $ty
   
 	} 
 } 
- 
-function codecleaner_script_manager_print_status($type, $handle) {
-	global $codecleaner_extras;
-	global $codecleaner_script_manager_options;
-	global $currentID;
-	$options = $codecleaner_script_manager_options;
-
-	global $statusDisabled;
- 
-	$statusDisabled = false;
-	if(isset($options['disabled'][$type][$handle]['everywhere']) || (isset($options['disabled'][$type][$handle]['current']) && in_array($currentID, $options['disabled'][$type][$handle]['current']))) {
-		$statusDisabled = true;
-	} 
-	if(!empty($codecleaner_extras['accessibility_mode']) && $codecleaner_extras['accessibility_mode'] == "1") {
-		echo "<select name='status[" . $type . "][" . $handle . "]' class='codecleaner-status-select" . ($statusDisabled ? "disabled" : "") . "'>";
-			echo "<option value='enabled' class='codecleaner-option-enabled'>" . __('ON', 'codecleaner') . "</option>";
-			echo "<option value='disabled' class='codecleaner-option-everywhere' " . ($statusDisabled ? "selected" : "") . ">" . __('OFF', 'codecleaner') . "</option>";
-		echo "</select>";
-	}
-	else {
-		echo "<input type='hidden' name='status[" . $type . "][" . $handle . "]' value='enabled' />";
-        echo "<label for='status_" . $type . "_" . $handle . "' class='codecleaner-script-manager-switch'>";
-        	echo "<input type='checkbox' id='status_" . $type . "_" . $handle . "' name='status[" . $type . "][" . $handle . "]' value='disabled' " . ($statusDisabled ? "checked" : "") . " class='codecleaner-status-toggle'>";
-        	echo "<div class='codecleaner-script-manager-slider'></div>";
-       	echo "</label>";
-	}
-}
-
-function codecleaner_script_manager_print_disable($type, $handle) {
-	global $codecleaner_script_manager_options;
-	global $currentID;
-	$options = $codecleaner_script_manager_options;
-
-	echo "<div class='codecleaner-script-manager-disable'>";
-		echo "<div style='font-size: 16px;'>" . __('Disabled', 'codecleaner') . "</div>";
-		echo "<label for='disabled-" . $type . "-" . $handle . "-everywhere'>";
-			echo "<input type='radio' name='disabled[" . $type . "][" . $handle . "]' id='disabled-" . $type . "-" . $handle . "-everywhere' class='codecleaner-disable-select' value='everywhere' ";
-			echo (!empty($options['disabled'][$type][$handle]['everywhere']) ? "checked" : "");
-			echo " />";
-			echo __('Everywhere', 'codecleaner');
-		echo "</label>";
-
-		echo "<label for='disabled-" . $type . "-" . $handle . "-current'>";
-			echo "<input type='radio' name='disabled[" . $type . "][" . $handle . "]' id='disabled-" . $type . "-" . $handle . "-current' class='codecleaner-disable-select' value='current' ";
-			echo (isset($options['disabled'][$type][$handle]['current']) && in_array($currentID, $options['disabled'][$type][$handle]['current']) ? "checked" : "");
-			echo " />";
-			echo __('Current URL', 'codecleaner');
-		echo "</label>";
-	echo "</div>";
-}
 
 function codecleaner_script_manager_print_enable($type, $handle) {
 	global $codecleaner_script_manager_settings;
@@ -1194,7 +1173,6 @@ function codecleaner_script_manager_print_enable($type, $handle) {
 
 	echo "</div>";
 }
-
 
 function codecleaner_script_manager_update() {
 
@@ -1433,16 +1411,30 @@ function codecleaner_dequeue_scripts($src, $handle) {
 	return $src;
 }
 
-/* DNS Prefetch
-/***********************************************************************/
-function codecleaner_dns_prefetch() {
-	global $codecleaner_extras;
-	if(!empty($codecleaner_extras['dns_prefetch']) && is_array($codecleaner_extras['dns_prefetch'])) {
-		foreach($codecleaner_extras['dns_prefetch'] as $url) {
-			echo "<link rel='dns-prefetch' href='" . $url . "'>" . "\n";
-		}
-	}
+function codecleaner_script_manager_print_disable($type, $handle) {
+	global $codecleaner_script_manager_options;
+	global $currentID;
+	$options = $codecleaner_script_manager_options;
+
+	echo "<div class='codecleaner-script-manager-disable'>";
+		echo "<div style='font-size: 16px;'>" . __('Disabled', 'codecleaner') . "</div>";
+		echo "<label for='disabled-" . $type . "-" . $handle . "-everywhere'>";
+			echo "<input type='radio' name='disabled[" . $type . "][" . $handle . "]' id='disabled-" . $type . "-" . $handle . "-everywhere' class='codecleaner-disable-select' value='everywhere' ";
+			echo (!empty($options['disabled'][$type][$handle]['everywhere']) ? "checked" : "");
+			echo " />";
+			echo __('Everywhere', 'codecleaner');
+		echo "</label>";
+
+		echo "<label for='disabled-" . $type . "-" . $handle . "-current'>";
+			echo "<input type='radio' name='disabled[" . $type . "][" . $handle . "]' id='disabled-" . $type . "-" . $handle . "-current' class='codecleaner-disable-select' value='current' ";
+			echo (isset($options['disabled'][$type][$handle]['current']) && in_array($currentID, $options['disabled'][$type][$handle]['current']) ? "checked" : "");
+			echo " />";
+			echo __('Current URL', 'codecleaner');
+		echo "</label>";
+	echo "</div>";
 }
+
+
 
 /* Preconnect
 /***********************************************************************/
@@ -1569,4 +1561,15 @@ function codecleaner_edd_check_license() {
 	}
 	
 	return($license_data);
+}
+
+/* DNS Prefetch
+/***********************************************************************/
+function codecleaner_dns_prefetch() {
+	global $codecleaner_extras;
+	if(!empty($codecleaner_extras['dns_prefetch']) && is_array($codecleaner_extras['dns_prefetch'])) {
+		foreach($codecleaner_extras['dns_prefetch'] as $url) {
+			echo "<link rel='dns-prefetch' href='" . $url . "'>" . "\n";
+		}
+	}
 }
