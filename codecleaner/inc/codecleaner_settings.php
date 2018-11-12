@@ -8,19 +8,6 @@ function codecleaner_settings() {
     //Options Primary Section
     add_settings_section('codecleaner_options', __('Options', 'codecleaner'), 'codecleaner_options_callback', 'codecleaner_options');
 
-    //Disable Emojis
-    add_settings_field(
-    	'disable_emojis', 
-    	codecleaner_title(__('Disable Emojis', 'codecleaner'), 'disable_emojis') . codecleaner_tooltip('https://cleancoded.com/docs/disable-emojis-wordpress/'), 
-    	'codecleaner_print_input', 
-    	'codecleaner_options', 
-    	'codecleaner_options', 
-    	array(
-            'id' => 'disable_emojis',
-            'tooltip' => __('Removes WordPress Emojis JavaScript file (wp-emoji-release.min.js).', 'codecleaner')
-        )
-    );
-
     //Disable Embeds
     add_settings_field(
     	'disable_embeds', 
@@ -32,6 +19,19 @@ function codecleaner_settings() {
     		'id' => 'disable_embeds',
     		'tooltip' => __('Removes WordPress Embed JavaScript file (wp-embed.min.js).', 'codecleaner')   		
     	)
+    );
+
+    //Disable Emojis
+    add_settings_field(
+    	'disable_emojis', 
+    	codecleaner_title(__('Disable Emojis', 'codecleaner'), 'disable_emojis') . codecleaner_tooltip('https://cleancoded.com/docs/disable-emojis-wordpress/'), 
+    	'codecleaner_print_input', 
+    	'codecleaner_options', 
+    	'codecleaner_options', 
+    	array(
+            'id' => 'disable_emojis',
+            'tooltip' => __('Removes WordPress Emojis JavaScript file (wp-emoji-release.min.js).', 'codecleaner')
+        )
     );
 
     //Remove Query Strings
@@ -62,19 +62,6 @@ function codecleaner_settings() {
         )
     );*/
 
-	//Disable XML-RPC
-    add_settings_field(
-    	'disable_xmlrpc', 
-    	codecleaner_title(__('Disable XML-RPC', 'codecleaner'), 'disable_xmlrpc') . codecleaner_tooltip('https://cleancoded.com/docs/disable-xml-rpc-wordpress/'), 
-    	'codecleaner_print_input', 
-    	'codecleaner_options', 
-    	'codecleaner_options', 
-    	array(
-    		'id' => 'disable_xmlrpc',
-    		'tooltip' => __('Disables WordPress XML-RPC functionality.', 'codecleaner')
-    	)
-    );
-
 	//Remove jQuery Migrate
     add_settings_field(
     	'remove_jquery_migrate', 
@@ -85,6 +72,19 @@ function codecleaner_settings() {
     	array(
     		'id' => 'remove_jquery_migrate',
     		'tooltip' => __('Removes jQuery Migrate JavaScript file (jquery-migrate.min.js).', 'codecleaner')
+    	)
+    );
+
+	//Disable XML-RPC
+    add_settings_field(
+    	'disable_xmlrpc', 
+    	codecleaner_title(__('Disable XML-RPC', 'codecleaner'), 'disable_xmlrpc') . codecleaner_tooltip('https://cleancoded.com/docs/disable-xml-rpc-wordpress/'), 
+    	'codecleaner_print_input', 
+    	'codecleaner_options', 
+    	'codecleaner_options', 
+    	array(
+    		'id' => 'disable_xmlrpc',
+    		'tooltip' => __('Disables WordPress XML-RPC functionality.', 'codecleaner')
     	)
     );
 
@@ -485,18 +485,17 @@ function codecleaner_settings() {
         )
     );
 
-    //Google Analytics ID
+    //Disable Display Features
     add_settings_field(
-        'tracking_id', 
-        codecleaner_title(__('Tracking ID', 'codecleaner'), 'tracking_id') . codecleaner_tooltip('https://cleancoded.com/docs/local-analytics/#trackingid'), 
+        'disable_display_features', 
+        codecleaner_title(__('Disable Display Features', 'codecleaner'), 'disable_display_features') . codecleaner_tooltip('https://cleancoded.com/docs/local-analytics/#disabledisplayfeatures'), 
         'codecleaner_print_input', 
         'codecleaner_ga', 
         'codecleaner_ga', 
         array(
-            'id' => 'tracking_id',
+            'id' => 'disable_display_features',
             'option' => 'codecleaner_ga',
-            'input' => 'text',
-            'tooltip' => __('Input your Google Analytics tracking ID.', 'codecleaner')
+            'tooltip' => __('Disable remarketing and advertising which generates a 2nd HTTP request.', 'codecleaner')
         )
     );
 
@@ -519,20 +518,6 @@ function codecleaner_settings() {
         )
     );
 
-    //Disable Display Features
-    add_settings_field(
-        'disable_display_features', 
-        codecleaner_title(__('Disable Display Features', 'codecleaner'), 'disable_display_features') . codecleaner_tooltip('https://cleancoded.com/docs/local-analytics/#disabledisplayfeatures'), 
-        'codecleaner_print_input', 
-        'codecleaner_ga', 
-        'codecleaner_ga', 
-        array(
-            'id' => 'disable_display_features',
-            'option' => 'codecleaner_ga',
-            'tooltip' => __('Disable remarketing and advertising which generates a 2nd HTTP request.', 'codecleaner')
-        )
-    );
-
     //Anonymize IP
     add_settings_field(
         'anonymize_ip', 
@@ -544,6 +529,21 @@ function codecleaner_settings() {
             'id' => 'anonymize_ip',
             'option' => 'codecleaner_ga',
             'tooltip' => __('Shorten visitor IP to comply with privacy restrictions in some countries.', 'codecleaner')
+        )
+    );
+
+    //Google Analytics ID
+    add_settings_field(
+        'tracking_id', 
+        codecleaner_title(__('Tracking ID', 'codecleaner'), 'tracking_id') . codecleaner_tooltip('https://cleancoded.com/docs/local-analytics/#trackingid'), 
+        'codecleaner_print_input', 
+        'codecleaner_ga', 
+        'codecleaner_ga', 
+        array(
+            'id' => 'tracking_id',
+            'option' => 'codecleaner_ga',
+            'input' => 'text',
+            'tooltip' => __('Input your Google Analytics tracking ID.', 'codecleaner')
         )
     );
 

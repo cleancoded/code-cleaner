@@ -101,18 +101,6 @@ function codecleaner_activate() {
 }
 register_activation_hook(__FILE__, 'codecleaner_activate');
 
-//Optimization Notice
-function codecleaner_guide_notice() {
-    if(get_current_screen()->base == 'settings_page_codecleaner') {
-        echo "<div class='notice notice-info'>";
-        	echo "<p>";
-        		_e("Check out our <a href='https://woorkup.com/speed-up-wordpress/' title='WordPress Optimization Guide' target='_blank'>complete optimization guide</a> for more ways to speed up WordPress.", 'codecleaner');
-        	echo "</p>";
-        echo "</div>";
-    }
-}
-add_action('admin_notices', 'codecleaner_guide_notice');
-
 //register a license deactivation
 function codecleaner_deactivate() {
 
@@ -154,41 +142,17 @@ function codecleaner_deactivate() {
 }
 register_deactivation_hook(__FILE__, 'codecleaner_deactivate');
 
-//license messages in plugins table
-function codecleaner_meta_links($links, $file) {
-	if(strpos($file, 'codecleaner.php' ) !== false) {
-
-		if(is_network_admin()) {
-			$license_info = codecleaner_edd_check_network_license();
-			$license_url = network_admin_url('settings.php?page=codecleaner');
-		}
-		else {
-			$license_info = codecleaner_edd_check_license();
-			$license_url = admin_url('options-general.php?page=codecleaner');
-		}
-
-		$codecleaner_links = array();
-		$codecleaner_links[] = '<a href="' . $license_url . '">' . esc_html__('Settings', 'codecleaner') . '</a>';
-
-		if(!is_plugin_active_for_network('codecleaner/codecleaner.php') || is_network_admin()) {
-
-			if(!empty($license_info->license) && $license_info->license == "valid") {
-				$codecleaner_links[] = '<a href="' . $license_url . '&tab=license" style="color: green;">' . __('License is Activated', 'codecleaner') . '</a>';
-			}
-			elseif(!empty($license_info->license) && $license_info->license == "expired") {
-				$codecleaner_links[] = '<a href="' . $license_url . '&tab=license" style="color: orange;">' . __('Renew License', 'codecleaner') . '</a>';
-			}
-			else {
-				$codecleaner_links[] = '<a href="' . $license_url . '&tab=license" style="color: red;">' . __('Activate License', 'codecleaner') . '</a>';
-			}
-
-		}
-
-		$links = array_merge($links, $codecleaner_links);
-	}
-	return $links;
+//Optimization Notice
+function codecleaner_guide_notice() {
+    if(get_current_screen()->base == 'settings_page_codecleaner') {
+        echo "<div class='notice notice-info'>";
+        	echo "<p>";
+        		_e("Check out our <a href='https://woorkup.com/speed-up-wordpress/' title='WordPress Optimization Guide' target='_blank'>complete optimization guide</a> for more ways to speed up WordPress.", 'codecleaner');
+        	echo "</p>";
+        echo "</div>";
+    }
 }
-add_filter('plugin_row_meta', 'codecleaner_meta_links', 10, 2);
+add_action('admin_notices', 'codecleaner_guide_notice');
 
 //uninstall\remove plugin + delete options
 function codecleaner_uninstall() {
@@ -230,6 +194,43 @@ function codecleaner_uninstall() {
 	}
 }
 register_uninstall_hook(__FILE__, 'codecleaner_uninstall');
+
+//license messages in plugins table
+function codecleaner_meta_links($links, $file) {
+	if(strpos($file, 'codecleaner.php' ) !== false) {
+
+		if(is_network_admin()) {
+			$license_info = codecleaner_edd_check_network_license();
+			$license_url = network_admin_url('settings.php?page=codecleaner');
+		}
+		else {
+			$license_info = codecleaner_edd_check_license();
+			$license_url = admin_url('options-general.php?page=codecleaner');
+		}
+
+		$codecleaner_links = array();
+		$codecleaner_links[] = '<a href="' . $license_url . '">' . esc_html__('Settings', 'codecleaner') . '</a>';
+
+		if(!is_plugin_active_for_network('codecleaner/codecleaner.php') || is_network_admin()) {
+
+			if(!empty($license_info->license) && $license_info->license == "valid") {
+				$codecleaner_links[] = '<a href="' . $license_url . '&tab=license" style="color: green;">' . __('License is Activated', 'codecleaner') . '</a>';
+			}
+			elseif(!empty($license_info->license) && $license_info->license == "expired") {
+				$codecleaner_links[] = '<a href="' . $license_url . '&tab=license" style="color: orange;">' . __('Renew License', 'codecleaner') . '</a>';
+			}
+			else {
+				$codecleaner_links[] = '<a href="' . $license_url . '&tab=license" style="color: red;">' . __('Activate License', 'codecleaner') . '</a>';
+			}
+
+		}
+
+		$links = array_merge($links, $codecleaner_links);
+	}
+	return $links;
+}
+add_filter('plugin_row_meta', 'codecleaner_meta_links', 10, 2);
+
 
 //files include in plugin
 include plugin_dir_path(__FILE__) . '/inc/codecleaner_settings.php';

@@ -1,10 +1,5 @@
 <?php
 
-//Codecleaner Network Section Callback
-function codecleaner_network_callback() {
-	echo '<p class="codecleaner-subheading">' . __('Manage network access control and setup a network default site.', 'codecleaner') . '</p>';
-} 
-
 function codecleaner_network_admin_menu() {
 
 	//Add Network Settings Menu Item
@@ -54,32 +49,10 @@ function codecleaner_network_admin_menu() {
 }
 add_filter('network_admin_menu', 'codecleaner_network_admin_menu');
 
-//Codecleaner Network Default
-function codecleaner_network_default_callback() {
-	$codecleaner_network = get_site_option('codecleaner_network');
-	echo "<div style='display: table; width: 100%;'>";
-		echo "<div class='codecleaner-input-wrapper'>";
-			echo "<select name='codecleaner_network[default]' id='default'>";
-				$sites = array_map('get_object_vars', get_sites(array('deleted' => 0)));
-				if(is_array($sites) && $sites !== array()) {
-					echo "<option value=''>" . __('None', 'codecleaner') . "</option>";
-					foreach($sites as $site) {
-						echo "<option value='" . $site['blog_id'] . "' " . ((!empty($codecleaner_network['default']) && $codecleaner_network['default'] == $site['blog_id']) ? "selected" : "") . ">" . $site['blog_id'] . ": " . $site['domain'] . $site['path'] . "</option>";
-					} 
-				}
-			echo "<select>";
-		echo "</div>";
-		echo "<div class='codecleaner-tooltip-text-wrapper'>";
-			echo "<div class='codecleaner-tooltip-text-container' style='display: none;'>";
-				echo "<div style='display: table; height: 100%; width: 100%;'>";
-					echo "<div style='display: table-cell; vertical-align: middle;'>";
-						echo "<span class='codecleaner-tooltip-text'>" . __('Choose a subsite that you want to pull default settings from.', 'codecleaner') . "</span>";
-					echo "</div>";
-				echo "</div>";
-			echo "</div>";
-		echo "</div>";
-	echo "</div>";
-}
+//Codecleaner Network Section Callback
+function codecleaner_network_callback() {
+	echo '<p class="codecleaner-subheading">' . __('Manage network access control and setup a network default site.', 'codecleaner') . '</p>';
+} 
 
 //Codecleaner Network Settings Page
 function codecleaner_network_page_callback() {
@@ -318,6 +291,33 @@ function codecleaner_network_page_callback() {
 	echo "</div>";
 }
 
+//Codecleaner Network Default
+function codecleaner_network_default_callback() {
+	$codecleaner_network = get_site_option('codecleaner_network');
+	echo "<div style='display: table; width: 100%;'>";
+		echo "<div class='codecleaner-input-wrapper'>";
+			echo "<select name='codecleaner_network[default]' id='default'>";
+				$sites = array_map('get_object_vars', get_sites(array('deleted' => 0)));
+				if(is_array($sites) && $sites !== array()) {
+					echo "<option value=''>" . __('None', 'codecleaner') . "</option>";
+					foreach($sites as $site) {
+						echo "<option value='" . $site['blog_id'] . "' " . ((!empty($codecleaner_network['default']) && $codecleaner_network['default'] == $site['blog_id']) ? "selected" : "") . ">" . $site['blog_id'] . ": " . $site['domain'] . $site['path'] . "</option>";
+					} 
+				}
+			echo "<select>";
+		echo "</div>";
+		echo "<div class='codecleaner-tooltip-text-wrapper'>";
+			echo "<div class='codecleaner-tooltip-text-container' style='display: none;'>";
+				echo "<div style='display: table; height: 100%; width: 100%;'>";
+					echo "<div style='display: table-cell; vertical-align: middle;'>";
+						echo "<span class='codecleaner-tooltip-text'>" . __('Choose a subsite that you want to pull default settings from.', 'codecleaner') . "</span>";
+					echo "</div>";
+				echo "</div>";
+			echo "</div>";
+		echo "</div>";
+	echo "</div>";
+}
+
 //Update Codecleaner Network Options
 function codecleaner_update_network_options() {
 
@@ -365,34 +365,6 @@ function codecleaner_network_access_callback() {
 		echo "</div>";
 	echo "</div>";
 } 
-
-function codecleaner_edd_activate_network_license() {
-
-	//retrieve the license from the database
-	$license = trim(get_site_option('codecleaner_edd_license_key'));
-
-	//data to send in our API request
-	$api_params = array(
-		'edd_action'=> 'activate_license',
-		'license' 	=> $license,
-		'item_name' => urlencode(CODECLEANER_ITEM_NAME), // name of product in EDD
-		'url'       => home_url()
-	);
-
-	//Call the custom API.
-	$response = wp_remote_post(CODECLEANER_STORE_URL, array('timeout' => 15, 'sslverify' => true, 'body' => $api_params));
-
-	//make sure the response came back okay
-	if(is_wp_error($response)) {
-		return false;
-	}
-
-	//decode the license data
-	$license_data = json_decode(wp_remote_retrieve_body($response));
-
-	//$license_data->license will be either "valid" or "invalid"
-	update_site_option('codecleaner_edd_license_status', $license_data->license);
-}
 
 function codecleaner_edd_check_network_license() {
 
@@ -455,3 +427,32 @@ function codecleaner_edd_deactivate_network_license() {
 		delete_site_option('codecleaner_edd_license_status');
 	}
 }
+
+function codecleaner_edd_activate_network_license() {
+
+	//retrieve the license from the database
+	$license = trim(get_site_option('codecleaner_edd_license_key'));
+
+	//data to send in our API request
+	$api_params = array(
+		'edd_action'=> 'activate_license',
+		'license' 	=> $license,
+		'item_name' => urlencode(CODECLEANER_ITEM_NAME), // name of product in EDD
+		'url'       => home_url()
+	);
+
+	//Call the custom API.
+	$response = wp_remote_post(CODECLEANER_STORE_URL, array('timeout' => 15, 'sslverify' => true, 'body' => $api_params));
+
+	//make sure the response came back okay
+	if(is_wp_error($response)) {
+		return false;
+	}
+
+	//decode the license data
+	$license_data = json_decode(wp_remote_retrieve_body($response));
+
+	//$license_data->license will be either "valid" or "invalid"
+	update_site_option('codecleaner_edd_license_status', $license_data->license);
+}
+
