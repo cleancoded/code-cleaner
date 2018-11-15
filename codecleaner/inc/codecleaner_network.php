@@ -72,7 +72,7 @@ function codecleaner_network_page_callback() {
 
 							$option_names = array(
 								'codecleaner_options',
-								'codecleaner_cdn',
+								'codecleaner_woocommerce',
 								'codecleaner_extras'
 							);
 
@@ -84,10 +84,6 @@ function codecleaner_network_page_callback() {
 								//catch new option from default blog
 								$new_option = get_blog_option($codecleaner_network['default'], $option_name);
 
-								//remove options we don't want to copy
-								if($option_name == 'codecleaner_cdn') {
-									unset($new_option['cdn_url']);
-								}
 
 								//update selected blog with default option
 								update_blog_option($blog->blog_id, $option_name, $new_option);

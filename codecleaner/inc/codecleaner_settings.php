@@ -37,7 +37,7 @@ function codecleaner_default_options() {
 //extras default values
 function codecleaner_default_extras() {
     $defaults = array(
-        'script_manager' => "0",
+        'deep_cleaning' => "0",
         'accessibility_mode' => "0"
     );
     codecleaner_network_defaults($defaults, 'codecleaner_extras');
@@ -67,219 +67,6 @@ function codecleaner_settings() {
 		add_option('codecleaner_options', apply_filters('codecleaner_default_options', codecleaner_default_options()));
 	}
 
-    //Disable Emojis
-    add_settings_field(
-    	'disable_emojis', 
-    	codecleaner_title(__('Disable Emojis', 'codecleaner'), 'disable_emojis') . codecleaner_tooltip('https://cleancoded.com/docs/disable-emojis-wordpress/'), 
-    	'codecleaner_print_input', 
-    	'codecleaner_options', 
-    	'codecleaner_options', 
-    	array(
-            'id' => 'disable_emojis',
-            'tooltip' => __('Removes WordPress Emojis JavaScript file (wp-emoji-release.min.js).', 'codecleaner')
-        )
-    );
-
-    //Disable Embeds
-    add_settings_field(
-    	'disable_embeds', 
-    	codecleaner_title(__('Disable Embeds', 'codecleaner'), 'disable_embeds') . codecleaner_tooltip('https://cleancoded.com/docs/disable-embeds-wordpress/'), 
-    	'codecleaner_print_input', 
-    	'codecleaner_options', 
-    	'codecleaner_options', 
-    	array(
-    		'id' => 'disable_embeds',
-    		'tooltip' => __('Removes WordPress Embed JavaScript file (wp-embed.min.js).', 'codecleaner')   		
-    	)
-    );
-
-    //Remove Query Strings
-    add_settings_field(
-    	'remove_query_strings', 
-    	codecleaner_title(__('Remove Query Strings', 'codecleaner'), 'remove_query_strings') . codecleaner_tooltip('https://cleancoded.com/docs/remove-query-strings-from-static-resources/'), 
-    	'codecleaner_print_input', 
-    	'codecleaner_options', 
-    	'codecleaner_options', 
-    	array(
-    		'id' => 'remove_query_strings',
-    		'tooltip' => __('Remove query strings from static resources (CSS, JS).', 'codecleaner')
-    	)
-    );
-
-    //Options Primary Section
-    add_settings_section('codecleaner_options', __('Default', 'codecleaner'), 'codecleaner_options_callback', 'codecleaner_options');
-
-	//Remove jQuery Migrate
-    add_settings_field(
-    	'remove_jquery_migrate', 
-    	codecleaner_title(__('Remove jQuery Migrate', 'codecleaner'), 'remove_jquery_migrate') . codecleaner_tooltip('https://cleancoded.com/docs/remove-jquery-migrate-wordpress/'), 
-    	'codecleaner_print_input', 
-    	'codecleaner_options', 
-    	'codecleaner_options', 
-    	array(
-    		'id' => 'remove_jquery_migrate',
-    		'tooltip' => __('Removes jQuery Migrate JavaScript file (jquery-migrate.min.js).', 'codecleaner')
-    	)
-    );
-
-	//Disable XML-RPC
-    add_settings_field(
-    	'disable_xmlrpc', 
-    	codecleaner_title(__('Disable XML-RPC', 'codecleaner'), 'disable_xmlrpc') . codecleaner_tooltip('https://cleancoded.com/docs/disable-xml-rpc-wordpress/'), 
-    	'codecleaner_print_input', 
-    	'codecleaner_options', 
-    	'codecleaner_options', 
-    	array(
-    		'id' => 'disable_xmlrpc',
-    		'tooltip' => __('Disables WordPress XML-RPC functionality.', 'codecleaner')
-    	)
-    );
-
-    //Query String Parameters
-    /*add_settings_field(
-        'query_string_parameters', 
-        codecleaner_title(__('Additional Parameters', 'codecleaner'), 'query_string_parameters') . codecleaner_tooltip(''), 
-        'codecleaner_print_input', 
-        'codecleaner_options', 
-        'codecleaner_options', 
-        array(
-            'id' => 'query_string_parameters',
-            'input' => 'text',
-            'placeholder' => 'v,id',
-            'tooltip' => __('', 'codecleaner')
-        )
-    );*/
-
-    //Remove wlmanifest Link
-    add_settings_field(
-    	'remove_wlwmanifest_link', 
-    	codecleaner_title(__('Remove wlwmanifest Link', 'codecleaner'), 'remove_wlwmanifest_link') . codecleaner_tooltip('https://cleancoded.com/docs/remove-wlwmanifest-link-wordpress/'), 
-    	'codecleaner_print_input', 
-    	'codecleaner_options', 
-    	'codecleaner_options',
-        array(
-        	'id' => 'remove_wlwmanifest_link',
-        	'tooltip' => __('Remove wlwmanifest (Windows Live Writer) link tag.', 'codecleaner')
-        )
-    );
-
-    //Hide WP Version
-    add_settings_field(
-    	'hide_wp_version', 
-    	codecleaner_title(__('Hide WP Version', 'codecleaner'), 'hide_wp_version') . codecleaner_tooltip('https://cleancoded.com/docs/remove-wordpress-version-number/'), 
-    	'codecleaner_print_input', 
-    	'codecleaner_options', 
-    	'codecleaner_options', 
-    	array(
-    		'id' => 'hide_wp_version',
-    		'tooltip' => __('Removes WordPress version meta tag.', 'codecleaner')
-    	)
-    );
-
-    //Remove RSD Link
-    add_settings_field(
-    	'remove_rsd_link', 
-    	codecleaner_title(__('Remove RSD Link', 'codecleaner'), 'remove_rsd_link') . codecleaner_tooltip('https://cleancoded.com/docs/remove-rsd-link-wordpress/'), 
-    	'codecleaner_print_input', 
-    	'codecleaner_options', 
-    	'codecleaner_options', 
-    	array(
-    		'id' => 'remove_rsd_link',
-    		'tooltip' => __('Remove RSD (Real Simple Discovery) link tag.', 'codecleaner')
-    	)
-    );
-
-    //Remove Shortlink
-    add_settings_field(
-    	'remove_shortlink', 
-    	codecleaner_title(__('Remove Shortlink', 'codecleaner'), 'remove_shortlink') . codecleaner_tooltip('https://cleancoded.com/docs/remove-shortlink-wordpress/'), 
-    	'codecleaner_print_input', 
-    	'codecleaner_options', 
-    	'codecleaner_options', 
-    	array(
-    		'id' => 'remove_shortlink',
-    		'tooltip' => __('Remove Shortlink link tag.', 'codecleaner')
-    	)
-    );
-
-    //Disable RSS Feeds
-    add_settings_field(
-    	'disable_rss_feeds', 
-    	codecleaner_title(__('Disable RSS Feeds', 'codecleaner'), 'disable_rss_feeds') . codecleaner_tooltip('https://cleancoded.com/docs/disable-rss-feeds-wordpress/'), 
-    	'codecleaner_print_input', 
-    	'codecleaner_options', 
-    	'codecleaner_options', 
-    	array(
-    		'id' => 'disable_rss_feeds',
-    		'tooltip' => __('Disable WordPress generated RSS feeds and 301 redirect URL to parent.', 'codecleaner')
-    	)
-    );
-
-    //Remove Feed Links
-    add_settings_field(
-    	'remove_feed_links', 
-    	codecleaner_title(__('Remove RSS Feed Links', 'codecleaner'), 'remove_feed_links') . codecleaner_tooltip('https://cleancoded.com/docs/remove-rss-feed-links-wordpress/'), 
-    	'codecleaner_print_input', 
-    	'codecleaner_options', 
-    	'codecleaner_options', 
-    	array(
-    		'id' => 'remove_feed_links',
-    		'tooltip' => __('Disable WordPress generated RSS feed link tags.', 'codecleaner')
-    	)
-    );
-
-    //Disable Self Pingbacks
-    add_settings_field(
-    	'disable_self_pingbacks', 
-    	codecleaner_title(__('Disable Self Pingbacks', 'codecleaner'), 'disable_self_pingbacks') . codecleaner_tooltip('https://cleancoded.com/docs/disable-self-pingbacks-wordpress/'), 
-    	'codecleaner_print_input', 
-    	'codecleaner_options', 
-    	'codecleaner_options', 
-    	array(
-    		'id' => 'disable_self_pingbacks',
-    		'tooltip' => __('Disable Self Pingbacks (generated when linking to an article on your own blog).', 'codecleaner')
-    	)
-    );
-
-    //Disable Dashicons
-    add_settings_field(
-        'disable_dashicons', 
-        codecleaner_title(__('Disable Dashicons', 'codecleaner'), 'disable_dashicons') . codecleaner_tooltip('https://cleancoded.com/docs/remove-dashicons-wordpress/'), 
-        'codecleaner_print_input', 
-        'codecleaner_options', 
-        'codecleaner_options', 
-        array(
-            'id' => 'disable_dashicons',
-            'tooltip' => __('Disables dashicons on the front end when not logged in.', 'codecleaner')
-        )
-    );
-	
-    //Remove REST API Links
-    add_settings_field(
-    	'remove_rest_api_links', 
-    	codecleaner_title(__('Remove REST API Links', 'codecleaner'), 'remove_rest_api_links') . codecleaner_tooltip('https://cleancoded.com/docs/remove-wordpress-rest-api-links/'), 
-    	'codecleaner_print_input', 
-    	'codecleaner_options', 
-    	'codecleaner_options', 
-    	array(
-    		'id' => 'remove_rest_api_links',
-    		'tooltip' => __('Removes REST API link tag from the front end and the REST API header link from page requests.', 'codecleaner')
-    	)
-    );
-
-    //Disable Google Maps
-    add_settings_field(
-        'disable_google_maps', 
-        codecleaner_title(__('Disable Google Maps', 'codecleaner'), 'disable_google_maps') . codecleaner_tooltip('https://cleancoded.com/docs/disable-google-maps-api-wordpress/'), 
-        'codecleaner_print_input', 
-        'codecleaner_options', 
-        'codecleaner_options', 
-        array(
-            'id' => 'disable_google_maps',
-            'tooltip' => __('Removes any instances of Google Maps being loaded across your entire site.', 'codecleaner')
-        )
-    );
-
     //Autosave Interval
     add_settings_field(
     	'autosave_interval', 
@@ -300,38 +87,44 @@ function codecleaner_settings() {
     		'tooltip' => __('Controls how often WordPress will auto save posts and pages while editing.', 'codecleaner')
     	)
     );
-	
-    //Disable Password Strength Meter
+
+    //Disable Dashicons
     add_settings_field(
-        'disable_password_strength_meter', 
-        codecleaner_title(__('Disable Password Strength Meter', 'codecleaner'), 'disable_password_strength_meter') . codecleaner_tooltip('https://cleancoded.com/docs/disable-password-meter-strength/'),
+        'disable_dashicons', 
+        codecleaner_title(__('Disable Dashicons', 'codecleaner'), 'disable_dashicons') . codecleaner_tooltip('https://cleancoded.com/docs/remove-dashicons-wordpress/'), 
         'codecleaner_print_input', 
         'codecleaner_options', 
         'codecleaner_options', 
         array(
-            'id' => 'disable_password_strength_meter',
-            'tooltip' => __('Removes WordPress and WooCommerce Password Strength Meter scripts from non essential pages.', 'codecleaner')
+            'id' => 'disable_dashicons',
+            'tooltip' => __('Disables dashicons on the front end when not logged in.', 'codecleaner')
         )
     );
 
-    //Heartbeat Frequency
+    //Disable Embeds
     add_settings_field(
-    	'heartbeat_frequency', 
-    	'<label for=\'heartbeat_frequency\'>' . __('Heartbeat Frequency', 'codecleaner') . '</label>' . codecleaner_tooltip('https://cleancoded.com/docs/change-heartbeat-frequency-wordpress/'), 
+    	'disable_embeds', 
+    	codecleaner_title(__('Disable Embeds', 'codecleaner'), 'disable_embeds') . codecleaner_tooltip('https://cleancoded.com/docs/disable-embeds-wordpress/'), 
     	'codecleaner_print_input', 
     	'codecleaner_options', 
     	'codecleaner_options', 
     	array(
-    		'id' => 'heartbeat_frequency',
-    		'input' => 'select',
-    		'options' => array(
-    			''   => sprintf(__('%s Seconds', 'codecleaner'), '15') . ' (' . __('Default', 'codecleaner') . ')',
-                '30' => sprintf(__('%s Seconds', 'codecleaner'), '30'),
-                '45' => sprintf(__('%s Seconds', 'codecleaner'), '45'),
-                '60' => sprintf(__('%s Seconds', 'codecleaner'), '60')
-    		),
-    		'tooltip' => __('Controls how often the WordPress Heartbeat API is allowed to run.', 'codecleaner')
+    		'id' => 'disable_embeds',
+    		'tooltip' => __('Removes WordPress Embed JavaScript file (wp-embed.min.js).', 'codecleaner')   		
     	)
+    );
+		
+    //Disable Emojis
+    add_settings_field(
+    	'disable_emojis', 
+    	codecleaner_title(__('Disable Emojis', 'codecleaner'), 'disable_emojis') . codecleaner_tooltip('https://cleancoded.com/docs/disable-emojis-wordpress/'), 
+    	'codecleaner_print_input', 
+    	'codecleaner_options', 
+    	'codecleaner_options', 
+    	array(
+            'id' => 'disable_emojis',
+            'tooltip' => __('Removes WordPress Emojis JavaScript file (wp-emoji-release.min.js).', 'codecleaner')
+        )
     );
 
     //Disable Heartbeat
@@ -352,6 +145,215 @@ function codecleaner_settings() {
     		'tooltip' => __('Disable WordPress Heartbeat everywhere or in certain areas (used for auto saving and revision tracking).', 'codecleaner')
     	)
     );
+	
+    //Heartbeat Frequency
+    add_settings_field(
+    	'heartbeat_frequency', 
+    	'<label for=\'heartbeat_frequency\'>' . __('Heartbeat Frequency', 'codecleaner') . '</label>' . codecleaner_tooltip('https://cleancoded.com/docs/change-heartbeat-frequency-wordpress/'), 
+    	'codecleaner_print_input', 
+    	'codecleaner_options', 
+    	'codecleaner_options', 
+    	array(
+    		'id' => 'heartbeat_frequency',
+    		'input' => 'select',
+    		'options' => array(
+    			''   => sprintf(__('%s Seconds', 'codecleaner'), '15') . ' (' . __('Default', 'codecleaner') . ')',
+                '30' => sprintf(__('%s Seconds', 'codecleaner'), '30'),
+                '45' => sprintf(__('%s Seconds', 'codecleaner'), '45'),
+                '60' => sprintf(__('%s Seconds', 'codecleaner'), '60')
+    		),
+    		'tooltip' => __('Controls how often the WordPress Heartbeat API is allowed to run.', 'codecleaner')
+    	)
+    );
+
+    //Disable RSS Feeds
+    add_settings_field(
+    	'disable_rss_feeds', 
+    	codecleaner_title(__('Disable RSS Feeds', 'codecleaner'), 'disable_rss_feeds') . codecleaner_tooltip('https://cleancoded.com/docs/disable-rss-feeds-wordpress/'), 
+    	'codecleaner_print_input', 
+    	'codecleaner_options', 
+    	'codecleaner_options', 
+    	array(
+    		'id' => 'disable_rss_feeds',
+    		'tooltip' => __('Disable WordPress generated RSS feeds and 301 redirect URL to parent.', 'codecleaner')
+    	)
+    );
+
+    //Disable Self Pingbacks
+    add_settings_field(
+    	'disable_self_pingbacks', 
+    	codecleaner_title(__('Disable Self Pingbacks', 'codecleaner'), 'disable_self_pingbacks') . codecleaner_tooltip('https://cleancoded.com/docs/disable-self-pingbacks-wordpress/'), 
+    	'codecleaner_print_input', 
+    	'codecleaner_options', 
+    	'codecleaner_options', 
+    	array(
+    		'id' => 'disable_self_pingbacks',
+    		'tooltip' => __('Disable Self Pingbacks (generated when linking to an article on your own blog).', 'codecleaner')
+    	)
+    );
+
+	//Disable XML-RPC
+    add_settings_field(
+    	'disable_xmlrpc', 
+    	codecleaner_title(__('Disable XML-RPC', 'codecleaner'), 'disable_xmlrpc') . codecleaner_tooltip('https://cleancoded.com/docs/disable-xml-rpc-wordpress/'), 
+    	'codecleaner_print_input', 
+    	'codecleaner_options', 
+    	'codecleaner_options', 
+    	array(
+    		'id' => 'disable_xmlrpc',
+    		'tooltip' => __('Disables WordPress XML-RPC functionality.', 'codecleaner')
+    	)
+    );
+
+	//Remove jQuery Migrate
+    add_settings_field(
+    	'remove_jquery_migrate', 
+    	codecleaner_title(__('Remove jQuery Migrate', 'codecleaner'), 'remove_jquery_migrate') . codecleaner_tooltip('https://cleancoded.com/docs/remove-jquery-migrate-wordpress/'), 
+    	'codecleaner_print_input', 
+    	'codecleaner_options', 
+    	'codecleaner_options', 
+    	array(
+    		'id' => 'remove_jquery_migrate',
+    		'tooltip' => __('Removes jQuery Migrate JavaScript file (jquery-migrate.min.js).', 'codecleaner')
+    	)
+    );
+
+    //Disable Password Strength Meter
+    add_settings_field(
+        'disable_password_strength_meter', 
+        codecleaner_title(__('Disable Password Strength Meter', 'codecleaner'), 'disable_password_strength_meter') . codecleaner_tooltip('https://cleancoded.com/docs/disable-password-meter-strength/'),
+        'codecleaner_print_input', 
+        'codecleaner_options', 
+        'codecleaner_options', 
+        array(
+            'id' => 'disable_password_strength_meter',
+            'tooltip' => __('Removes WordPress and WooCommerce Password Strength Meter scripts from non essential pages.', 'codecleaner')
+        )
+    );
+
+    //Remove Query Strings
+    add_settings_field(
+    	'remove_query_strings', 
+    	codecleaner_title(__('Remove Query Strings', 'codecleaner'), 'remove_query_strings') . codecleaner_tooltip('https://cleancoded.com/docs/remove-query-strings-from-static-resources/'), 
+    	'codecleaner_print_input', 
+    	'codecleaner_options', 
+    	'codecleaner_options', 
+    	array(
+    		'id' => 'remove_query_strings',
+    		'tooltip' => __('Remove query strings from static resources (CSS, JS).', 'codecleaner')
+    	)
+    );
+	
+    //Remove REST API Links
+    add_settings_field(
+    	'remove_rest_api_links', 
+    	codecleaner_title(__('Remove REST API Links', 'codecleaner'), 'remove_rest_api_links') . codecleaner_tooltip('https://cleancoded.com/docs/remove-wordpress-rest-api-links/'), 
+    	'codecleaner_print_input', 
+    	'codecleaner_options', 
+    	'codecleaner_options', 
+    	array(
+    		'id' => 'remove_rest_api_links',
+    		'tooltip' => __('Removes REST API link tag from the front end and the REST API header link from page requests.', 'codecleaner')
+    	)
+    );
+
+    //Remove RSD Link
+    add_settings_field(
+    	'remove_rsd_link', 
+    	codecleaner_title(__('Remove RSD Link', 'codecleaner'), 'remove_rsd_link') . codecleaner_tooltip('https://cleancoded.com/docs/remove-rsd-link-wordpress/'), 
+    	'codecleaner_print_input', 
+    	'codecleaner_options', 
+    	'codecleaner_options', 
+    	array(
+    		'id' => 'remove_rsd_link',
+    		'tooltip' => __('Remove RSD (Real Simple Discovery) link tag.', 'codecleaner')
+    	)
+    );
+
+    //Remove RSS Feed Links
+    add_settings_field(
+    	'remove_feed_links', 
+    	codecleaner_title(__('Remove RSS Feed Links', 'codecleaner'), 'remove_feed_links') . codecleaner_tooltip('https://cleancoded.com/docs/remove-rss-feed-links-wordpress/'), 
+    	'codecleaner_print_input', 
+    	'codecleaner_options', 
+    	'codecleaner_options', 
+    	array(
+    		'id' => 'remove_feed_links',
+    		'tooltip' => __('Disable WordPress generated RSS feed link tags.', 'codecleaner')
+    	)
+    );
+
+    //Remove Shortlink
+    add_settings_field(
+    	'remove_shortlink', 
+    	codecleaner_title(__('Remove Shortlink', 'codecleaner'), 'remove_shortlink') . codecleaner_tooltip('https://cleancoded.com/docs/remove-shortlink-wordpress/'), 
+    	'codecleaner_print_input', 
+    	'codecleaner_options', 
+    	'codecleaner_options', 
+    	array(
+    		'id' => 'remove_shortlink',
+    		'tooltip' => __('Remove Shortlink link tag.', 'codecleaner')
+    	)
+    );
+
+    //Remove wlmanifest Link
+    add_settings_field(
+    	'remove_wlwmanifest_link', 
+    	codecleaner_title(__('Remove wlwmanifest Link', 'codecleaner'), 'remove_wlwmanifest_link') . codecleaner_tooltip('https://cleancoded.com/docs/remove-wlwmanifest-link-wordpress/'), 
+    	'codecleaner_print_input', 
+    	'codecleaner_options', 
+    	'codecleaner_options',
+        array(
+        	'id' => 'remove_wlwmanifest_link',
+        	'tooltip' => __('Remove wlwmanifest (Windows Live Writer) link tag.', 'codecleaner')
+        )
+    );
+
+    //Options Primary Section
+    add_settings_section('codecleaner_options', __('Default', 'codecleaner'), 'codecleaner_options_callback', 'codecleaner_options');
+
+    //Query String Parameters
+    /*add_settings_field(
+        'query_string_parameters', 
+        codecleaner_title(__('Additional Parameters', 'codecleaner'), 'query_string_parameters') . codecleaner_tooltip(''), 
+        'codecleaner_print_input', 
+        'codecleaner_options', 
+        'codecleaner_options', 
+        array(
+            'id' => 'query_string_parameters',
+            'input' => 'text',
+            'placeholder' => 'v,id',
+            'tooltip' => __('', 'codecleaner')
+        )
+    );*/
+
+    //Hide WP Version
+    add_settings_field(
+    	'hide_wp_version', 
+    	codecleaner_title(__('Hide WP Version', 'codecleaner'), 'hide_wp_version') . codecleaner_tooltip('https://cleancoded.com/docs/remove-wordpress-version-number/'), 
+    	'codecleaner_print_input', 
+    	'codecleaner_options', 
+    	'codecleaner_options', 
+    	array(
+    		'id' => 'hide_wp_version',
+    		'tooltip' => __('Removes WordPress version meta tag.', 'codecleaner')
+    	)
+    );
+
+    //Disable Google Maps
+/*    add_settings_field(
+        'disable_google_maps', 
+        codecleaner_title(__('Disable Google Maps', 'codecleaner'), 'disable_google_maps') . codecleaner_tooltip('https://cleancoded.com/docs/disable-google-maps-api-wordpress/'), 
+        'codecleaner_print_input', 
+        'codecleaner_options', 
+        'codecleaner_options', 
+        array(
+            'id' => 'disable_google_maps',
+            'tooltip' => __('Removes any instances of Google Maps being loaded across your entire site.', 'codecleaner')
+        )
+    );*/
+
+
 	
     //Limit Post Revisions
     add_settings_field(
@@ -397,14 +399,14 @@ function codecleaner_settings() {
     );*/
 
     //WooCommerce Options Section
-    add_settings_section('codecleaner_woocommerce', 'WooCommerce', 'codecleaner_woocommerce_callback', 'codecleaner_options');
+    add_settings_section('codecleaner_woocommerce', 'WooCommerce', 'codecleaner_woocommerce_callback', 'codecleaner_woocommerce');
 
     //Disable WooCommerce Scripts
     add_settings_field(
         'disable_woocommerce_scripts', 
         codecleaner_title(__('Disable Scripts', 'codecleaner'), 'disable_woocommerce_scripts') . codecleaner_tooltip('https://cleancoded.com/docs/disable-woocommerce-scripts-and-styles/'), 
         'codecleaner_print_input', 
-        'codecleaner_options', 
+        'codecleaner_woocommerce', 
         'codecleaner_woocommerce', 
         array(
             'id' => 'disable_woocommerce_scripts',
@@ -417,7 +419,7 @@ function codecleaner_settings() {
         'disable_woocommerce_cart_fragmentation', 
         codecleaner_title(__('Disable Cart Fragmentation', 'codecleaner'), 'disable_woocommerce_cart_fragmentation') . codecleaner_tooltip('https://cleancoded.com/docs/disable-woocommerce-cart-fragments-ajax/'), 
         'codecleaner_print_input', 
-        'codecleaner_options', 
+        'codecleaner_woocommerce', 
         'codecleaner_woocommerce', 
         array(
             'id' => 'disable_woocommerce_cart_fragmentation',
@@ -430,7 +432,7 @@ function codecleaner_settings() {
         'disable_woocommerce_status', 
         codecleaner_title(__('Disable Status Meta Box', 'codecleaner'), 'disable_woocommerce_status') . codecleaner_tooltip('https://cleancoded.com/docs/disable-woocommerce-status-meta-box/'), 
         'codecleaner_print_input', 
-        'codecleaner_options', 
+        'codecleaner_woocommerce', 
         'codecleaner_woocommerce', 
         array(
             'id' => 'disable_woocommerce_status',
@@ -443,7 +445,7 @@ function codecleaner_settings() {
         'disable_woocommerce_widgets', 
         codecleaner_title(__('Disable Widgets', 'codecleaner'), 'disable_woocommerce_widgets') . codecleaner_tooltip('https://cleancoded.com/docs/disable-woocommerce-widgets/'), 
         'codecleaner_print_input', 
-        'codecleaner_options', 
+        'codecleaner_woocommerce', 
         'codecleaner_woocommerce', 
         array(
             'id' => 'disable_woocommerce_widgets',
@@ -451,79 +453,7 @@ function codecleaner_settings() {
         )
     );
 
-    register_setting('codecleaner_options', 'codecleaner_options');
-
-    //CDN Option
-    if(get_option('codecleaner_cdn') == false) {    
-        add_option('codecleaner_cdn', apply_filters('codecleaner_default_cdn', codecleaner_default_cdn()));
-    }
-
-    //CDN Section
-    add_settings_section('codecleaner_cdn', 'CDN', 'codecleaner_cdn_callback', 'codecleaner_cdn');
-
-    //CDN URL
-    add_settings_field(
-        'enable_cdn', 
-        codecleaner_title(__('Enable CDN Rewrite', 'codecleaner'), 'enable_cdn') . codecleaner_tooltip('https://cleancoded.com/docs/cdn-rewrite/'), 
-        'codecleaner_print_input', 
-        'codecleaner_cdn', 
-        'codecleaner_cdn', 
-        array(
-            'id' => 'enable_cdn',
-            'option' => 'codecleaner_cdn',
-            'tooltip' => __('Enables rewriting of your site URLs with your CDN URLs which can be configured below.', 'codecleaner')
-        )
-    );
-
-    //CDN URL
-    add_settings_field(
-        'cdn_url', 
-        codecleaner_title(__('CDN URL', 'codecleaner'), 'cdn_url') . codecleaner_tooltip('https://cleancoded.com/docs/cdn-url/'), 
-        'codecleaner_print_input', 
-        'codecleaner_cdn', 
-        'codecleaner_cdn', 
-        array(
-            'id' => 'cdn_url',
-            'option' => 'codecleaner_cdn',
-            'input' => 'text',
-            'placeholder' => 'https://cdn.example.com',
-            'tooltip' => __('Enter your CDN URL without the trailing backslash. Example: https://cdn.example.com', 'codecleaner')
-        )
-    );
-
-    //CDN Exclusions
-    add_settings_field(
-        'cdn_exclusions', 
-        codecleaner_title(__('CDN Exclusions', 'codecleaner'), 'cdn_exclusions') . codecleaner_tooltip('https://cleancoded.com/docs/cdn-exclusions/'), 
-        'codecleaner_print_input', 
-        'codecleaner_cdn', 
-        'codecleaner_cdn', 
-        array(
-            'id' => 'cdn_exclusions',
-            'option' => 'codecleaner_cdn',
-            'input' => 'text',
-            'placeholder' => '.php',
-            'tooltip' => __('Enter any directories or file extensions you would like to be excluded from CDN rewriting, separated by commas (,). Default: .php', 'codecleaner')
-        )
-    );
-
-    register_setting('codecleaner_cdn', 'codecleaner_cdn');
-
-    //CDN Included Directories
-    add_settings_field(
-        'cdn_directories', 
-        codecleaner_title(__('Included Directories', 'codecleaner'), 'cdn_directories') . codecleaner_tooltip('https://cleancoded.com/docs/cdn-included-directories/'), 
-        'codecleaner_print_input', 
-        'codecleaner_cdn', 
-        'codecleaner_cdn', 
-        array(
-            'id' => 'cdn_directories',
-            'option' => 'codecleaner_cdn',
-            'input' => 'text',
-            'placeholder' => 'wp-content,wp-includes',
-            'tooltip' => __('Enter any directories you would like to be included in CDN rewriting, separated by commas (,). Default: wp-content,wp-includes', 'codecleaner')
-        )
-    );
+    register_setting('codecleaner_woocommerce', 'codecleaner_woocommerce');
 
     //Google Analytics Option
     if(get_option('codecleaner_ga') == false) {    
@@ -563,6 +493,19 @@ function codecleaner_settings() {
             	"footer" => __('Footer', 'codecleaner')
             	),
             'tooltip' => __('Load your analytics script in the header (default) or footer of your site. Default: Header', 'codecleaner')
+        )
+    );
+	
+	//Disable Google Maps
+    add_settings_field(
+        'disable_google_maps', 
+        codecleaner_title(__('Disable Google Maps', 'codecleaner'), 'disable_google_maps') . codecleaner_tooltip('https://cleancoded.com/docs/disable-google-maps-api-wordpress/'), 
+        'codecleaner_print_input', 
+        'codecleaner_ga', 
+        'codecleaner_ga', 
+        array(
+            'id' => 'disable_google_maps',
+            'tooltip' => __('Removes any instances of Google Maps being loaded across your entire site.', 'codecleaner')
         )
     );
 
@@ -661,13 +604,13 @@ function codecleaner_settings() {
 
     //Deep Cleaning
     add_settings_field(
-        'script_manager', 
-        codecleaner_title(__('Deep Cleaning', 'codecleaner'), 'script_manager') . codecleaner_tooltip('https://cleancoded.com/docs/disable-scripts-per-post-page/'), 
+        'deep_cleaning', 
+        codecleaner_title(__('Deep Cleaning', 'codecleaner'), 'deep_cleaning') . codecleaner_tooltip('https://cleancoded.com/docs/disable-scripts-per-post-page/'), 
         'codecleaner_print_input', 
         'codecleaner_extras', 
         'codecleaner_extras', 
         array(
-        	'id' => 'script_manager',
+        	'id' => 'deep_cleaning',
         	'option' => 'codecleaner_extras',
         	'tooltip' => __('Enables the Codecleaner Deep Cleaning, which gives you the ability to disable CSS and JS files on a page by page basis.', 'codecleaner')
         )
@@ -741,17 +684,7 @@ function codecleaner_settings() {
 }
 add_action('admin_init', 'codecleaner_settings');
 
-//cdn default values
-function codecleaner_default_cdn() {
-    $defaults = array(
-        'enable_cdn' => "0",
-        'cdn_url' => "0",
-        'cdn_directories' => "wp-content,wp-includes",
-        'cdn_exclusions' => ".php"
-    );
-    codecleaner_network_defaults($defaults, 'codecleaner_cdn');
-    return apply_filters( 'codecleaner_default_cdn', $defaults );
-}
+
 
 //google analytics group callback
 function codecleaner_ga_callback() {
@@ -900,11 +833,6 @@ function codecleaner_print_toggle($args) {
 	       echo "<div class='slider'></div>";
 	   echo "</label>";
     }
-}
-
-//cdn group callback
-function codecleaner_cdn_callback() {
-    echo '<p class="codecleaner-subheading">' . __('CDN options that allow you to rewrite your site URLs with your CDN URLs.', 'codecleaner') . '</p>';
 }
 
 //sanitize EDD license

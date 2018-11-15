@@ -12,7 +12,7 @@ if(empty($_GET['tab'])) {
     <!-- Tab Navigation -->
 	<h2 class="nav-tab-wrapper">
 		<a href="?page=codecleaner&tab=default" class="nav-tab <?php echo $_GET['tab'] == 'default' || '' ? 'nav-tab-active' : ''; ?>"><?php _e('Default', 'codecleaner'); ?></a>
-		<a href="?page=codecleaner&tab=cdn" class="nav-tab <?php echo $_GET['tab'] == 'cdn' ? 'nav-tab-active' : ''; ?>"><?php _e('CDN', 'codecleaner'); ?></a>
+		<a href="?page=codecleaner&tab=woocommerce" class="nav-tab <?php echo $_GET['tab'] == 'woocommerce' || '' ? 'nav-tab-active' : ''; ?>"><?php _e('WooCommerce', 'codecleaner'); ?></a>
 		<a href="?page=codecleaner&tab=ga" class="nav-tab <?php echo $_GET['tab'] == 'ga' ? 'nav-tab-active' : ''; ?>"><?php _e('Google Analytics', 'codecleaner'); ?></a>
 		<a href="?page=codecleaner&tab=more" class="nav-tab <?php echo $_GET['tab'] == 'more' ? 'nav-tab-active' : ''; ?>"><?php _e('More', 'codecleaner'); ?></a>
 		<?php if(!is_plugin_active_for_network('codecleaner/codecleaner.php')) { ?>
@@ -30,14 +30,14 @@ if(empty($_GET['tab'])) {
 		    <?php settings_fields('codecleaner_options'); ?>
 		    <?php do_settings_sections('codecleaner_options'); ?>
 			<?php submit_button(); ?>
+            
+		<!-- Main WooCommerce Tab -->
+		<?php } elseif($_GET['tab'] == 'woocommerce') { ?>
 
-		<!-- CDN Tab -->
-		<?php } elseif($_GET['tab'] == 'cdn') { ?>
-
-			<?php settings_fields('codecleaner_cdn'); ?>
-		    <?php do_settings_sections('codecleaner_cdn'); ?>
+		    <?php settings_fields('codecleaner_woocommerce'); ?>
+		    <?php do_settings_sections('codecleaner_woocommerce'); ?>
 			<?php submit_button(); ?>
-
+            
 		<!-- Google Analytics Tab -->
 		<?php } elseif($_GET['tab'] == 'ga') { ?>
 

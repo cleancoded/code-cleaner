@@ -1,6 +1,6 @@
 <?php
 $codecleaner_options = get_option('codecleaner_options');
-$codecleaner_cdn = get_option('codecleaner_cdn');
+//$codecleaner_woocommerce = get_option('codecleaner_woocommerce');
 $codecleaner_ga = get_option('codecleaner_ga');
 $codecleaner_extras = get_option('codecleaner_extras');
 
@@ -146,13 +146,13 @@ if(!empty($codecleaner_extras['dns_prefetch'])) {
 	add_action('wp_head', 'codecleaner_dns_prefetch', 1);
 }
 
-if(!empty($codecleaner_extras['script_manager']) && $codecleaner_extras['script_manager'] == "1") {
-	add_action('admin_bar_menu', 'codecleaner_script_manager_admin_bar', 1000);
-	add_action('wp_footer', 'codecleaner_script_manager', 1000);
+if(!empty($codecleaner_extras['deep_cleaning']) && $codecleaner_extras['deep_cleaning'] == "1") {
+	add_action('admin_bar_menu', 'codecleaner_deep_cleaning_admin_bar', 1000);
+	add_action('wp_footer', 'codecleaner_deep_cleaning', 1000);
 	add_action('script_loader_src', 'codecleaner_dequeue_scripts', 1000, 2);
 	add_action('style_loader_src', 'codecleaner_dequeue_scripts', 1000, 2);
-	add_action('template_redirect', 'codecleaner_script_manager_update', 10, 2);
-	add_action('wp_enqueue_scripts', 'codecleaner_script_manager_scripts');
+	add_action('template_redirect', 'codecleaner_deep_cleaning_update', 10, 2);
+	add_action('wp_enqueue_scripts', 'codecleaner_deep_cleaning_scripts');
 }
 
 /* Remove Shortlink
@@ -593,78 +593,6 @@ function codecleaner_welcome_email($value) {
 
 /* CDN Rewrite URLs
 /***********************************************************************/
-if(!empty($codecleaner_cdn['enable_cdn']) && $codecleaner_cdn['enable_cdn'] == "1" && !empty($codecleaner_cdn['cdn_url'])) {
-	add_action('template_redirect', 'codecleaner_cdn_rewrite');
-}
-
-function codecleaner_cdn_rewrite_url($url) {
-	global $codecleaner_cdn;
-
-	//Make Sure CDN URL is Set
-	if(!empty($codecleaner_cdn['cdn_url'])) {
-
-		//Don't Rewrite if Excluded
-		if(!empty($codecleaner_cdn['cdn_exclusions'])) {
-			$exclusions = array_map('trim', explode(',', $codecleaner_cdn['cdn_exclusions']));
-			foreach($exclusions as $exclusion) {
-	            if(!empty($exclusion) && stristr($url[0], $exclusion) != false) {
-	                return $url[0];
-	            }
-	        }
-		} 
-
-	    //Don't Rewrite if Previewing
-	    if(is_admin_bar_showing() && isset($_GET['preview']) && $_GET['preview'] == 'true') {
-	        return $url[0];
-	    }
-
-	    //Prep Site URL
-	    $siteURL = get_option('home');
-	    $siteURL = substr($siteURL, strpos($siteURL, '//'));
-
-	    //Replace URL w/ No HTTP/S Prefix
-	    if(strpos($url[0], '//') === 0) {
-	        return str_replace($siteURL, $codecleaner_cdn['cdn_url'], $url[0]);
-	    }
-
-	    //Found Site URL, Replace Non Relative URL w/ HTTP/S Prefix
-	    if(strstr($url[0], $siteURL)) {
-	        return str_replace(array('http:' . $siteURL, 'https:' . $siteURL), $codecleaner_cdn['cdn_url'], $url[0]);
-	    }
-
-	    //Replace Relative URL
-    	return $codecleaner_cdn['cdn_url'] . $url[0];
-    }
-
-    //Return Original URL
-    return $url[0];
-}
-
-function codecleaner_cdn_rewrite() {
-	ob_start('codecleaner_cdn_rewriter');
-}
-
-function codecleaner_cdn_rewriter($html) {
-	global $codecleaner_cdn;
-
-	//Prep Site URL
-    $escapedSiteURL = quotemeta(get_option('home'));
-	$regExURL = '(https?:|)' . substr($escapedSiteURL, strpos($escapedSiteURL, '//'));
-
-	//Prep Included Directories
-	$directories = 'wp\-content|wp\-includes';
-	if(!empty($codecleaner_cdn['cdn_directories'])) {
-		$directoriesArray = array_map('trim', explode(',', $codecleaner_cdn['cdn_directories']));
-		if(count($directoriesArray) > 0) {
-			$directories = implode('|', array_map('quotemeta', array_filter($directoriesArray)));
-		}
-	}
-  
-  	//Rewrite URLs + Return
-	$regEx = '#(?<=[(\"\'])(?:' . $regExURL . ')?/(?:((?:' . $directories . ')[^\"\')]+)|([^/\"\']+\.[^/\"\')]+))(?=[\"\')])#';
-	$cdnHTML = preg_replace_callback($regEx, 'codecleaner_cdn_rewrite_url', $html);
-	return $cdnHTML;
-}
 
 
 //update analytics.js
@@ -792,7 +720,7 @@ function codecleaner_monster_ga($url) {
 
 //Deep Cleaning Scripts
 
-function codecleaner_script_manager_load_master_array() {
+function codecleaner_deep_cleaning_load_master_array() {
 
 	if(!function_exists('get_plugins')) {
 		require_once(ABSPATH . 'wp-admin/includes/plugin.php');
@@ -872,26 +800,26 @@ function codecleaner_script_manager_load_master_array() {
 	return $master_array;
 }
 
-function codecleaner_script_manager_scripts() {
+function codecleaner_deep_cleaning_scripts() {
 	if(!current_user_can('manage_options') || is_admin() || !isset($_GET['codecleaner']) || !codecleaner_network_access()) {
 		return;
 	}
-	wp_register_script('codecleaner-script-manager-js', plugins_url('js/codecleaner-scripts.js', dirname(__FILE__)), array('jquery-core'), CODECLEANER_VERSION);
-	wp_enqueue_script('codecleaner-script-manager-js');
+	wp_register_script('codecleaner-deep-cleaning-js', plugins_url('js/codecleaner-scripts.js', dirname(__FILE__)), array('jquery-core'), CODECLEANER_VERSION);
+	wp_enqueue_script('codecleaner-deep-cleaning-js');
 }
 
-function codecleaner_script_manager_print_script($category, $group, $script, $type) {
+function codecleaner_deep_cleaning_print_script($category, $group, $script, $type) {
  
 	global $codecleaner_extras;
-	global $codecleaner_script_manager_settings;
+	global $codecleaner_deep_cleaning_settings;
 	global $codecleaner_filters;
 	global $codecleaner_disables;
-	global $codecleaner_script_manager_options;
+	global $codecleaner_deep_cleaning_options;
 	global $currentID;
 	global $statusDisabled;
 	global $pmsm_jquery_disabled;
 
-	$options = $codecleaner_script_manager_options;
+	$options = $codecleaner_deep_cleaning_options;
 
 	$data = $codecleaner_filters[$type];
 
@@ -911,14 +839,14 @@ function codecleaner_script_manager_print_script($category, $group, $script, $ty
 		echo "<tr>";	
 
 			//Status
-			echo "<td class='codecleaner-script-manager-status'>";
+			echo "<td class='codecleaner-deep-cleaning-status'>";
 
-				codecleaner_script_manager_print_status($type, $handle);
+				codecleaner_deep_cleaning_print_status($type, $handle);
 
 			echo "</td>";
 
 			//Script Cell
-			echo "<td class='codecleaner-script-manager-script'>";
+			echo "<td class='codecleaner-deep-cleaning-script'>";
 
 				//Script Handle
 				echo "<span>" . $handle . "</span>";
@@ -926,13 +854,13 @@ function codecleaner_script_manager_print_script($category, $group, $script, $ty
 				//Script Path
 				echo "<a href='" . $data["scripts"]->registered[$script]->src . "' target='_blank'>" . str_replace(get_home_url(), '', $data["scripts"]->registered[$script]->src) . "</a>";
 
-				echo "<div class='codecleaner-script-manager-controls' " . (!$statusDisabled ? "style='display: none;'" : "") . ">";
+				echo "<div class='codecleaner-deep-cleaning-controls' " . (!$statusDisabled ? "style='display: none;'" : "") . ">";
 
 					//Disable
-					codecleaner_script_manager_print_disable($type, $handle);
+					codecleaner_deep_cleaning_print_disable($type, $handle);
 
 					//Enable
-					codecleaner_script_manager_print_enable($type, $handle);
+					codecleaner_deep_cleaning_print_enable($type, $handle);
 
 				echo "</div>";
 
@@ -949,14 +877,14 @@ function codecleaner_script_manager_print_script($category, $group, $script, $ty
 			echo "</td>";
   
 			//Type
-			echo "<td class='codecleaner-script-manager-type'>";
+			echo "<td class='codecleaner-deep-cleaning-type'>";
 				if(!empty($type)) {
 					echo $type;
 				}
 			echo "</td>";
  
 			//Size					
-			echo "<td class='codecleaner-script-manager-size'>";
+			echo "<td class='codecleaner-deep-cleaning-size'>";
 				if(file_exists(ABSPATH . str_replace(get_home_url(), '', $data["scripts"]->registered[$script]->src))) {
 					echo round(filesize(ABSPATH . str_replace(get_home_url(), '', $data["scripts"]->registered[$script]->src)) / 1024, 1 ) . ' KB';
 				}
@@ -967,13 +895,13 @@ function codecleaner_script_manager_print_script($category, $group, $script, $ty
 	} 
 } 
  
-function codecleaner_script_manager_print_enable($type, $handle) {
-	global $codecleaner_script_manager_settings;
-	global $codecleaner_script_manager_options;
+function codecleaner_deep_cleaning_print_enable($type, $handle) {
+	global $codecleaner_deep_cleaning_settings;
+	global $codecleaner_deep_cleaning_options;
 	global $currentID;
-	$options = $codecleaner_script_manager_options;
+	$options = $codecleaner_deep_cleaning_options;
 
-	echo "<div class='codecleaner-script-manager-enable'"; if(empty($options['disabled'][$type][$handle]['everywhere'])) { echo " style='display: none;'"; } echo">";
+	echo "<div class='codecleaner-deep-cleaning-enable'"; if(empty($options['disabled'][$type][$handle]['everywhere'])) { echo " style='display: none;'"; } echo">";
 
 		echo "<div style='font-size: 16px;'>" . __('Exceptions', 'codecleaner') . "</div>";
 
@@ -1011,7 +939,7 @@ function codecleaner_script_manager_print_enable($type, $handle) {
 		}
 
 		//Archives
-		if(!empty($codecleaner_script_manager_settings['separate_archives']) && $codecleaner_script_manager_settings['separate_archives'] == "1") {
+		if(!empty($codecleaner_deep_cleaning_settings['separate_archives']) && $codecleaner_deep_cleaning_settings['separate_archives'] == "1") {
 			echo "<span style='display: block; font-size: 10px; font-weight: bold; margin: 0px;'>Archives:</span>";
 			echo "<input type='hidden' name='enabled[" . $type . "][" . $handle . "][archives]' value='' />";
 
@@ -1066,11 +994,11 @@ function codecleaner_script_manager_print_enable($type, $handle) {
 	echo "</div>";
 }
 
-function codecleaner_script_manager_print_status($type, $handle) {
+function codecleaner_deep_cleaning_print_status($type, $handle) {
 	global $codecleaner_extras;
-	global $codecleaner_script_manager_options;
+	global $codecleaner_deep_cleaning_options;
 	global $currentID;
-	$options = $codecleaner_script_manager_options;
+	$options = $codecleaner_deep_cleaning_options;
 
 	global $statusDisabled;
  
@@ -1086,9 +1014,9 @@ function codecleaner_script_manager_print_status($type, $handle) {
 	}
 	else {
 		echo "<input type='hidden' name='status[" . $type . "][" . $handle . "]' value='enabled' />";
-        echo "<label for='status_" . $type . "_" . $handle . "' class='codecleaner-script-manager-switch'>";
+        echo "<label for='status_" . $type . "_" . $handle . "' class='codecleaner-deep-cleaning-switch'>";
         	echo "<input type='checkbox' id='status_" . $type . "_" . $handle . "' name='status[" . $type . "][" . $handle . "]' value='disabled' " . ($statusDisabled ? "checked" : "") . " class='codecleaner-status-toggle'>";
-        	echo "<div class='codecleaner-script-manager-slider'></div>";
+        	echo "<div class='codecleaner-deep-cleaning-slider'></div>";
        	echo "</label>";
 	}
 }
@@ -1102,8 +1030,8 @@ function codecleaner_dequeue_scripts($src, $handle) {
 	$type = current_filter() == 'script_loader_src' ? "js" : "css";
 
 	//load options
-	$options = get_option('codecleaner_script_manager');
-	$settings = get_option('codecleaner_script_manager_settings');
+	$options = get_option('codecleaner_deep_cleaning');
+	$settings = get_option('codecleaner_deep_cleaning_settings');
 	$currentID = get_queried_object_id();
 
 	//get category + group from src
@@ -1183,18 +1111,18 @@ function codecleaner_dequeue_scripts($src, $handle) {
 	return $src;
 }
 
-function codecleaner_script_manager_print_section($category, $group, $scripts) {
-	global $codecleaner_script_manager_options;
+function codecleaner_deep_cleaning_print_section($category, $group, $scripts) {
+	global $codecleaner_deep_cleaning_options;
 	global $currentID;
 
-	$options = $codecleaner_script_manager_options;
+	$options = $codecleaner_deep_cleaning_options;
 
 	$statusDisabled = false;
 	if(isset($options['disabled'][$category][$group]['everywhere']) || (isset($options['disabled'][$category][$group]['current']) && in_array($currentID, $options['disabled'][$category][$group]['current']))) {
 		$statusDisabled = true;
 	}
 
-	echo "<div class='codecleaner-script-manager-section'>";
+	echo "<div class='codecleaner-deep-cleaning-section'>";
 		echo "<table " . ($statusDisabled ? "style='display: none;'" : "") . ">";
 			echo "<thead>";
 				echo "<tr>";
@@ -1206,22 +1134,22 @@ function codecleaner_script_manager_print_section($category, $group, $scripts) {
 			echo "</thead>";
 			echo "<tbody>";
 				foreach($scripts as $key => $details) {
-					codecleaner_script_manager_print_script($category, $group, $details['handle'], $details['type']);
+					codecleaner_deep_cleaning_print_script($category, $group, $details['handle'], $details['type']);
 				}
 			echo "</tbody>";
 		echo "</table>";
 
 		if($category != "misc") {
 			
-			echo "<div class='codecleaner-script-manager-assets-disabled' " . (!$statusDisabled ? "style='display: none;'" : "") . ">";
+			echo "<div class='codecleaner-deep-cleaning-assets-disabled' " . (!$statusDisabled ? "style='display: none;'" : "") . ">";
 
-				echo "<div class='codecleaner-script-manager-controls'>";
+				echo "<div class='codecleaner-deep-cleaning-controls'>";
 
 					//Disable
-					codecleaner_script_manager_print_disable($category, $group);
+					codecleaner_deep_cleaning_print_disable($category, $group);
 
 					//Enable
-					codecleaner_script_manager_print_enable($category, $group);
+					codecleaner_deep_cleaning_print_enable($category, $group);
 
 				echo "</div>";
 
@@ -1231,16 +1159,16 @@ function codecleaner_script_manager_print_section($category, $group, $scripts) {
 	echo "</div>";
 }
 
-function codecleaner_script_manager_update() {
+function codecleaner_deep_cleaning_update() {
 
-	if(isset($_GET['codecleaner']) && !empty($_POST['codecleaner_script_manager'])) {
+	if(isset($_GET['codecleaner']) && !empty($_POST['codecleaner_deep_cleaning'])) {
 
 		$currentID = get_queried_object_id();
 
 		$codecleaner_filters = array("js", "css", "plugins", "themes");
 
-		$options = get_option('codecleaner_script_manager');
-		$settings = get_option('codecleaner_script_manager_settings');
+		$options = get_option('codecleaner_deep_cleaning');
+		$settings = get_option('codecleaner_deep_cleaning_settings');
 
 		foreach($codecleaner_filters as $type) {
 
@@ -1374,16 +1302,16 @@ function codecleaner_script_manager_update() {
 				}
 			}
 		}
-		update_option('codecleaner_script_manager', $options);
+		update_option('codecleaner_deep_cleaning', $options);
 	}
 }
 
-function codecleaner_script_manager_print_disable($type, $handle) {
-	global $codecleaner_script_manager_options;
+function codecleaner_deep_cleaning_print_disable($type, $handle) {
+	global $codecleaner_deep_cleaning_options;
 	global $currentID;
-	$options = $codecleaner_script_manager_options;
+	$options = $codecleaner_deep_cleaning_options;
 
-	echo "<div class='codecleaner-script-manager-disable'>";
+	echo "<div class='codecleaner-deep-cleaning-disable'>";
 		echo "<div style='font-size: 16px;'>" . __('Disabled', 'codecleaner') . "</div>";
 		echo "<label for='disabled-" . $type . "-" . $handle . "-everywhere'>";
 			echo "<input type='radio' name='disabled[" . $type . "][" . $handle . "]' id='disabled-" . $type . "-" . $handle . "-everywhere' class='codecleaner-disable-select' value='everywhere' ";
@@ -1406,7 +1334,7 @@ function codecleaner_script_manager_print_disable($type, $handle) {
 /***********************************************************************/
 
 //Deep Cleaning Admin Bar Link
-function codecleaner_script_manager_admin_bar($wp_admin_bar) {
+function codecleaner_deep_cleaning_admin_bar($wp_admin_bar) {
 	if(!current_user_can('manage_options') || is_admin() || !codecleaner_network_access()) {
 		return;
 	}
@@ -1424,7 +1352,7 @@ function codecleaner_script_manager_admin_bar($wp_admin_bar) {
 	}
 
 	$args = array(
-		'id'    => 'codecleaner_script_manager',
+		'id'    => 'codecleaner_deep_cleaning',
 		'title' => $menu_text,
 		'href'  => $href
 	);
@@ -1432,8 +1360,8 @@ function codecleaner_script_manager_admin_bar($wp_admin_bar) {
 }
 
 //Deep Cleaning Front End
-function codecleaner_script_manager() {
-	require_once('script_manager.php');
+function codecleaner_deep_cleaning() {
+	require_once('deep_cleaning.php');
 }
 
 

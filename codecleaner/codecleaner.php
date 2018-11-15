@@ -160,11 +160,11 @@ function codecleaner_uninstall() {
 	//plugin options
 	$codecleaner_options = array(
 		'codecleaner_options',
-		'codecleaner_cdn',
+		'codecleaner_woocommerce',
 		'codecleaner_ga',
 		'codecleaner_extras',
-		'codecleaner_script_manager',
-		'codecleaner_script_manager_settings',
+		'codecleaner_deep_cleaning',
+		'codecleaner_deep_cleaning_settings',
 		'codecleaner_edd_license_key',
 		'codecleaner_edd_license_status'
 	);
