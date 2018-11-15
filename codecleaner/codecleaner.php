@@ -1,11 +1,11 @@
 <?php
 /*
-Plugin Name: Codecleaner
-Plugin URI: https://cleancoded.com/
-Description: This plugin adds an assortment of performance and speed improvements to your WordPress installation.
+Plugin Name: Code Cleaner
+Plugin URI: https://cleancoded.com/cleaner/
+Description: The Code Cleaner plugin cleans and optimizes WordPress code for improved website performance and faster page load times.
 Version: 1.0.1
-Author: cleancoded
-Author URI: https://cleancoded.com/
+Author: CLEANCODED
+Author URI: https://cleancoded.com/cleaner/
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: cleancoded
@@ -15,7 +15,7 @@ Domain Path: /languages
 /*****************************************************************************************
 * EDD License
 *****************************************************************************************/
-define('CODECLEANER_STORE_URL', 'https://cleancoded.com/');
+define('CODECLEANER_STORE_URL', 'https://cleancoded.com/cleaner/');
 define('CODECLEANER_ITEM_NAME', 'codecleaner');
 define('CODECLEANER_VERSION', '1.0.1');
 
@@ -33,7 +33,7 @@ if(is_admin()) {
 //admin menu
 function codecleaner_menu() {
 	if(codecleaner_network_access()) {
-		$pages = add_options_page('codecleaner', 'Codecleaner', 'manage_options', 'codecleaner', 'codecleaner_admin');
+		$pages = add_options_page('Code Cleaner', 'Code Cleaner', 'manage_options', 'codecleaner', 'codecleaner_admin');
 	}
 }
 
@@ -147,7 +147,7 @@ function codecleaner_guide_notice() {
     if(get_current_screen()->base == 'settings_page_codecleaner') {
         echo "<div class='notice notice-info'>";
         	echo "<p>";
-        		_e("Check out our <a href='https://woorkup.com/speed-up-wordpress/' title='WordPress Optimization Guide' target='_blank'>complete optimization guide</a> for more ways to speed up WordPress.", 'codecleaner');
+        		_e("Have a look at our <a href='https://cleancoded.com/speed-up-wordpress/' title='WordPress Optimization Guide' target='_blank'>WordPress Optimization Guide</a> for even more ways to make WordPress faster!", 'codecleaner');
         	echo "</p>";
         echo "</div>";
     }
@@ -213,7 +213,7 @@ function codecleaner_meta_links($links, $file) {
 
 		if(!is_plugin_active_for_network('codecleaner/codecleaner.php') || is_network_admin()) {
 
-			if(!empty($license_info->license) && $license_info->license == "valid") {
+/*			if(!empty($license_info->license) && $license_info->license == "valid") {
 				$codecleaner_links[] = '<a href="' . $license_url . '&tab=license" style="color: green;">' . __('License is Activated', 'codecleaner') . '</a>';
 			}
 			elseif(!empty($license_info->license) && $license_info->license == "expired") {
@@ -222,7 +222,7 @@ function codecleaner_meta_links($links, $file) {
 			else {
 				$codecleaner_links[] = '<a href="' . $license_url . '&tab=license" style="color: red;">' . __('Activate License', 'codecleaner') . '</a>';
 			}
-
+*/
 		}
 
 		$links = array_merge($links, $codecleaner_links);

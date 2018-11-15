@@ -265,7 +265,7 @@ function codecleaner_network_page_callback() {
 		//Support Tab Content
 		elseif($_GET['tab'] == 'support') {
 			echo "<h2>" . __('Support', 'codecleaner') . "</h2>";
-			echo "<p>" . __("For plugin support and documentation, please visit <a href='https://cleancoded.com/' title='codecleaner' target='_blank'>cleancoded.com</a>.", 'codecleaner') . "</p>";
+			echo "<p>" . __("For plugin support and documentation, please visit <a href='https://cleancoded.com/cleaner/' title='codecleaner' target='_blank'>cleancoded.com</a>.", 'codecleaner') . "</p>";
 		}
 
 		//Tooltip Legend

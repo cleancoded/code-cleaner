@@ -375,8 +375,8 @@ function codecleaner_disable_heartbeat() {
 			wp_deregister_script('heartbeat');
 			/*wp_dequeue_script('heartbeat');
 			if(is_admin()) {
-				wp_register_script('hearbeat', plugins_url('js/heartbeat.js', dirname(__FILE__)));
-				wp_enqueue_script('heartbeat', plugins_url('js/heartbeat.js', dirname(__FILE__)));
+				wp_register_script('hearbeat', plugins_url('js/codecleaner-core.js', dirname(__FILE__)));
+				wp_enqueue_script('heartbeat', plugins_url('js/codecleaner-core.js', dirname(__FILE__)));
 			}*/
 		}
 		elseif($codecleaner_options['disable_heartbeat'] == 'allow_posts') {
@@ -385,8 +385,8 @@ function codecleaner_disable_heartbeat() {
 				wp_deregister_script('heartbeat');
 				/*wp_dequeue_script('heartbeat');
 				if(is_admin()) {
-					wp_register_script('hearbeat', plugins_url('js/heartbeat.js', dirname(__FILE__)));
-					wp_enqueue_script('heartbeat', plugins_url('js/heartbeat.js', dirname(__FILE__)));
+					wp_register_script('hearbeat', plugins_url('js/codecleaner-core.js', dirname(__FILE__)));
+					wp_enqueue_script('heartbeat', plugins_url('js/codecleaner-core.js', dirname(__FILE__)));
 				}*/
 			}
 		}
@@ -428,12 +428,12 @@ function codecleaner_site_url($url, $path, $scheme, $blog_id) {
 	return codecleaner_filter_wp_login($url, $scheme);
 }
 
-function codecleaner_network_site_url($url, $path, $scheme) {
-	return codecleaner_filter_wp_login($url, $scheme);
-}
-
 function codecleaner_wp_redirect($location, $status) {
 	return codecleaner_filter_wp_login($location);
+}
+
+function codecleaner_network_site_url($url, $path, $scheme) {
+	return codecleaner_filter_wp_login($url, $scheme);
 }
 
 function codecleaner_filter_wp_login($url, $scheme = null) {
@@ -472,28 +472,6 @@ function codecleaner_login_url($scheme = null) {
 	}
 }
 
-function codecleaner_trailingslashit($string) {
-
-	//Check for Permalink Trailing Slash and Add to String
-	if((substr(get_option('permalink_structure'), -1, 1)) === '/') {
-		return trailingslashit($string);
-	}
-	else {
-		return untrailingslashit($string);
-	}
-}
-
-function codecleaner_login_slug() {
-
-	//Declare Global Variable
-	global $codecleaner_options;
-
-	//Return Login URL Slug if Available
-	if(!empty($codecleaner_options['login_url'])) {
-		return $codecleaner_options['login_url'];
-	} 
-}
-
 function codecleaner_plugins_loaded() {
 
 	//Declare Global Variables
@@ -521,6 +499,28 @@ function codecleaner_plugins_loaded() {
 		//Override Current Page w/ wp-login.php
 		$pagenow = 'wp-login.php';
 	}
+}
+
+function codecleaner_trailingslashit($string) {
+
+	//Check for Permalink Trailing Slash and Add to String
+	if((substr(get_option('permalink_structure'), -1, 1)) === '/') {
+		return trailingslashit($string);
+	}
+	else {
+		return untrailingslashit($string);
+	}
+}
+
+function codecleaner_login_slug() {
+
+	//Declare Global Variable
+	global $codecleaner_options;
+
+	//Return Login URL Slug if Available
+	if(!empty($codecleaner_options['login_url'])) {
+		return $codecleaner_options['login_url'];
+	} 
 }
 
 function codecleaner_wp_loaded() {
@@ -790,7 +790,7 @@ function codecleaner_monster_ga($url) {
 	return plugins_url() . "/codecleaner/js/analytics.js";
 }
 
-//Script Manager Scripts
+//Deep Cleaning Scripts
 
 function codecleaner_script_manager_load_master_array() {
 
@@ -871,6 +871,101 @@ function codecleaner_script_manager_load_master_array() {
 	}
 	return $master_array;
 }
+
+function codecleaner_script_manager_scripts() {
+	if(!current_user_can('manage_options') || is_admin() || !isset($_GET['codecleaner']) || !codecleaner_network_access()) {
+		return;
+	}
+	wp_register_script('codecleaner-script-manager-js', plugins_url('js/codecleaner-scripts.js', dirname(__FILE__)), array('jquery-core'), CODECLEANER_VERSION);
+	wp_enqueue_script('codecleaner-script-manager-js');
+}
+
+function codecleaner_script_manager_print_script($category, $group, $script, $type) {
+ 
+	global $codecleaner_extras;
+	global $codecleaner_script_manager_settings;
+	global $codecleaner_filters;
+	global $codecleaner_disables;
+	global $codecleaner_script_manager_options;
+	global $currentID;
+	global $statusDisabled;
+	global $pmsm_jquery_disabled;
+
+	$options = $codecleaner_script_manager_options;
+
+	$data = $codecleaner_filters[$type];
+
+	if(!empty($data["scripts"]->registered[$script]->src)) {
+ 
+		//Check for disables already set
+		if(!empty($codecleaner_disables)) {
+			foreach($codecleaner_disables as $key => $val) {
+				if(strpos($data["scripts"]->registered[$script]->src, $val) !== false) {
+					//continue 2;
+					return;
+				}
+			}
+		} 
+
+		$handle = $data["scripts"]->registered[$script]->handle;
+		echo "<tr>";	
+
+			//Status
+			echo "<td class='codecleaner-script-manager-status'>";
+
+				codecleaner_script_manager_print_status($type, $handle);
+
+			echo "</td>";
+
+			//Script Cell
+			echo "<td class='codecleaner-script-manager-script'>";
+
+				//Script Handle
+				echo "<span>" . $handle . "</span>";
+
+				//Script Path
+				echo "<a href='" . $data["scripts"]->registered[$script]->src . "' target='_blank'>" . str_replace(get_home_url(), '', $data["scripts"]->registered[$script]->src) . "</a>";
+
+				echo "<div class='codecleaner-script-manager-controls' " . (!$statusDisabled ? "style='display: none;'" : "") . ">";
+
+					//Disable
+					codecleaner_script_manager_print_disable($type, $handle);
+
+					//Enable
+					codecleaner_script_manager_print_enable($type, $handle);
+
+				echo "</div>";
+
+				if($category != "misc") {
+					echo "<input type='hidden' name='relations[" . $type . "][" . $handle . "][category]' value='" . $category . "' />";
+					echo "<input type='hidden' name='relations[" . $type . "][" . $handle . "][group]' value='" . $group . "' />";
+				}
+
+				//jquery override message
+				if($type == 'js' && $handle == 'jquery-core' && $pmsm_jquery_disabled) {
+					echo "<div id='jquery-message'>jQuery has been temporarily enabled in order for the Deep Cleaning to function properly.</div>";
+				}
+				 
+			echo "</td>";
+  
+			//Type
+			echo "<td class='codecleaner-script-manager-type'>";
+				if(!empty($type)) {
+					echo $type;
+				}
+			echo "</td>";
+ 
+			//Size					
+			echo "<td class='codecleaner-script-manager-size'>";
+				if(file_exists(ABSPATH . str_replace(get_home_url(), '', $data["scripts"]->registered[$script]->src))) {
+					echo round(filesize(ABSPATH . str_replace(get_home_url(), '', $data["scripts"]->registered[$script]->src)) / 1024, 1 ) . ' KB';
+				}
+			echo "</td>";
+
+		echo "</tr>";
+  
+	} 
+} 
  
 function codecleaner_script_manager_print_enable($type, $handle) {
 	global $codecleaner_script_manager_settings;
@@ -971,101 +1066,6 @@ function codecleaner_script_manager_print_enable($type, $handle) {
 	echo "</div>";
 }
 
-function codecleaner_script_manager_scripts() {
-	if(!current_user_can('manage_options') || is_admin() || !isset($_GET['codecleaner']) || !codecleaner_network_access()) {
-		return;
-	}
-	wp_register_script('codecleaner-script-manager-js', plugins_url('js/script-manager.js', dirname(__FILE__)), array('jquery-core'), CODECLEANER_VERSION);
-	wp_enqueue_script('codecleaner-script-manager-js');
-}
-
-function codecleaner_script_manager_print_script($category, $group, $script, $type) {
- 
-	global $codecleaner_extras;
-	global $codecleaner_script_manager_settings;
-	global $codecleaner_filters;
-	global $codecleaner_disables;
-	global $codecleaner_script_manager_options;
-	global $currentID;
-	global $statusDisabled;
-	global $pmsm_jquery_disabled;
-
-	$options = $codecleaner_script_manager_options;
-
-	$data = $codecleaner_filters[$type];
-
-	if(!empty($data["scripts"]->registered[$script]->src)) {
- 
-		//Check for disables already set
-		if(!empty($codecleaner_disables)) {
-			foreach($codecleaner_disables as $key => $val) {
-				if(strpos($data["scripts"]->registered[$script]->src, $val) !== false) {
-					//continue 2;
-					return;
-				}
-			}
-		} 
-
-		$handle = $data["scripts"]->registered[$script]->handle;
-		echo "<tr>";	
-
-			//Status
-			echo "<td class='codecleaner-script-manager-status'>";
-
-				codecleaner_script_manager_print_status($type, $handle);
-
-			echo "</td>";
-
-			//Script Cell
-			echo "<td class='codecleaner-script-manager-script'>";
-
-				//Script Handle
-				echo "<span>" . $handle . "</span>";
-
-				//Script Path
-				echo "<a href='" . $data["scripts"]->registered[$script]->src . "' target='_blank'>" . str_replace(get_home_url(), '', $data["scripts"]->registered[$script]->src) . "</a>";
-
-				echo "<div class='codecleaner-script-manager-controls' " . (!$statusDisabled ? "style='display: none;'" : "") . ">";
-
-					//Disable
-					codecleaner_script_manager_print_disable($type, $handle);
-
-					//Enable
-					codecleaner_script_manager_print_enable($type, $handle);
-
-				echo "</div>";
-
-				if($category != "misc") {
-					echo "<input type='hidden' name='relations[" . $type . "][" . $handle . "][category]' value='" . $category . "' />";
-					echo "<input type='hidden' name='relations[" . $type . "][" . $handle . "][group]' value='" . $group . "' />";
-				}
-
-				//jquery override message
-				if($type == 'js' && $handle == 'jquery-core' && $pmsm_jquery_disabled) {
-					echo "<div id='jquery-message'>jQuery has been temporarily enabled in order for the Script Manager to function properly.</div>";
-				}
-				 
-			echo "</td>";
-  
-			//Type
-			echo "<td class='codecleaner-script-manager-type'>";
-				if(!empty($type)) {
-					echo $type;
-				}
-			echo "</td>";
- 
-			//Size					
-			echo "<td class='codecleaner-script-manager-size'>";
-				if(file_exists(ABSPATH . str_replace(get_home_url(), '', $data["scripts"]->registered[$script]->src))) {
-					echo round(filesize(ABSPATH . str_replace(get_home_url(), '', $data["scripts"]->registered[$script]->src)) / 1024, 1 ) . ' KB';
-				}
-			echo "</td>";
-
-		echo "</tr>";
-  
-	} 
-} 
-
 function codecleaner_script_manager_print_status($type, $handle) {
 	global $codecleaner_extras;
 	global $codecleaner_script_manager_options;
@@ -1091,6 +1091,96 @@ function codecleaner_script_manager_print_status($type, $handle) {
         	echo "<div class='codecleaner-script-manager-slider'></div>";
        	echo "</label>";
 	}
+}
+
+function codecleaner_dequeue_scripts($src, $handle) {
+	if(is_admin()) {
+		return $src;
+	}
+
+	//get script type
+	$type = current_filter() == 'script_loader_src' ? "js" : "css";
+
+	//load options
+	$options = get_option('codecleaner_script_manager');
+	$settings = get_option('codecleaner_script_manager_settings');
+	$currentID = get_queried_object_id();
+
+	//get category + group from src
+	preg_match('/\/wp-content\/(.*?\/.*?)\//', $src, $match);
+	if(!empty($match[1])) {
+		$match = explode("/", $match[1]);
+		$category = $match[0];
+		$group = $match[1];
+	}
+
+	//check for group disable settings and override
+	if(!empty($category) && !empty($group) && isset($options['disabled'][$category][$group])) {
+		$type = $category;
+		$handle = $group;
+	}
+
+	//disable is set, check options
+	if((!empty($options['disabled'][$type][$handle]['everywhere']) && $options['disabled'][$type][$handle]['everywhere'] == 1) || (!empty($options['disabled'][$type][$handle]['current']) && in_array($currentID, $options['disabled'][$type][$handle]['current']))) {
+
+		if($handle == 'jquery-core' && $type == 'js' && isset($_GET['codecleaner']) && current_user_can('manage_options')) {
+			global $pmsm_jquery_disabled;
+			$pmsm_jquery_disabled = true;
+			return $src;
+		}
+	
+		if(!empty($options['enabled'][$type][$handle]['current']) && in_array($currentID, $options['enabled'][$type][$handle]['current'])) {
+			return $src;
+		}
+
+		if(!empty($settings['separate_archives']) && $settings['separate_archives'] == "1") {
+			if(is_archive()) {
+				$object = get_queried_object();
+				$objectClass = get_class($object);
+				if($objectClass == "WP_Post_Type") {
+					if(!empty($options['enabled'][$type][$handle]['archives']) && in_array($object->name, $options['enabled'][$type][$handle]['archives'])) {
+						return $src;
+					}
+					else {
+						return false;
+					}
+				}
+				elseif($objectClass == "WP_User")
+				{
+					if(!empty($options['enabled'][$type][$handle]['archives']) && in_array("author", $options['enabled'][$type][$handle]['archives'])) {
+						return $src;
+					}
+					else {
+						return false;
+					}
+				}
+				else {
+					if(!empty($options['enabled'][$type][$handle]['archives']) && in_array($object->taxonomy, $options['enabled'][$type][$handle]['archives'])) {
+						return $src;
+					}
+					else {
+						return false;
+					}
+				}
+			}
+		}
+
+		if(is_front_page() || is_home()) {
+			if(get_option('show_on_front') == 'page' && !empty($options['enabled'][$type][$handle]['post_types']) && in_array('page', $options['enabled'][$type][$handle]['post_types'])) {
+				return $src;
+			}
+		}
+		else {
+			if(!empty($options['enabled'][$type][$handle]['post_types']) && in_array(get_post_type(), $options['enabled'][$type][$handle]['post_types'])) {
+				return $src;
+			}
+		}
+
+		return false;
+	}
+
+	//original script src
+	return $src;
 }
 
 function codecleaner_script_manager_print_section($category, $group, $scripts) {
@@ -1311,101 +1401,11 @@ function codecleaner_script_manager_print_disable($type, $handle) {
 	echo "</div>";
 }
 
-function codecleaner_dequeue_scripts($src, $handle) {
-	if(is_admin()) {
-		return $src;
-	}
 
-	//get script type
-	$type = current_filter() == 'script_loader_src' ? "js" : "css";
-
-	//load options
-	$options = get_option('codecleaner_script_manager');
-	$settings = get_option('codecleaner_script_manager_settings');
-	$currentID = get_queried_object_id();
-
-	//get category + group from src
-	preg_match('/\/wp-content\/(.*?\/.*?)\//', $src, $match);
-	if(!empty($match[1])) {
-		$match = explode("/", $match[1]);
-		$category = $match[0];
-		$group = $match[1];
-	}
-
-	//check for group disable settings and override
-	if(!empty($category) && !empty($group) && isset($options['disabled'][$category][$group])) {
-		$type = $category;
-		$handle = $group;
-	}
-
-	//disable is set, check options
-	if((!empty($options['disabled'][$type][$handle]['everywhere']) && $options['disabled'][$type][$handle]['everywhere'] == 1) || (!empty($options['disabled'][$type][$handle]['current']) && in_array($currentID, $options['disabled'][$type][$handle]['current']))) {
-
-		if($handle == 'jquery-core' && $type == 'js' && isset($_GET['codecleaner']) && current_user_can('manage_options')) {
-			global $pmsm_jquery_disabled;
-			$pmsm_jquery_disabled = true;
-			return $src;
-		}
-	
-		if(!empty($options['enabled'][$type][$handle]['current']) && in_array($currentID, $options['enabled'][$type][$handle]['current'])) {
-			return $src;
-		}
-
-		if(!empty($settings['separate_archives']) && $settings['separate_archives'] == "1") {
-			if(is_archive()) {
-				$object = get_queried_object();
-				$objectClass = get_class($object);
-				if($objectClass == "WP_Post_Type") {
-					if(!empty($options['enabled'][$type][$handle]['archives']) && in_array($object->name, $options['enabled'][$type][$handle]['archives'])) {
-						return $src;
-					}
-					else {
-						return false;
-					}
-				}
-				elseif($objectClass == "WP_User")
-				{
-					if(!empty($options['enabled'][$type][$handle]['archives']) && in_array("author", $options['enabled'][$type][$handle]['archives'])) {
-						return $src;
-					}
-					else {
-						return false;
-					}
-				}
-				else {
-					if(!empty($options['enabled'][$type][$handle]['archives']) && in_array($object->taxonomy, $options['enabled'][$type][$handle]['archives'])) {
-						return $src;
-					}
-					else {
-						return false;
-					}
-				}
-			}
-		}
-
-		if(is_front_page() || is_home()) {
-			if(get_option('show_on_front') == 'page' && !empty($options['enabled'][$type][$handle]['post_types']) && in_array('page', $options['enabled'][$type][$handle]['post_types'])) {
-				return $src;
-			}
-		}
-		else {
-			if(!empty($options['enabled'][$type][$handle]['post_types']) && in_array(get_post_type(), $options['enabled'][$type][$handle]['post_types'])) {
-				return $src;
-			}
-		}
-
-		return false;
-	}
-
-	//original script src
-	return $src;
-}
-
-
-/* Script Manager
+/* Deep Cleaning
 /***********************************************************************/
 
-//Script Manager Admin Bar Link
+//Deep Cleaning Admin Bar Link
 function codecleaner_script_manager_admin_bar($wp_admin_bar) {
 	if(!current_user_can('manage_options') || is_admin() || !codecleaner_network_access()) {
 		return;
@@ -1417,10 +1417,10 @@ function codecleaner_script_manager_admin_bar($wp_admin_bar) {
 
 	if(!isset($_GET['codecleaner'])) {
 		$href.= !empty($_SERVER['QUERY_STRING']) ? '&codecleaner' : '?codecleaner';
-		$menu_text = __('Script Manager', 'codecleaner');
+		$menu_text = __('Deep Cleaning', 'codecleaner');
 	}
 	else {
-		$menu_text = __('Close Script Manager', 'codecleaner');
+		$menu_text = __('Close Deep Cleaning', 'codecleaner');
 	}
 
 	$args = array(
@@ -1431,7 +1431,7 @@ function codecleaner_script_manager_admin_bar($wp_admin_bar) {
 	$wp_admin_bar->add_node($args);
 }
 
-//Script Manager Front End
+//Deep Cleaning Front End
 function codecleaner_script_manager() {
 	require_once('script_manager.php');
 }

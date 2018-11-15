@@ -13,6 +13,13 @@ global $codecleaner_options;
 global $currentID;
 $currentID = get_queried_object_id();
 
+//Load Script Options
+global $codecleaner_script_manager_options;
+$codecleaner_script_manager_options = get_option('codecleaner_script_manager');
+
+//Load Styles
+require_once('script_manager_css.php');
+
 //Settings Process Form
 if(isset($_POST['codecleaner_script_manager_settings'])) {
 
@@ -31,15 +38,6 @@ if(isset($_POST['codecleaner_script_manager_settings'])) {
 global $codecleaner_script_manager_settings;
 $codecleaner_script_manager_settings = get_option('codecleaner_script_manager_settings');
 
-//Build Array of Existing Disables
-global $codecleaner_disables;
-$codecleaner_disables = array();
-if(!empty($codecleaner_options['disable_google_maps']) && $codecleaner_options['disable_google_maps'] == "1") {
-	$codecleaner_disables[] = 'maps.google.com';
-	$codecleaner_disables[] = 'maps.googleapis.com';
-	$codecleaner_disables[] = 'maps.gstatic.com';
-}
-
 //Setup Filters Array
 global $codecleaner_filters;
 $codecleaner_filters = array(
@@ -53,14 +51,16 @@ $codecleaner_filters = array(
 	)
 );
 
-//Load Script Options
-global $codecleaner_script_manager_options;
-$codecleaner_script_manager_options = get_option('codecleaner_script_manager');
+//Build Array of Existing Disables
+global $codecleaner_disables;
+$codecleaner_disables = array();
+if(!empty($codecleaner_options['disable_google_maps']) && $codecleaner_options['disable_google_maps'] == "1") {
+	$codecleaner_disables[] = 'maps.google.com';
+	$codecleaner_disables[] = 'maps.googleapis.com';
+	$codecleaner_disables[] = 'maps.gstatic.com';
+}
 
-//Load Styles
-require_once('script_manager_css.php');
-
-//Wrapper Script Manager 
+//Wrapper Deep Cleaning 
 echo "<div id='codecleaner-script-manager-wrapper' " . (isset($_GET['codecleaner']) ? "style='display: block;'" : "") . ">";
 
 	echo "<div id='codecleaner-script-manager'>";
@@ -76,7 +76,7 @@ echo "<div id='codecleaner-script-manager-wrapper' " . (isset($_GET['codecleaner
 			//Main Navigation Form
 			echo "<form method='POST'>";
 				echo "<div id='codecleaner-script-manager-tabs'>";
-					echo "<button name='tab' value='' class='"; if(empty($_POST['tab'])){echo "active";} echo "' title='" . __('Script Manager', 'codecleaner') . "'>" . __('Script Manager', 'codecleaner') . "</button>";
+					echo "<button name='tab' value='' class='"; if(empty($_POST['tab'])){echo "active";} echo "' title='" . __('Deep Cleaning', 'codecleaner') . "'>" . __('Deep Cleaning', 'codecleaner') . "</button>";
 					echo "<button name='tab' value='global' class='"; if(!empty($_POST['tab']) && $_POST['tab'] == "global"){echo "active";} echo "' title='" . __('Global View', 'codecleaner') . "'>" . __('Global View', 'codecleaner') . "</button>";
 					echo "<button name='tab' value='settings' class='"; if(!empty($_POST['tab']) && $_POST['tab'] == "settings"){echo "active";} echo "' title='" . __('Settings', 'codecleaner') . "'>" . __('Settings', 'codecleaner') . "</button>";
 				echo "</div>";
@@ -102,7 +102,7 @@ echo "<div id='codecleaner-script-manager-wrapper' " . (isset($_GET['codecleaner
 			if(empty($_POST['tab'])) {
 
 				echo "<div class='codecleaner-script-manager-title-bar'>";
-					echo "<h1>" . __('Script Manager', 'codecleaner') . "</h1>";
+					echo "<h1>" . __('Deep Cleaning', 'codecleaner') . "</h1>";
 					echo "<p>" . __('Manage scripts loading on the current page.', 'codecleaner') . "</p>";
 				echo "</div>";
 
@@ -151,7 +151,7 @@ echo "<div id='codecleaner-script-manager-wrapper' " . (isset($_GET['codecleaner
 
 				echo "<div class='codecleaner-script-manager-title-bar'>";
 					echo "<h1>" . __('Global View', 'codecleaner') . "</h1>";
-					echo "<p>" . __('This is a visual representation of the Script Manager configuration across your entire site.', 'codecleaner') . "</p>";
+					echo "<p>" . __('This is a visual representation of the Deep Cleaning configuration across your entire site.', 'codecleaner') . "</p>";
 				echo "</div>";
 				
 				if(!empty($codecleaner_script_manager_options)) {
@@ -211,7 +211,7 @@ echo "<div id='codecleaner-script-manager-wrapper' " . (isset($_GET['codecleaner
 
 				echo "<div class='codecleaner-script-manager-title-bar'>";
 					echo "<h1>" . __('Settings', 'codecleaner') . "</h1>";
-					echo "<p>" . __('View and manage all of your Script Manager settings.', 'codecleaner') . "</p>";
+					echo "<p>" . __('View and manage all of your Deep Cleaning settings.', 'codecleaner') . "</p>";
 				echo "</div>";
 
 				//Form
@@ -229,7 +229,7 @@ echo "<div id='codecleaner-script-manager-wrapper' " . (isset($_GET['codecleaner
 										$args = array(
 								            'id' => 'hide_disclaimer',
 								            'option' => 'codecleaner_script_manager_settings',
-								            'tooltip' => __('Hide the disclaimer message box across all Script Manager views.', 'codecleaner')
+								            'tooltip' => __('Hide the disclaimer message box across all Deep Cleaning views.', 'codecleaner')
 								        );
 										codecleaner_print_input($args);
 									echo "</td>";
@@ -240,7 +240,7 @@ echo "<div id='codecleaner-script-manager-wrapper' " . (isset($_GET['codecleaner
 									$args = array(
 							            'id' => 'separate_archives',
 							            'option' => 'codecleaner_script_manager_settings',
-							            'tooltip' => __('Add WordPress archives to your Script Manager selection options. Archive posts will no longer be grouped with their post type.', 'codecleaner')
+							            'tooltip' => __('Add WordPress archives to your Deep Cleaning selection options. Archive posts will no longer be grouped with their post type.', 'codecleaner')
 							        );
 									codecleaner_print_input($args);
 									echo "</td>";

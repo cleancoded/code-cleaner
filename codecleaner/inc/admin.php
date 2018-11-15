@@ -1,20 +1,20 @@
 <?php 
 //if no tab is set, default to first/options tab
 if(empty($_GET['tab'])) {
-	$_GET['tab'] = 'options';
+	$_GET['tab'] = 'default';
 } 
 ?>
 <div class="wrap codecleaner-admin">
 
 	<!-- Plugin Admin Page Title -->
-	<h2><?php _e('Codecleaner Settings', 'codecleaner'); ?></h2>
+	<h2><?php _e('Code Cleaner Settings', 'codecleaner'); ?></h2>
 
     <!-- Tab Navigation -->
 	<h2 class="nav-tab-wrapper">
-		<a href="?page=codecleaner&tab=options" class="nav-tab <?php echo $_GET['tab'] == 'options' || '' ? 'nav-tab-active' : ''; ?>"><?php _e('Options', 'codecleaner'); ?></a>
+		<a href="?page=codecleaner&tab=default" class="nav-tab <?php echo $_GET['tab'] == 'default' || '' ? 'nav-tab-active' : ''; ?>"><?php _e('Default', 'codecleaner'); ?></a>
 		<a href="?page=codecleaner&tab=cdn" class="nav-tab <?php echo $_GET['tab'] == 'cdn' ? 'nav-tab-active' : ''; ?>"><?php _e('CDN', 'codecleaner'); ?></a>
 		<a href="?page=codecleaner&tab=ga" class="nav-tab <?php echo $_GET['tab'] == 'ga' ? 'nav-tab-active' : ''; ?>"><?php _e('Google Analytics', 'codecleaner'); ?></a>
-		<a href="?page=codecleaner&tab=extras" class="nav-tab <?php echo $_GET['tab'] == 'extras' ? 'nav-tab-active' : ''; ?>"><?php _e('Extras', 'codecleaner'); ?></a>
+		<a href="?page=codecleaner&tab=more" class="nav-tab <?php echo $_GET['tab'] == 'more' ? 'nav-tab-active' : ''; ?>"><?php _e('More', 'codecleaner'); ?></a>
 		<?php if(!is_plugin_active_for_network('codecleaner/codecleaner.php')) { ?>
 			<a href="?page=codecleaner&tab=license" class="nav-tab <?php echo $_GET['tab'] == 'license' ? 'nav-tab-active' : ''; ?>"><?php _e('License', 'codecleaner'); ?></a>
 		<?php } ?>
@@ -25,7 +25,7 @@ if(empty($_GET['tab'])) {
 	<form method="post" action="options.php">
 
 		<!-- Main Options Tab -->
-		<?php if($_GET['tab'] == 'options') { ?>
+		<?php if($_GET['tab'] == 'default') { ?>
 
 		    <?php settings_fields('codecleaner_options'); ?>
 		    <?php do_settings_sections('codecleaner_options'); ?>
@@ -46,7 +46,7 @@ if(empty($_GET['tab'])) {
 			<?php submit_button(); ?>
 
 		<!-- Extras Tab -->
-		<?php } elseif($_GET['tab'] == 'extras') { ?>
+		<?php } elseif($_GET['tab'] == 'more') { ?>
 
 			<?php settings_fields('codecleaner_extras'); ?>
 		    <?php do_settings_sections('codecleaner_extras'); ?>
@@ -61,7 +61,7 @@ if(empty($_GET['tab'])) {
 		<?php } elseif($_GET['tab'] == 'support') { ?>
 
 			<h2><?php _e('Support', 'codecleaner'); ?></h2>
-			<p><?php _e("For plugin support and documentation, please visit <a href='https://cleancoded.com/' title='codecleaner' target='_blank'>cleancoded.com</a>.", 'codecleaner'); ?></p>
+			<p><?php _e("For plugin support and documentation, please visit <a href='https://cleancoded.com/cleaner/' title='codecleaner' target='_blank'>cleancoded.com</a>.", 'codecleaner'); ?></p>
 
 		<?php } ?>
 	</form>

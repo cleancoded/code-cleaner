@@ -17,9 +17,10 @@ settings_fields('codecleaner_edd_license');
 				<label class="description" for="codecleaner_edd_license_key"><?php _e('Enter your license key', 'codecleaner'); ?></label>
 			</td>
 		</tr>
+        
+		<!-- Activate/Deactivate License -->
 		<?php if( false !== $license ) { ?>
 
-			<!-- Activate/Deactivate License -->
 			<tr>
 				<th>
 					<?php _e('Activate License'); ?>
