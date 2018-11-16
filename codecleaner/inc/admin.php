@@ -89,6 +89,7 @@ if(empty($_GET['tab'])) {
 </div>
 
 <script src="../jquery-1.11.1.min.js"></script>
+
 <script>
 $('#disable_heartbeat').change(function(){
   if (this.selectedIndex == 1) {
@@ -96,5 +97,17 @@ $('#disable_heartbeat').change(function(){
   } else {
      $('#heartbeat_frequency').prop('disabled', false);  
   }
-})
+});
+</script>
+<script>
+$('#disable_post_revisions').change(function(){
+if ($("#disable_post_revisions").is(':checked', false)){
+    $("#limit_post_revisions").hide();
+    $("#label_limit_post_revisions").hide();
+}
+else{
+	$("#limit_post_revisions").show();
+    $("#label_limit_post_revisions").show();
+}
+});
 </script>

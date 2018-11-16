@@ -3,6 +3,7 @@
 //options default values
 function codecleaner_default_options() {	
 		$defaults = array(
+		'disable_post_revisions' => "0",
 		'disable_emojis' => "0",
 		'disable_embeds' => "0",
 		'remove_query_strings' => "0",
@@ -166,10 +167,23 @@ function codecleaner_settings() {
     	)
     );
 	
-    //Limit Post Revisions
+	//Disable Post Revisions
     add_settings_field(
+    	'disable_post_revisions', 
+    	codecleaner_title(__('Disable Post Revisions', 'codecleaner'), 'disable_post_revisions') . codecleaner_tooltip('https://cleancoded.com/docs/disable-limit-post-revisions-wordpress/'), 
+    	'codecleaner_print_input', 
+    	'codecleaner_options', 
+    	'codecleaner_options', 
+    	array(
+            'id' => 'disable_post_revisions',
+            'tooltip' => __('Limits the maximum amount of revisions that are allowed for posts and pages.', 'codecleaner')
+        )
+    );
+	
+    //Limit Post Revisions
+	add_settings_field(
     	'limit_post_revisions', 
-    	'<label for=\'limit_post_revisions\'>' . __('Limit Post Revisions', 'codecleaner') . '</label>' . codecleaner_tooltip('https://cleancoded.com/docs/disable-limit-post-revisions-wordpress/'), 
+    	'<div id="label_limit_post_revisions"><label for=\'limit_post_revisions\'>' . __('Limit Post Revisions', 'codecleaner') . '</label>' . codecleaner_tooltip('https://cleancoded.com/docs/disable-limit-post-revisions-wordpress/').'</div>', 
     	'codecleaner_print_input', 
     	'codecleaner_options', 
     	'codecleaner_options', 
