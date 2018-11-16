@@ -71,30 +71,18 @@ echo "<div id='codecleaner-deep-cleaning-wrapper' " . (isset($_GET['codecleaner'
 		echo "<div id='codecleaner-deep-cleaning-header'>";
 
 			//Logo
-			echo "<img src='" . plugins_url('img/logo.svg', dirname(__FILE__)) . "' title='Codecleaner' id='codecleaner-logo' />";
+			echo "<img src='" . plugins_url('img/CLEANCODED.svg', dirname(__FILE__)) . "' title='Codecleaner' id='codecleaner-logo' />";
 		
 			//Main Navigation Form
 			echo "<form method='POST'>";
 				echo "<div id='codecleaner-deep-cleaning-tabs'>";
 					echo "<button name='tab' value='' class='"; if(empty($_POST['tab'])){echo "active";} echo "' title='" . __('Deep Cleaning', 'codecleaner') . "'>" . __('Deep Cleaning', 'codecleaner') . "</button>";
-					echo "<button name='tab' value='global' class='"; if(!empty($_POST['tab']) && $_POST['tab'] == "global"){echo "active";} echo "' title='" . __('Global View', 'codecleaner') . "'>" . __('Global View', 'codecleaner') . "</button>";
-					echo "<button name='tab' value='settings' class='"; if(!empty($_POST['tab']) && $_POST['tab'] == "settings"){echo "active";} echo "' title='" . __('Settings', 'codecleaner') . "'>" . __('Settings', 'codecleaner') . "</button>";
+					echo "<button name='tab' value='global' class='"; if(!empty($_POST['tab']) && $_POST['tab'] == "global"){echo "active";} echo "' title='" . __('Site-wide Settings', 'codecleaner') . "'>" . __('Site-wide Settings', 'codecleaner') . "</button>";
+					/*echo "<button name='tab' value='settings' class='"; if(!empty($_POST['tab']) && $_POST['tab'] == "settings"){echo "active";} echo "' title='" . __('Settings', 'codecleaner') . "'>" . __('Settings', 'codecleaner') . "</button>"*/;
 				echo "</div>";
 			echo "</form>";
 
 		echo "</div>";
-
-		//Disclaimer
-		if(empty($codecleaner_deep_cleaning_settings['hide_disclaimer']) || $codecleaner_deep_cleaning_settings['hide_disclaimer'] != "1") {
-			echo "<div id='codecleaner-deep-cleaning-disclaimer'>";
-				echo "<p>";
-					_e("Below you can disable/enable CSS and JS files on a per page/post basis, as well as by custom post types. We recommend testing this locally or on a staging site first, as you could break the appearance of your live site. If you aren't sure about a certain script, you can try clicking on it, as a lot of authors will mention their plugin or theme in the header of the source code.", 'codecleaner');
-				echo "</p>";
-				echo "<p>";
-					_e("If for some reason you run into trouble, you can always enable everything again to reset the settings. Make sure to check out the <a href='https://cleancoded.com/docs/' target='_blank' title='Codecleaner Knowledge Base'>Codecleaner knowledge base</a> for more information.", 'codecleaner');
-				echo "</p>";
-			echo "</div>";
-		}
 
 		echo "<div id='codecleaner-deep-cleaning-container'>";
 
@@ -151,7 +139,7 @@ echo "<div id='codecleaner-deep-cleaning-wrapper' " . (isset($_GET['codecleaner'
 
 				echo "<div class='codecleaner-deep-cleaning-title-bar'>";
 					echo "<h1>" . __('Global View', 'codecleaner') . "</h1>";
-					echo "<p>" . __('This is a visual representation of the Deep Cleaning configuration across your entire site.', 'codecleaner') . "</p>";
+					echo "<p>" . __('These are the scripts and files that are disabled across your entire WordPress site.', 'codecleaner') . "</p>";
 				echo "</div>";
 				
 				if(!empty($codecleaner_deep_cleaning_options)) {

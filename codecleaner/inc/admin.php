@@ -87,3 +87,14 @@ if(empty($_GET['tab'])) {
 	</script>
 	
 </div>
+
+<script src="../jquery-1.11.1.min.js"></script>
+<script>
+$('#disable_heartbeat').change(function(){
+  if (this.selectedIndex == 1) {
+     $('#heartbeat_frequency').prop('disabled', true);
+  } else {
+     $('#heartbeat_frequency').prop('disabled', false);  
+  }
+})
+</script>

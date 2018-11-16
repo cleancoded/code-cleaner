@@ -1,8 +1,8 @@
-<?php
 
+<?php
 //options default values
-function codecleaner_default_options() {
-	$defaults = array(
+function codecleaner_default_options() {	
+		$defaults = array(
 		'disable_emojis' => "0",
 		'disable_embeds' => "0",
 		'remove_query_strings' => "0",
@@ -165,7 +165,35 @@ function codecleaner_settings() {
     		'tooltip' => __('Controls how often the WordPress Heartbeat API is allowed to run.', 'codecleaner')
     	)
     );
-
+	
+    //Limit Post Revisions
+    add_settings_field(
+    	'limit_post_revisions', 
+    	'<label for=\'limit_post_revisions\'>' . __('Limit Post Revisions', 'codecleaner') . '</label>' . codecleaner_tooltip('https://cleancoded.com/docs/disable-limit-post-revisions-wordpress/'), 
+    	'codecleaner_print_input', 
+    	'codecleaner_options', 
+    	'codecleaner_options', 
+    	array(
+    		'id' => 'limit_post_revisions',
+    		'input' => 'select',
+    		'options' => array(
+    			''      => __('Default', 'codecleaner'),
+    			'false' => __('Disable Post Revisions', 'codecleaner'),
+    			'1'     => '1',
+    			'2'     => '2',
+    			'3'     => '3',
+    			'4'     => '4',
+    			'5'     => '5',
+    			'10'    => '10',
+    			'15'    => '15',
+    			'20'    => '20',
+    			'25'    => '25',
+    			'30'    => '30'
+    		),
+    		'tooltip' => __('Limits the maximum amount of revisions that are allowed for posts and pages.', 'codecleaner')
+    	)
+    );
+	
     //Disable RSS Feeds
     add_settings_field(
     	'disable_rss_feeds', 
@@ -353,36 +381,6 @@ function codecleaner_settings() {
         )
     );*/
 
-
-	
-    //Limit Post Revisions
-    add_settings_field(
-    	'limit_post_revisions', 
-    	'<label for=\'limit_post_revisions\'>' . __('Limit Post Revisions', 'codecleaner') . '</label>' . codecleaner_tooltip('https://cleancoded.com/docs/disable-limit-post-revisions-wordpress/'), 
-    	'codecleaner_print_input', 
-    	'codecleaner_options', 
-    	'codecleaner_options', 
-    	array(
-    		'id' => 'limit_post_revisions',
-    		'input' => 'select',
-    		'options' => array(
-    			''      => __('Default', 'codecleaner'),
-    			'false' => __('Disable Post Revisions', 'codecleaner'),
-    			'1'     => '1',
-    			'2'     => '2',
-    			'3'     => '3',
-    			'4'     => '4',
-    			'5'     => '5',
-    			'10'    => '10',
-    			'15'    => '15',
-    			'20'    => '20',
-    			'25'    => '25',
-    			'30'    => '30'
-    		),
-    		'tooltip' => __('Limits the maximum amount of revisions that are allowed for posts and pages.', 'codecleaner')
-    	)
-    );
-
     //Change Login URL
 /*    add_settings_field(
         'login_url', 
@@ -453,7 +451,7 @@ function codecleaner_settings() {
         )
     );
 
-    register_setting('codecleaner_woocommerce', 'codecleaner_woocommerce');
+    register_setting('codecleaner_options', 'codecleaner_options');
 
     //Google Analytics Option
     if(get_option('codecleaner_ga') == false) {    
@@ -963,3 +961,4 @@ function codecleaner_print_select($args) {
 		}
 	echo "</select>";
 }
+?>

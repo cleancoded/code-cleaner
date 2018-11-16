@@ -4,6 +4,7 @@ $codecleaner_options = get_option('codecleaner_options');
 $codecleaner_ga = get_option('codecleaner_ga');
 $codecleaner_extras = get_option('codecleaner_extras');
 
+
 /* Options Actions + Filters
 /***********************************************************************/
 if(!empty($codecleaner_options['disable_emojis']) && $codecleaner_options['disable_emojis'] == "1") {
