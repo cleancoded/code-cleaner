@@ -1,4 +1,3 @@
-
 <?php
 //options default values
 function codecleaner_default_options() {	
@@ -25,11 +24,7 @@ function codecleaner_default_options() {
 		'heartbeat_frequency' => "",
 		'limit_post_revisions' => "",
 		'autosave_interval' => "",
-        'login_url' => "",
-        'disable_woocommerce_scripts' => "0",
-        'disable_woocommerce_cart_fragmentation' => "0",
-        'disable_woocommerce_status' => "0",
-        'disable_woocommerce_widgets' => "0"
+        'login_url' => ""
 	);
     codecleaner_network_defaults($defaults, 'codecleaner_options');
 	return apply_filters('codecleaner_default_options', $defaults);
@@ -46,7 +41,7 @@ function codecleaner_default_extras() {
 }
 
 function codecleaner_network_defaults(&$defaults, $option) {
-    if(is_multisite() && is_plugin_active_for_network('codecleaner/codecleaner.php')) {
+    if(is_multisite()) {
         $codecleaner_network = get_site_option('codecleaner_network');
         if(!empty($codecleaner_network['default'])) {
             $networkDefaultOptions = get_blog_option($codecleaner_network['default'], $option);
@@ -372,7 +367,7 @@ function codecleaner_settings() {
     //Hide WP Version
     add_settings_field(
     	'hide_wp_version', 
-    	codecleaner_title(__('Hide WP Version', 'codecleaner'), 'hide_wp_version') . codecleaner_tooltip('https://cleancoded.com/docs/remove-wordpress-version-number/'), 
+    	codecleaner_title(__('Remove WP Version Meta Tag', 'codecleaner'), 'hide_wp_version') . codecleaner_tooltip('https://cleancoded.com/docs/remove-wordpress-version-number/'), 
     	'codecleaner_print_input', 
     	'codecleaner_options', 
     	'codecleaner_options', 
@@ -410,6 +405,13 @@ function codecleaner_settings() {
         )
     );*/
 
+	    register_setting('codecleaner_options', 'codecleaner_options');
+
+    //Google Analytics Option
+    if(get_option('codecleaner_woocommerce') == false) {    
+    add_option('codecleaner_woocommerce', apply_filters('codecleaner_default_woocommerce', codecleaner_default_woocommerce()));
+    }
+
     //WooCommerce Options Section
     add_settings_section('codecleaner_woocommerce', 'WooCommerce', 'codecleaner_woocommerce_callback', 'codecleaner_woocommerce');
 
@@ -422,6 +424,7 @@ function codecleaner_settings() {
         'codecleaner_woocommerce', 
         array(
             'id' => 'disable_woocommerce_scripts',
+			'codecleaner_woocommerce',
             'tooltip' => __('Disables WooCommerce scripts and styles except on product, cart, and checkout pages.', 'codecleaner')
         )
     );
@@ -465,7 +468,7 @@ function codecleaner_settings() {
         )
     );
 
-    register_setting('codecleaner_options', 'codecleaner_options');
+    register_setting('codecleaner_woocommerce', 'codecleaner_woocommerce');
 
     //Google Analytics Option
     if(get_option('codecleaner_ga') == false) {    
@@ -517,6 +520,7 @@ function codecleaner_settings() {
         'codecleaner_ga', 
         array(
             'id' => 'disable_google_maps',
+            'option' => 'codecleaner_ga',
             'tooltip' => __('Removes any instances of Google Maps being loaded across your entire site.', 'codecleaner')
         )
     );
@@ -691,8 +695,6 @@ function codecleaner_settings() {
 
     register_setting('codecleaner_extras', 'codecleaner_extras', 'codecleaner_sanitize_extras');
 
-    //edd license option
-	register_setting('codecleaner_edd_license', 'codecleaner_edd_license_key', 'codecleaner_edd_sanitize_license');
 }
 add_action('admin_init', 'codecleaner_settings');
 
@@ -798,6 +800,18 @@ function codecleaner_woocommerce_callback() {
     echo '<p class="codecleaner-subheading">' . __('Disable specific elements of WooCommerce.', 'codecleaner') . '</p>';
 }
 
+//woocommerce default values
+function codecleaner_default_woocommerce() {
+    $defaults = array(
+        'disable_woocommerce_scripts' => "0",
+        'disable_woocommerce_cart_fragmentation' => "0",
+        'disable_woocommerce_status' => "0",
+        'disable_woocommerce_widgets' => "0"
+    );
+    codecleaner_network_defaults($defaults, 'codecleaner_woocommerce');
+    return apply_filters('codecleaner_default_woocommerce', $defaults);
+}
+
 //google analytics default values
 function codecleaner_default_ga() {
     $defaults = array(
@@ -845,15 +859,6 @@ function codecleaner_print_toggle($args) {
 	       echo "<div class='slider'></div>";
 	   echo "</label>";
     }
-}
-
-//sanitize EDD license
-function codecleaner_edd_sanitize_license($new) {
-	$old = get_option( 'codecleaner_edd_license_key' );
-	if($old && $old != $new) {
-		delete_option( 'codecleaner_edd_license_status' ); // new license has been entered, so must reactivate
-	}
-	return $new;
 }
 
 //print tooltip
@@ -975,4 +980,3 @@ function codecleaner_print_select($args) {
 		}
 	echo "</select>";
 }
-?>

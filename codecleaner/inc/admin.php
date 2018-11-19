@@ -15,9 +15,6 @@ if(empty($_GET['tab'])) {
 		<a href="?page=codecleaner&tab=woocommerce" class="nav-tab <?php echo $_GET['tab'] == 'woocommerce' || '' ? 'nav-tab-active' : ''; ?>"><?php _e('WooCommerce', 'codecleaner'); ?></a>
 		<a href="?page=codecleaner&tab=ga" class="nav-tab <?php echo $_GET['tab'] == 'ga' ? 'nav-tab-active' : ''; ?>"><?php _e('Google Analytics', 'codecleaner'); ?></a>
 		<a href="?page=codecleaner&tab=more" class="nav-tab <?php echo $_GET['tab'] == 'more' ? 'nav-tab-active' : ''; ?>"><?php _e('More', 'codecleaner'); ?></a>
-		<?php if(!is_plugin_active_for_network('codecleaner/codecleaner.php')) { ?>
-			<a href="?page=codecleaner&tab=license" class="nav-tab <?php echo $_GET['tab'] == 'license' ? 'nav-tab-active' : ''; ?>"><?php _e('License', 'codecleaner'); ?></a>
-		<?php } ?>
 		<a href="?page=codecleaner&tab=support" class="nav-tab <?php echo $_GET['tab'] == 'support' ? 'nav-tab-active' : ''; ?>"><?php _e('Support', 'codecleaner'); ?></a>
 	</h2>
 
@@ -52,11 +49,6 @@ if(empty($_GET['tab'])) {
 		    <?php do_settings_sections('codecleaner_extras'); ?>
 			<?php submit_button(); ?>
 
-		<!-- License and Activation Tab -->
-		<?php } elseif($_GET['tab'] == 'license') { ?>
-
-			<?php require_once('license.php'); ?>
-
 		<!-- Support Tab -->
 		<?php } elseif($_GET['tab'] == 'support') { ?>
 
@@ -75,7 +67,7 @@ if(empty($_GET['tab'])) {
 		</div>
 
 	<?php } ?>
-
+    
 	<script>
 		(function ($) {
 			$(".codecleaner-tooltip").hover(function(){
@@ -101,13 +93,28 @@ $('#disable_heartbeat').change(function(){
 </script>
 <script>
 $('#disable_post_revisions').change(function(){
-if ($("#disable_post_revisions").is(':checked', false)){
-    $("#limit_post_revisions").hide();
-    $("#label_limit_post_revisions").hide();
-}
-else{
-	$("#limit_post_revisions").show();
-    $("#label_limit_post_revisions").show();
-}
+  if ($("#disable_post_revisions").is(':checked'))
+  {
+	  document.getElementById( 'limit_post_revisions').style.display = 'block';
+	  document.getElementById( 'label_limit_post_revisions').style.display = 'block';
+  }
+  else
+  {
+	  document.getElementById( 'limit_post_revisions').style.display = 'none'
+	  document.getElementById( 'label_limit_post_revisions').style.display = 'none'
+  }
 });
+</script>
+<script>
+window.onload = $("#disable_post_revisions");
+  if ($("#disable_post_revisions").is(':checked'))
+  {
+	  document.getElementById( 'limit_post_revisions').style.display = 'block';
+	  document.getElementById( 'label_limit_post_revisions').style.display = 'block';
+  }
+  else
+  {
+	  document.getElementById( 'limit_post_revisions').style.display = 'none'
+	  document.getElementById( 'label_limit_post_revisions').style.display = 'none'
+  }
 </script>

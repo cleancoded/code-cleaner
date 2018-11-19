@@ -71,7 +71,7 @@ echo "<div id='codecleaner-deep-cleaning-wrapper' " . (isset($_GET['codecleaner'
 		echo "<div id='codecleaner-deep-cleaning-header'>";
 
 			//Logo
-			echo "<img src='" . plugins_url('img/CLEANCODED.svg', dirname(__FILE__)) . "' title='Codecleaner' id='codecleaner-logo' />";
+			echo "<img src='" . plugins_url('img/CLEANCODED.png', dirname(__FILE__)) . "' title='Codecleaner' id='codecleaner-logo' />";
 		
 			//Main Navigation Form
 			echo "<form method='POST'>";

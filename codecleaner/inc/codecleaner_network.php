@@ -1,4 +1,3 @@
-
 <?php
 
 function codecleaner_network_admin_menu() {
@@ -162,100 +161,6 @@ function codecleaner_network_page_callback() {
 				echo "<select>";
 
 				echo "<input type='submit' name='codecleaner_apply_defaults' value='" . __('Apply Default Settings', 'codecleaner') . "' class='button' />";
-			echo "</form>";
-		}
-		//License Tab Content
-		elseif($_GET['tab'] == 'license') {
-			if(isset($_POST['codecleaner_save_license'])) {
-				if(isset($_POST['codecleaner_edd_license_key'])) {
-					//Save License Key
-					update_site_option('codecleaner_edd_license_key', $_POST['codecleaner_edd_license_key']);
-				}
-			}
-			if(isset($_POST['codecleaner_edd_license_activate'])) {
-				codecleaner_edd_activate_network_license();
-			}
-			if(isset($_POST['codecleaner_edd_license_deactivate'])) {
-				codecleaner_edd_deactivate_network_license();
-			}
-
-			$license_info = codecleaner_edd_check_network_license();
-			$license = get_site_option('codecleaner_edd_license_key');
-			$status = get_site_option('codecleaner_edd_license_status');
-
-			echo "<form method='POST'>";
-				echo "<table class='form-table'>";
-					echo "<tbody>";
-
-						//License Key
-						echo "<tr>";
-							echo "<th><label for='codecleaner_edd_license_key'>" . __('License Key', 'codecleaner') . "</label></th>";
-							echo "<td>";
-								echo "<input id='codecleaner_edd_license_key' name='codecleaner_edd_license_key' type='password' class='regular-text' value='" . $license . "' />";
-								echo "<label class='description' for='codecleaner_edd_license_key'>" . __('Enter your license key', 'codecleaner') . "</label>";
-							echo "</td>";
-						echo "</tr>";
-						
-						if($license !== false) {
-
-							//Activate/Deactivate License
-							echo "<tr>";
-								echo "<th>" . __('Activate License', 'permatters') . "</th>";
-								echo "<td>";
-									wp_nonce_field('codecleaner_edd_nonce', 'codecleaner_edd_nonce');
-									if($status !== false && $status == 'valid') {
-										echo "<input type='submit' class='button-secondary' name='codecleaner_edd_license_deactivate' value='" . __('Deactivate License', 'codecleaner') . "' />";
-										echo "<span style='color:green; display: block; margin-top: 10px;'>" . __('License is activated.', 'codecleaner') . "</span>";
-									} else {
-										if(!empty($license_info->activations_left) && $license_info->activations_left == 'unlimited') {
-											echo "<input type='submit' class='button-secondary' name='codecleaner_edd_license_activate' value='" . __('Activate License', 'codecleaner') . "' />";
-											echo "<span style='color:red; display: block; margin-top: 10px;'>" . __('License is not activated.', 'codecleaner') . "</span>";
-										}
-										else {
-											echo "<span style='color:red; display: block;'>" . __('Unlimited License needed for use in a multisite environment. Please contact support to upgrade.', 'codecleaner') . "</span>";
-										}
-									}
-								echo "</td>";
-							echo "</tr>";
-
-							if(!empty($license_info)) {
-
-								//Email Address
-								if(!empty($license_info->customer_email)) {
-									echo "<tr>";
-										echo "<th>" . __('Customer Email', 'codecleaner') . "</th>";
-										echo "<td>" . $license_info->customer_email . "</td>";
-									echo "</tr>";
-								}
-
-								//License Status (Active/Expired)
-								if(!empty($license_info->license)) {
-									echo "<tr>";
-										echo "<th>" . __('License Status', 'codecleaner') . "</th>";
-										echo "<td " . ($license_info->license == "expired" ? "style='color: red;'" : "") . ">";
-											echo $license_info->license;
-											if(!empty($license) && $license_info->license == "expired") {
-												echo "<br /><a href='https://cleancoded.com/checkout/?edd_license_key=" . $license . "&download_id=696' class='button-primary' style='margin-top: 10px;' target='_blank'>" . __('Renew Your License for Updates + Support!', 'codecleaner') . "</a>";
-											}
-										echo "</td>";
-									echo "</tr>";
-								}
-
-								//Licenses Used
-								if(!empty($license_info->site_count) && !empty($license_info->license_limit)) {
-									echo "<tr>";
-										echo "<th>" . __('Licenses Used', 'codecleaner') . "</th>";
-										echo "<td>" . $license_info->site_count . "/" . $license_info->license_limit . "</td>";
-									echo "</tr>";
-								}
-							}
-						}
-					echo "</tbody>";
-				echo "</table>";
- 
- 				//Button To Save License 
-				echo "<p class='submit'><input type='submit' name='codecleaner_save_license' class='button button-primary' value='" . __('Save License', 'codecleaner') . "'></p>";
-
 			echo "</form>";
 		}
 

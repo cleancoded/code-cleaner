@@ -1,10 +1,10 @@
 <?php
 $codecleaner_options = get_option('codecleaner_options');
-//$codecleaner_woocommerce = get_option('codecleaner_woocommerce');
+$codecleaner_woocommerce = get_option('codecleaner_woocommerce');
 $codecleaner_ga = get_option('codecleaner_ga');
 $codecleaner_extras = get_option('codecleaner_extras');
 
-
+//print_r($codecleaner_woocommerce);exit;
 /* Options Actions + Filters
 /***********************************************************************/
 if(!empty($codecleaner_options['disable_emojis']) && $codecleaner_options['disable_emojis'] == "1") {
@@ -1379,127 +1379,4 @@ function codecleaner_preconnect() {
 			echo "<link rel='preconnect' href='" . $url . "' crossorigin>" . "\n";
 		}
 	}
-}
-
-/* DNS Prefetch
-/***********************************************************************/
-function codecleaner_dns_prefetch() {
-	global $codecleaner_extras;
-	if(!empty($codecleaner_extras['dns_prefetch']) && is_array($codecleaner_extras['dns_prefetch'])) {
-		foreach($codecleaner_extras['dns_prefetch'] as $url) {
-			echo "<link rel='dns-prefetch' href='" . $url . "'>" . "\n";
-		}
-	}
-}
-
-/* EDD License Functions
-/***********************************************************************/
-function codecleaner_edd_activate_license() {
-
-	//listen for our activate button to be clicked
-	if(isset($_POST['codecleaner_edd_license_activate'])) {
-
-		//run a quick security check
-	 	if(!check_admin_referer('codecleaner_edd_nonce', 'codecleaner_edd_nonce')) {
-			return; // get out if we didn't click the Activate button
-	 	}
-
-		//retrieve the license from the database
-		$license = trim( get_option('codecleaner_edd_license_key'));
-
-		//data to send in our API request
-		$api_params = array(
-			'edd_action'=> 'activate_license',
-			'license' 	=> $license,
-			'item_name' => urlencode(CODECLEANER_ITEM_NAME), // the name of our product in EDD
-			'url'       => home_url()
-		);
-
-		//Call the custom API.
-		$response = wp_remote_post(CODECLEANER_STORE_URL, array('timeout' => 15, 'sslverify' => true, 'body' => $api_params));
-
-		//make sure the response came back okay
-		if(is_wp_error($response)) {
-			return false;
-		}
-
-		//decode the license data
-		$license_data = json_decode(wp_remote_retrieve_body($response));
-
-		//$license_data->license will be either "valid" or "invalid"
-		update_option('codecleaner_edd_license_status', $license_data->license);
-	}
-}
-add_action('admin_init', 'codecleaner_edd_activate_license');
-
-function codecleaner_edd_deactivate_license() {
-
-	// listen for our activate button to be clicked
-	if(isset($_POST['codecleaner_edd_license_deactivate'])) {
-
-		// run a quick security check
-	 	if(!check_admin_referer('codecleaner_edd_nonce', 'codecleaner_edd_nonce')) {
-			return; // get out if we didn't click the Activate button
-	 	}
-
-		// retrieve the license from the database
-		$license = trim( get_option('codecleaner_edd_license_key'));
-
-		// data to send in our API request
-		$api_params = array(
-			'edd_action'=> 'deactivate_license',
-			'license' 	=> $license,
-			'item_name' => urlencode(CODECLEANER_ITEM_NAME), // the name of our product in EDD
-			'url'       => home_url()
-		);
-
-		// Call the custom API.
-		$response = wp_remote_post(CODECLEANER_STORE_URL, array('timeout' => 15, 'sslverify' => true, 'body' => $api_params));
-
-		// make sure the response came back okay
-		if(is_wp_error($response)) {
-			return false;
-		}
-
-		// decode the license data
-		$license_data = json_decode(wp_remote_retrieve_body($response));
-
-		// $license_data->license will be either "deactivated" or "failed"
-		if($license_data->license == 'deactivated') {
-			delete_option('codecleaner_edd_license_status');
-		}
-	}
-}
-add_action('admin_init', 'codecleaner_edd_deactivate_license');
-
-function codecleaner_edd_check_license() {
-
-	global $wp_version;
-
-	$license = trim(get_option('codecleaner_edd_license_key'));
-
-	$api_params = array(
-		'edd_action' => 'check_license',
-		'license' => $license,
-		'item_name' => urlencode(CODECLEANER_ITEM_NAME),
-		'url'       => home_url()
-	);
-
-	// Call the custom API.
-	$response = wp_remote_post(CODECLEANER_STORE_URL, array('timeout' => 15, 'sslverify' => true, 'body' => $api_params));
-
-	if(is_wp_error($response)) {
-		return false;
-	}
-
-	$license_data = json_decode(wp_remote_retrieve_body($response));
-
-	if($license_data->license == 'valid') {
-		update_option('codecleaner_edd_license_status', "valid");
-	}
-	else {
-		update_option('codecleaner_edd_license_status', "invalid");
-	}
-	
-	return($license_data);
 }
