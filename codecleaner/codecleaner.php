@@ -47,28 +47,6 @@ if(!class_exists('EDD_SL_Plugin_Updater')) {
 	include(dirname( __FILE__ ) . '/inc/EDD_SL_Plugin_Updater.php');
 }
 
-//EDD function updater
-function codecleaner_plugin_updater() {
-
-	//get license key from the DB
-	if(is_network_admin()) {
-		$license_key = trim(get_site_option('codecleaner_edd_license_key'));
-	}
-	else {
-		$license_key = trim(get_option('codecleaner_edd_license_key'));
-	}
-	
-	//updater setting
-	$edd_updater = new EDD_SL_Plugin_Updater(CODECLEANER_STORE_URL, __FILE__, array(
-			'version' 	=> CODECLEANER_VERSION,
-			'license' 	=> $license_key,
-			'item_name' => CODECLEANER_ITEM_NAME,
-			'author' 	=> 'forgemedia'
-		)
-	);
-}
-add_action('admin_init', 'codecleaner_plugin_updater', 0);
-
 //load plugin scripts (.css/.js)
 function codecleaner_admin_scripts() {
 	if(codecleaner_network_access()) {
