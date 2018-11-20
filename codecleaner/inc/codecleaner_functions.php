@@ -592,9 +592,6 @@ function codecleaner_welcome_email($value) {
 	return $value;
 }
 
-/* CDN Rewrite URLs
-/***********************************************************************/
-
 
 //update analytics.js
 function cleadcoded_update_ga() {

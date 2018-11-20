@@ -45,9 +45,6 @@ function codecleaner_network_defaults(&$defaults, $option) {
         $codecleaner_network = get_site_option('codecleaner_network');
         if(!empty($codecleaner_network['default'])) {
             $networkDefaultOptions = get_blog_option($codecleaner_network['default'], $option);
-            if($option == 'codecleaner_cdn') {
-                unset($networkDefaultOptions['cdn_url']);
-            }
             if(!empty($networkDefaultOptions)) {
                 foreach($networkDefaultOptions as $key => $val) {
                     $defaults[$key] = $val;
@@ -255,10 +252,10 @@ function codecleaner_settings() {
     	)
     );
 
-    //Disable Password Strength Meter
+    //Remove Password Strength Meter
     add_settings_field(
         'disable_password_strength_meter', 
-        codecleaner_title(__('Disable Password Strength Meter', 'codecleaner'), 'disable_password_strength_meter') . codecleaner_tooltip('https://cleancoded.com/docs/disable-password-meter-strength/'),
+        codecleaner_title(__('Remove Password Strength Meter', 'codecleaner'), 'disable_password_strength_meter') . codecleaner_tooltip('https://cleancoded.com/docs/disable-password-meter-strength/'),
         'codecleaner_print_input', 
         'codecleaner_options', 
         'codecleaner_options', 

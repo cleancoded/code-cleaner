@@ -68,19 +68,20 @@ if(empty($_GET['tab'])) {
 
 	<?php } ?>
     
-	<script>
-		(function ($) {
-			$(".codecleaner-tooltip").hover(function(){
-			    $(this).closest("tr").find(".codecleaner-tooltip-text-container").show();
-			},function(){
-			    $(this).closest("tr").find(".codecleaner-tooltip-text-container").hide();
-			});
-		}(jQuery));
-	</script>
-	
 </div>
 
-<script src="../jquery-1.11.1.min.js"></script>
+
+<script src="<?php echo plugins_url('js/jquery-1.11.1.min.js', dirname(__FILE__))?>"></script>
+
+  <script>
+      (function ($) {
+          $(".codecleaner-tooltip").hover(function(){
+              $(this).closest("tr").find(".codecleaner-tooltip-text-container").show();
+          },function(){
+              $(this).closest("tr").find(".codecleaner-tooltip-text-container").hide();
+          });
+      }(jQuery));
+  </script>
 
 <script>
 $('#disable_heartbeat').change(function(){

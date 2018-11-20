@@ -91,7 +91,7 @@ echo "<div id='codecleaner-deep-cleaning-wrapper' " . (isset($_GET['codecleaner'
 
 				echo "<div class='codecleaner-deep-cleaning-title-bar'>";
 					echo "<h1>" . __('Deep Cleaning', 'codecleaner') . "</h1>";
-					echo "<p>" . __('Manage scripts loading on the current page.', 'codecleaner') . "</p>";
+					echo "<p>" . __('Manually enable/disable CSS and JS files on a page-by-page and post-by-post basis.', 'codecleaner') . "</p>";
 				echo "</div>";
 
 				//Form
