@@ -30,6 +30,18 @@ function codecleaner_default_options() {
 	return apply_filters('codecleaner_default_options', $defaults);
 }
 
+//woocommerce default values
+function codecleaner_default_woocommerce() {
+    $defaults = array(
+        'disable_woocommerce_scripts' => "0",
+        'disable_woocommerce_cart_fragmentation' => "0",
+        'disable_woocommerce_status' => "0",
+        'disable_woocommerce_widgets' => "0"
+    );
+    codecleaner_network_defaults($defaults, 'codecleaner_woocommerce');
+    return apply_filters('codecleaner_default_woocommerce', $defaults);
+}
+
 //extras default values
 function codecleaner_default_extras() {
     $defaults = array(
@@ -421,7 +433,7 @@ function codecleaner_settings() {
         'codecleaner_woocommerce', 
         array(
             'id' => 'disable_woocommerce_scripts',
-			'codecleaner_woocommerce',
+            'option' => 'codecleaner_woocommerce',
             'tooltip' => __('Disables WooCommerce scripts and styles except on product, cart, and checkout pages.', 'codecleaner')
         )
     );
@@ -435,6 +447,7 @@ function codecleaner_settings() {
         'codecleaner_woocommerce', 
         array(
             'id' => 'disable_woocommerce_cart_fragmentation',
+            'option' => 'codecleaner_woocommerce',
             'tooltip' => __('Completely disables WooCommerce cart fragmentation script.', 'codecleaner')
         )
     );
@@ -448,6 +461,7 @@ function codecleaner_settings() {
         'codecleaner_woocommerce', 
         array(
             'id' => 'disable_woocommerce_status',
+            'option' => 'codecleaner_woocommerce',
             'tooltip' => __('Disables WooCommerce status meta box from the WP Admin Dashboard.', 'codecleaner')
         )
     );
@@ -461,6 +475,7 @@ function codecleaner_settings() {
         'codecleaner_woocommerce', 
         array(
             'id' => 'disable_woocommerce_widgets',
+            'option' => 'codecleaner_woocommerce',
             'tooltip' => __('Disables all WooCommerce widgets.', 'codecleaner')
         )
     );
@@ -797,17 +812,6 @@ function codecleaner_woocommerce_callback() {
     echo '<p class="codecleaner-subheading">' . __('Disable specific elements of WooCommerce.', 'codecleaner') . '</p>';
 }
 
-//woocommerce default values
-function codecleaner_default_woocommerce() {
-    $defaults = array(
-        'disable_woocommerce_scripts' => "0",
-        'disable_woocommerce_cart_fragmentation' => "0",
-        'disable_woocommerce_status' => "0",
-        'disable_woocommerce_widgets' => "0"
-    );
-    codecleaner_network_defaults($defaults, 'codecleaner_woocommerce');
-    return apply_filters('codecleaner_default_woocommerce', $defaults);
-}
 
 //google analytics default values
 function codecleaner_default_ga() {

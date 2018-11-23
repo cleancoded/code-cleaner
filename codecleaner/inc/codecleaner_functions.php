@@ -1,6 +1,6 @@
 <?php
 $codecleaner_options = get_option('codecleaner_options');
-$codecleaner_woocommerce = get_option('codecleaner_woocommerce');
+//$codecleaner_woocommerce = get_option('codecleaner_woocommerce');
 $codecleaner_ga = get_option('codecleaner_ga');
 $codecleaner_extras = get_option('codecleaner_extras');
 

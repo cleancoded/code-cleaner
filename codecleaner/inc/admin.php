@@ -84,6 +84,14 @@ if(empty($_GET['tab'])) {
   </script>
 
 <script>
+window.onload = $("#disable_heartbeat");
+	if ($("#disable_heartbeat").val() == 'disable_everywhere') {
+     $('#heartbeat_frequency').prop('disabled', true);
+  } else {
+     $('#heartbeat_frequency').prop('disabled', false);  
+  }
+</script>
+<script>
 $('#disable_heartbeat').change(function(){
   if (this.selectedIndex == 1) {
      $('#heartbeat_frequency').prop('disabled', true);
